@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Introduction
 ------------------------
 ZanPHP is an agile Web application development framework written in PHP5 that uses different design patterns and best practices to create applications more quickly with good quality code.
@@ -193,3 +194,9 @@ To complete the translation process, you must add the translation in the followi
      
         return $text;
     }
+=======
+adExtra
+=======
+
+Administrador de extraescolares del ITSA.
+>>>>>>> ed457f8daccedbf491f9483ee0c4e16aca620228
