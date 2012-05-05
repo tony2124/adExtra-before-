@@ -78,6 +78,7 @@
 				      <li><a href="#">Administrar álbumes</a></li>
 				      <li><a href="#">Administrar banners</a></li>
 				    </ul>
+				    
 				  </li>
 				</ul>
 	          </div><!--/.nav-collapse -->

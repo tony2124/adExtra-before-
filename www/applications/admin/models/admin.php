@@ -16,6 +16,21 @@ class Admin_Model extends ZP_Model {
 		$this->table = "contacts";
 	}
 
+	public function getConfiguracion()
+	{
+		return $data = $this->Db->query("select * from configuracion");
+	}
+
+	public function getClubes()
+	{
+		return $data = $this->Db->query("select * from clubes order by nombre_club asc");
+	}
+
+	public function getAlumnosInscritos($periodo = NULL)
+	{
+		return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes where periodo = '$periodo'");	
+	}
+
 	public function contact($id) {
 		$data = $this->Db->findAll($this->table);
 
