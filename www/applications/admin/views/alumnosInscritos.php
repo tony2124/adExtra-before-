@@ -1,4 +1,4 @@
-ALUMNOS INSCRITOS EN LOS CLUBES EN EL PERIODO: <?php print $periodo ?>
+<p>ALUMNOS INSCRITOS EN LOS CLUBES EN EL PERIODO: <?php print $periodo ?></p>
 
 <table width="600" class = "table table-striped table-bordered table-condensed">
 	 <thead>
@@ -18,14 +18,20 @@ ALUMNOS INSCRITOS EN LOS CLUBES EN EL PERIODO: <?php print $periodo ?>
 			if($clubes[$i]['tipo_club'] == 1 || $clubes[$i]['tipo_club'] == 2)
 			{
 	?>
-				<tr>
-					
+				<tr>			
 					<td>
 						<?php echo $clubes[$i]['nombre_club'] ?>		
 					</td>
 					<td align="center">
 				<?php 
-						print "Numero de alumnos";
+						$contador = 0;
+						foreach ($alumnos as $al) {
+							if($al['id_club'] == $clubes[$i]['id_club'])
+								$contador++;
+						}
+						print $contador;
+						$TOTAL += $contador;
+						 
 						
 				?>
 					</td>

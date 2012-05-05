@@ -5,10 +5,9 @@
 
 ?>
 <div class="span3">
-	<h3>Sidebar</h3>
-	<ul>
-		<li><a href="#" title="Option 1">Option 1</a></li>
-		<li><a href="#" title="Option 2">Option 2</a></li>
-		<li><a href="#" title="Option 3">Option 3</a></li>
-	</ul>
+	<h3>Búsqueda de alumnos</h3>
+	<form class="well form-search" method="post" action"">
+		  <p><input type="text" class="search-query"></p>
+		  <p><button type="submit" class="btn btn-primary btn-large">Búsqueda de alumno</button></p>
+		</form>
 </div>

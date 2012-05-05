@@ -78,9 +78,19 @@
 				      <li><a href="#">Administrar álbumes</a></li>
 				      <li><a href="#">Administrar banners</a></li>
 				    </ul>
-				    
+
 				  </li>
 				</ul>
+				<div class="btn-group pull-right">
+				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				    Action
+				    <span class="caret"></span>
+				  </a>
+				  <ul class="dropdown-menu">
+				    <li><a href="#">Configuración de la cuenta</a></li>
+				    <li><a href="#">Salir</a></li>
+				  </ul>
+				</div>
 	          </div><!--/.nav-collapse -->
 	        </div>
 	      </div>
