@@ -6,20 +6,17 @@ if(!defined("_access")) {
 	die("Error: You don't have permission to access here...");
 }
 
-class Default_Controller extends ZP_Controller {
+class Admin_Controller extends ZP_Controller {
 	
 	public function __construct() {
 		$this->app("admin");
-		
 		$this->Templates = $this->core("Templates");
-
 		$this->Templates->theme();
-
-		$this->Default_Model = $this->model("Default_Model");
+		$this->Admin_Model = $this->model("Admin_Model");
 	}
 	
 	public function index() {	
-		$vars["message"] = __(_("Hello World"));
+		$vars["message"] = __(_("Hello World :D"));
 		$vars["view"]	 = $this->view("show", TRUE);
 		//$this->view("show",$vars);
 		$this->render("content", $vars);

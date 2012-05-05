@@ -3,9 +3,6 @@
 		die("Error: You don't have permission to access here..."); 
 	}
 	
-	if(isMobile()) {
-		include "mobile/header.php";
-	} else {
 ?>
 <!DOCTYPE html>
 <html lang="<?php print get("webLang"); ?>">
@@ -13,43 +10,80 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title><?php print $this->getTitle(); ?></title>
 		
-		<link href="<?php print path("vendors/css/frameworks/bootstrap/bootstrap.min.css", "zan"); ?>" rel="stylesheet">
-		<link href="<?php print $this->themePath; ?>/css/style.css" rel="stylesheet">
+		<link href="<?php print path("vendors/css/frameworks/bootstrapnew/css/bootstrap.min.css", "zan"); ?>" rel="stylesheet">
+		<!--<link href="<?php print $this->themePath; ?>/css/style.css" rel="stylesheet">-->
 		<?php print $this->getCSS(); ?>
+		<link href="<?php print path("vendors/css/frameworks/bootstrapnew/css/bootstrap-responsive.min.css", "zan"); ?>" rel="stylesheet">
 		
-		<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-			<!--[if lt IE 9]>
-			  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-			<![endif]-->
-		<!-- Le styles -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="<?php print path("vendors/css/frameworks/bootstrapnew/js/bootstrap.min.js", "zan"); ?>"></script>
+		<script>
+			$(document).on('ready', function () {
+				$('.dropdown-toggle').dropdown();
+				$('.dropdown-menu').dropdown();
+			});
+		</script>
+
+		 <style>
+		      body {
+		        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+		      }
+		 </style>
+
 	</head>
 
 	<body>
-		<div class="topbar">
-			<div class="fill">
-				<div class="container">
-					<a class="brand" href="#">ZanPHP.com</a>
-					
-					<ul class="nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#contact">Contact</a></li>
-					</ul>
-          
-					<form action="#" class="pull-right">
-						<input class="input-small" type="text" placeholder="Username">
-						<input class="input-small" type="password" placeholder="Password">
-						<button class="btn" type="submit">Sign in</button>
-					</form>
-				</div>
-			</div>
-		</div>
-
+		<div class="navbar navbar-fixed-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+	          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </a>
+	          <a class="brand" href="#">Administrador Extraescolares</a>
+	          <div class="nav-collapse">
+	           <ul class="nav nav-pills">
+				  <li class="active"><a href="#">Estadísticas</a></li>
+				  <li class="dropdown" id="menu1">
+				    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
+				      Alumnos
+				      <b class="caret"></b>
+				    </a>
+				    <ul class="dropdown-menu">
+				      <li><a href="#">Buscar un alumno</a></li>
+				      <li><a href="#">Listas de clubes</a></li>
+				      <li><a href="#">Agregar un nuevo alumno</a></li>
+				    </ul>
+				  </li>
+				  <li class="dropdown" id="menu2">
+				    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu2">
+				      Promotores
+				      <b class="caret"></b>
+				    </a>
+				    <ul class="dropdown-menu">
+				      <li><a href="#">Ver promotores</a></li>
+				      <li><a href="#">Agregar un nuevo promotor</a></li>
+				      <li><a href="#">Configuración de liberación</a></li>
+				    </ul>
+				  </li>
+				  <li class="dropdown" id="menu3">
+				    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu3">
+				      Sitio web
+				      <b class="caret"></b>
+				    </a>
+				    <ul class="dropdown-menu">
+				      <li><a href="#">Administrar noticias</a></li>
+				      <li><a href="#">Administrar avisos</a></li>
+				      <li><a href="#">Administrar álbumes</a></li>
+				      <li><a href="#">Administrar banners</a></li>
+				    </ul>
+				  </li>
+				</ul>
+	          </div><!--/.nav-collapse -->
+	        </div>
+	      </div>
+	    </div>
+		
 		<div class="container">
-			<div class="content">
-				<div class="page-header">
-					<h1>ZanPHP <small>PHP5 Framework</small></h1>
-				</div>
-				
-				<div class="row">
-<?php } ?>
+			<div class="row">
