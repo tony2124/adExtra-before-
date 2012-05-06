@@ -48,13 +48,19 @@ class Admin_Model extends ZP_Model {
 
 	public function getRespuesta($datos, $sit)
 	{
-		return $this->Db->query("select * from alumnos natural join carreras where numero_control like '$datos%' or nombre_alumno like '$datos%' or apellido_paterno_alumno like '$datos%' and situacion_escolar = '$sit' order by apellido_paterno_alumno asc, apellido_materno_alumno asc, nombre_alumno asc");
+		return $this->Db->query("select * from alumnos natural join carreras where (numero_control like '$datos%' or nombre_alumno like '$datos%' or apellido_paterno_alumno like '$datos%') and situacion_escolar = '$sit' order by apellido_paterno_alumno asc, apellido_materno_alumno asc, nombre_alumno asc");
 	}
 
 	public function getAlumno($n)
 	{
-		return $this->Db->query("select * from alumnos where numero_control = '$n'");
+		return $this->Db->query("select * from alumnos natural join carreras where numero_control = '$n'");
 	}
+
+	public function getClubesInscritosAlumno($n)
+	{
+		return $this->Db->query("select * from inscripciones natural join clubes where numero_control = '$n'");
+	}
+
 	public function contact($id) {
 		$data = $this->Db->findAll($this->table);
 		return $data;

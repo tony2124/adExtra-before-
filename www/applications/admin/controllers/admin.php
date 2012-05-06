@@ -16,10 +16,7 @@ class Admin_Controller extends ZP_Controller {
 	}
 	
 	public function index() {	
-		//$vars["message"] = __(_("Hello World :D"));
-		//$vars["view"]	 = $this->view("show", TRUE);
-		//$this->view("show",$vars);
-		//$this->render("content", $vars);
+
 		if( SESSION('user_admin') )
 			return redirect(get('webURL') .  _sh .'admin/estadistica');
 
@@ -62,7 +59,7 @@ class Admin_Controller extends ZP_Controller {
 		$usuario = POST('usuario');
 		$clave = POST('clave');
 		$data = $this->Admin_Model->getData($usuario);
-		//____($data);
+
 		if($data[0]['contrasena_administrador'] == $clave)
 		{
 			SESSION('user_admin',$data[0]['usuario_administrador']);
@@ -105,25 +102,43 @@ class Admin_Controller extends ZP_Controller {
 
 	public function buscar()
 	{
-		$datos = POST('bus');
+		$busqueda = POST('bus');
+		$sit = POST('sit');
 
-		if(isset($_POST['sit'])) $sit=5; else $sit = 1;
+		if(!POST('sit')) $sit='1';
+		//____($sit);
 		$error = NULL;
-		if($datos=='') $error = 1;
+		if($busqueda=='') $error = 1;
 
-		$encontrado = $this->Admin_Model->getRespuesta($datos,$sit);
+		$datos = $this->Admin_Model->getRespuesta($busqueda,$sit);
+		
+		/***************** variables **********************/
 		$vars["error"] = $error;
-		$vars["datos"] = $encontrado;
-		$vars["palabra"] = $datos;
+		$vars["palabra"] = $busqueda;
+		
+		$vars["datos"] = $datos;
+		
 		$vars["view"] = $this->view("busquedaAlumnos",true);
+		/*****************************************************/
+
 		$this->render("content",$vars);
 	}
 
 	public function alumno($nctrl = NULL)
 	{
+		include(_corePath . _sh .'/libraries/funciones/funciones.php');
 		$datos = $this->Admin_Model->getAlumno($nctrl);
+		$inscripciones = $this->Admin_Model->getClubesInscritosAlumno($nctrl);
+
+		$vars["nombreAlumno"] = $datos[0]['apellido_paterno_alumno'].' '.$datos[0]['apellido_materno_alumno'].' '.$datos[0]['nombre_alumno'];
+		$vars["periodos"] = periodos($datos[0]['fecha_inscripcion']);
+		
+
 		$vars["alumno"] = $datos[0];
+		$vars["inscripciones"] = $inscripciones;
+
 		$vars["view"] = $this->view("alumno",true);
+
 		$this->render("content",$vars);
 	}
 

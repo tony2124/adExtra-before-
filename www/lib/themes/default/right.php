@@ -12,7 +12,7 @@
 	  <input type="text" name="bus" class="input-medium">
 	 <!-- <span class="help-block">Buscar también alumnos egresados</span>-->
 	  <label class="checkbox">
-	    <input type="checkbox" name="sit"> Buscar también en alumnos egresados.
+	    <input type="checkbox" name="sit" value="5"> Buscar también en alumnos egresados.
 	  </label>
 	  <button type="submit" class="btn btn-primary">Buscar</button>
 	</form>

@@ -12,7 +12,7 @@ function periodos($fecha_inscripcion)
 	$periodo = array();
 	$fec = substr($fecha_inscripcion,1,2);
 	$anio = "20".$fec;
-	for($i = 0; $i < semestre($fecha_inscripcion); $i++)
+	for($i = 0; $i < semestre($fecha_inscripcion) && $i < 9; $i++)
 	{
 		if($i % 2 == 0)
 		{

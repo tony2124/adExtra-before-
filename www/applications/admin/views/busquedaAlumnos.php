@@ -17,19 +17,21 @@ include(_corePath . _sh .'/libraries/funciones/funciones.php'); ?>
   <thead>
     <tr>
       <th>No. de control</th>
+      <th>SE</th>
       <th>Nombre</th>
       <th>Carrera</th>
       <th>Semestre</th>
-      <th>Sexo</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <?php foreach ($datos as $alumno) { ?>
       <tr>
         <td><?php print $alumno['numero_control']?></td>
+        <td><?php print $alumno['situacion_escolar']?></td>
         <td><?php print $alumno['apellido_paterno_alumno'].' '.$alumno['apellido_materno_alumno'].' '.$alumno['nombre_alumno'] ?></td>
         <td><?php print $alumno['abreviatura_carrera']?></td>
-        <td><?php print semestre($alumno['fecha_inscripcion']) ?></td>
+        <td><?php print ($alumno['situacion_escolar'] == 1) ? semestre($alumno['fecha_inscripcion']) : 'NO DISP.' ?></td>
         <td><a href="<?php print get('webURL'). _sh . 'admin/alumno/'.$alumno['numero_control'] ?>" class="btn btn-mini">Ver</a></td>
       </tr>
     <?php } ?>
