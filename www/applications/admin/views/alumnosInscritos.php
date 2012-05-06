@@ -55,3 +55,5 @@
 	</tr>
 </tbody>
 </table>
+
+<button class="btn btn-success">Mostrar gráfico</button>

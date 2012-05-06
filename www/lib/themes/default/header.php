@@ -24,6 +24,16 @@
 		      }
 		 </style>
 
+		 <script>
+		$(function(){
+		 	  $("a[rel=popover]")
+			      .popover()
+			      .click(function(e) {
+			        e.preventDefault()
+			      });
+			  });
+		 </script>
+
 	</head>
 
 	<body>
@@ -36,10 +46,10 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	          </a>
-	          <a class="brand" href="#">Administrador Extraescolares</a>
+	          <a class="brand" href="#">Extraescolares</a>
 	          <div class="nav-collapse">
 	           <ul class="nav nav-pills">
-				  <li class="active"><a href="<?php print get('webURL') .'admin/estadisticas' ?>">Estadísticas</a></li>
+				  <li class="active"><a href="<?php print get('webURL') . _sh .'admin/estadisticas' ?>">Estadísticas</a></li>
 				  <li class="dropdown" id="menu1">
 				    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
 				      Alumnos
@@ -64,7 +74,7 @@
 				  </li>
 				   <li class="dropdown" id="menu3">
 				    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu3">
-				      Mantenimiento de datos
+				      Mantenimiento
 				      <b class="caret"></b>
 				    </a>
 				    <ul class="dropdown-menu">
@@ -80,12 +90,9 @@
 				      <b class="caret"></b>
 				    </a>
 				    <ul class="dropdown-menu">
-				      <li class><a data-target="a.html" href="a.html">Administrar noticias</a></li>
-				      <li class="divider"></li>
+				      <li class><a href="#">Administrar noticias</a></li>
 				      <li><a href="#">Administrar avisos</a></li>
-				      <li class="divider"></li>
-				      <li><a href="#">Administrar álbumes</a></li>
-				      <li class="divider"></li>
+				      <li><a href="#">Administrar álbumes</a></li>				      
 				      <li><a href="#">Administrar banners</a></li>
 				    </ul>
 				  </li>
@@ -93,28 +100,16 @@
 				<!-- INICIO DE SESION -->
 				 <div class="btn-group pull-right">
 		            <a class="btn dropdown-toggle btn-danger" data-toggle="dropdown" href="#">
-		              <i class="icon-user"></i> <?php print strtoupper(SESSION('abreviatura_profesion').' '.SESSION('name_admin').' '.SESSION('last1_admin').' '.SESSION('last2_admin')) ?>
+		              <i class="icon-user"></i> <?php print strtoupper(SESSION('profesion_admin').' '.SESSION('name_admin').' '.SESSION('last1_admin')) ?>
 		              <span class="caret"></span>
 		            </a>
 		            <ul class="dropdown-menu">
-		              <li><a href="#">Configuración del administrador</a></li>
+		              <li><a href="<?php print get('webURL'). _sh .'admin/adminconfig/' ?>"><b class="icon-wrench"></b> Configuración del administrador</a></li>
 		              <li class="divider"></li>
-		              <li><a href="<?php print get('webURL') . 'admin/logout' ?>">Salir de la sesión</a></li>
+		              <li><a href="<?php print get('webURL') .  _sh .'admin/logout' ?>">Salir de la sesión</a></li>
 		            </ul>
 		          </div>
-				<!--
-				<div class="btn-group pull-right">
-				  <button class="btn btn-danger"><b><?php print strtoupper(SESSION('abreviatura_profesion').' '.SESSION('name_admin').' '.SESSION('last1_admin').' '.SESSION('last2_admin')) ?></b></button>
-				  <button class="btn dropdown-toggle btn-danger" data-toggle="dropdown">
-				    <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				    <li><a href="#">Configuración del administrador</a></li>
-				    <li class="divider"></li>
-				    <li><a data-target="#" href="<?php print get('webURL') . 'admin/logout' ?>" >Salir de la sesión</a></li>
-				  </ul>
-				</div>-->
-				<!--  -->
+	
 
 	          </div><!--/.nav-collapse -->
 	        </div>
