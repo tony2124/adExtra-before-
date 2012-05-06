@@ -15,15 +15,9 @@
 		<?php print $this->getCSS(); ?>
 		<link href="<?php print path("vendors/css/frameworks/bootstrapnew/css/bootstrap-responsive.min.css", "zan"); ?>" rel="stylesheet">
 		
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>-->
+		<script src="<?php print path("vendors/js/jquery-1.7.1.min.js","zan") ?>"></script>
 		<script src="<?php print path("vendors/css/frameworks/bootstrapnew/js/bootstrap.min.js", "zan"); ?>"></script>
-		<script>
-			$(document).on('ready', function () {
-				$('.dropdown-toggle').dropdown();
-				$('.dropdown-menu').dropdown();
-			});
-		</script>
-
 		 <style>
 		      body {
 		        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -33,6 +27,7 @@
 	</head>
 
 	<body>
+		<?php if(SESSION('user_admin')) { ?>
 		<div class="navbar navbar-fixed-top">
 	      <div class="navbar-inner">
 	        <div class="container">
@@ -44,7 +39,7 @@
 	          <a class="brand" href="#">Administrador Extraescolares</a>
 	          <div class="nav-collapse">
 	           <ul class="nav nav-pills">
-				  <li class="active"><a href="#">Estadísticas</a></li>
+				  <li class="active"><a href="<?php print get('webURL') .'admin/estadisticas' ?>">Estadísticas</a></li>
 				  <li class="dropdown" id="menu1">
 				    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
 				      Alumnos
@@ -67,34 +62,64 @@
 				      <li><a href="#">Configuración de liberación</a></li>
 				    </ul>
 				  </li>
-				  <li class="dropdown" id="menu3">
+				   <li class="dropdown" id="menu3">
 				    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu3">
+				      Mantenimiento de datos
+				      <b class="caret"></b>
+				    </a>
+				    <ul class="dropdown-menu">
+				      <li><a href="#">Respaldo de BD</a></li>
+				      <li><a href="#">Actualizar datos</a></li>
+				      <li><a href="#">Descarga de formatos</a></li>
+				      <li><a href="#">Configuración de BD</a></li>
+				    </ul>
+				  </li>
+				  <li class="dropdown" id="menu4">
+				    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 				      Sitio web
 				      <b class="caret"></b>
 				    </a>
 				    <ul class="dropdown-menu">
-				      <li><a href="#">Administrar noticias</a></li>
+				      <li class><a data-target="a.html" href="a.html">Administrar noticias</a></li>
+				      <li class="divider"></li>
 				      <li><a href="#">Administrar avisos</a></li>
+				      <li class="divider"></li>
 				      <li><a href="#">Administrar álbumes</a></li>
+				      <li class="divider"></li>
 				      <li><a href="#">Administrar banners</a></li>
 				    </ul>
-
 				  </li>
 				</ul>
+				<!-- INICIO DE SESION -->
+				 <div class="btn-group pull-right">
+		            <a class="btn dropdown-toggle btn-danger" data-toggle="dropdown" href="#">
+		              <i class="icon-user"></i> <?php print strtoupper(SESSION('abreviatura_profesion').' '.SESSION('name_admin').' '.SESSION('last1_admin').' '.SESSION('last2_admin')) ?>
+		              <span class="caret"></span>
+		            </a>
+		            <ul class="dropdown-menu">
+		              <li><a href="#">Configuración del administrador</a></li>
+		              <li class="divider"></li>
+		              <li><a href="<?php print get('webURL') . 'admin/logout' ?>">Salir de la sesión</a></li>
+		            </ul>
+		          </div>
+				<!--
 				<div class="btn-group pull-right">
-				  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-				    Action
+				  <button class="btn btn-danger"><b><?php print strtoupper(SESSION('abreviatura_profesion').' '.SESSION('name_admin').' '.SESSION('last1_admin').' '.SESSION('last2_admin')) ?></b></button>
+				  <button class="btn dropdown-toggle btn-danger" data-toggle="dropdown">
 				    <span class="caret"></span>
-				  </a>
+				  </button>
 				  <ul class="dropdown-menu">
-				    <li><a href="#">Configuración de la cuenta</a></li>
-				    <li><a href="#">Salir</a></li>
+				    <li><a href="#">Configuración del administrador</a></li>
+				    <li class="divider"></li>
+				    <li><a data-target="#" href="<?php print get('webURL') . 'admin/logout' ?>" >Salir de la sesión</a></li>
 				  </ul>
-				</div>
+				</div>-->
+				<!--  -->
+
 	          </div><!--/.nav-collapse -->
 	        </div>
 	      </div>
 	    </div>
-		
+		<?php } ?>
 		<div class="container">
 			<div class="row">

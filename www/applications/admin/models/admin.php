@@ -31,6 +31,11 @@ class Admin_Model extends ZP_Model {
 		return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes where periodo = '$periodo'");	
 	}
 
+	public function getData($usuario)
+	{
+		return $this->Db->query("select * from administradores where usuario_administrador = '$usuario'");
+	}
+
 	public function contact($id) {
 		$data = $this->Db->findAll($this->table);
 

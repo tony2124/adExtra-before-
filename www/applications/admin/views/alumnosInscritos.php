@@ -1,13 +1,15 @@
 <p>ALUMNOS INSCRITOS EN LOS CLUBES EN EL PERIODO: <?php print $periodo ?></p>
 
 <table width="600" class = "table table-striped table-bordered table-condensed">
-	 <thead>
-     <tr>
-      <th>Nombre del club</th>
-      <th>No. Alumnos</th>
-    </tr>
-  </thead>
-  <tbody>
+	<thead>
+     	<tr>
+     		<th>ID</th>
+		    <th>Tipo</th>
+		    <th>Nombre del club</th>
+		    <th>No. Alumnos</th>
+    	</tr>
+  	</thead>
+  	<tbody>
 	
 	<?php
 
@@ -18,7 +20,9 @@
 			if($clubes[$i]['tipo_club'] == 1 || $clubes[$i]['tipo_club'] == 2)
 			{
 	?>
-				<tr>			
+				<tr>
+					<td><?php echo $clubes[$i]['id_club'] ?></td>
+					<td><?php echo $clubes[$i]['tipo_club'] ?></td>		
 					<td>
 						<?php echo $clubes[$i]['nombre_club'] ?>		
 					</td>
@@ -42,7 +46,7 @@
 		}
 	?>
 	<tr bgcolor="#EEF">
-		<td></td>
+		<td colspan="3"></td>
 		<td align="center" style="font-size: 20px;">
 			<b>
 				<?php echo $TOTAL ?>

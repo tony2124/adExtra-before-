@@ -4,9 +4,8 @@
 	}
 	
 ?>
-	<div class="span9">
+	<div class="span12"  align="center">
 		
 		<?php $this->load(isset($view) ? $view : NULL, TRUE); ?>
 
-	<button class="btn btn-success">Mostrar gráfico</button>
 	</div>
