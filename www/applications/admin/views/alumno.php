@@ -183,7 +183,7 @@ if(!$alumno){
         <input type="text" name="prof" class="input-xlarge" id="input08">
       </div>
     </div>
-</form>
+</form> 
   </div>
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
