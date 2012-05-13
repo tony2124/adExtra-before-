@@ -54,6 +54,7 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("contAdminConfig",$vars);
 	}
 
+
 	public function iniciarsesion()
 	{
 		$usuario = POST('usuario');
@@ -142,6 +143,7 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content",$vars);
 	}
 
+	
 	public function contact($contactID) {
 		$data = $this->Default_Model->contact($contactID);
 		____($data);
