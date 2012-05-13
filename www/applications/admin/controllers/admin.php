@@ -68,9 +68,9 @@ class Admin_Controller extends ZP_Controller {
 		if (FILES("foto", "tmp_name")) 
 		{
 
-			 $this->Files = $this->core("Files");
+			// $this->Files = $this->core("Files");
 			 
-			 print $path = $_SERVER['DOCUMENT_ROOT']."/IMAGENES/fotosNoticias/";
+			 $path = _spath; 
 			 
 			 //Assuming $_FILES["file"] is set and its a .rar file 
 		/*	 print $this->Files->filename  = FILES("foto", "name");
@@ -142,15 +142,99 @@ class Admin_Controller extends ZP_Controller {
 		$vars["id_administrador"] = SESSION('id_admin');
 
 		$this->Admin_Model->saveNew($vars);
-	//	redirect(get('webURL')._sh.'admin/noticias');
-		
+		redirect(get('webURL')._sh.'admin/noticias');
 	}
 
-	public function noticias()
+	public function modnoticia($id_not)
+	{
+
+		$nombre = POST('name');
+		$texto = $_POST['texto'];
+
+		$cadena = str_replace( "'", "\"", $texto);
+		$nombre = str_replace( "'", "\"", $nombre);
+
+		$name = POST('mostrarfoto');
+
+		if (FILES("foto", "tmp_name")) 
+		{
+			$path = _spath; 
+
+		    $tmp_name = $_FILES["foto"]["tmp_name"];
+			$name = $_FILES["foto"]["name"];
+	
+			$ext = explode(".",$name);		
+			if($ext[1]=='JPG' || $ext[1]=='jpg')
+			{		 		
+				$id = date("YmdHis").rand(0,100).rand(0,100);
+				$name = $id.".".$ext[1];
+
+				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
+				chmod($path.$name,0777);
+
+				$rutaImagenOriginal = $path.$name;
+				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
+				$max_ancho = 800;
+				$max_alto = 800;
+				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
+				$x_ratio = $max_ancho /$ancho;
+				$y_ratio = $max_alto / $alto;
+				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
+				{
+					$ancho_final = $ancho;
+					$alto_final = $alto;
+				}
+				elseif(($x_ratio * $alto) <$max_alto)
+				{
+					$alto_final = ceil($x_ratio * $alto);
+					$ancho_final = $max_ancho;
+				}
+				else 
+				{
+					$ancho_final = ceil($y_ratio*$ancho);
+					$alto_final = $max_alto;
+				}
+
+				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
+				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
+				imagedestroy($img_original);
+				$calidad = 95;
+				imagejpeg($tmp,$path."tm".$name,$calidad);
+					
+				
+				chmod($path."tm".$name,0777);
+				unlink($path.$name);
+				$name = "tm".$name;
+			}else $name=""; 
+
+		} 
+
+		$vars["id_noticias"] = $id_not;
+		$vars["nombre_noticia"] = $nombre;
+		$vars["texto_noticia"] = $cadena;
+		$vars["imagen_noticia"] = $name;
+		$vars["fecha_modificacion"] = date("Y-m-d");
+		$vars["hora"] = date("H:i:s");
+		$vars["id_administrador"] = SESSION('id_admin');
+
+		print $this->Admin_Model->updateNew($vars);
+		redirect(get('webURL')._sh.'admin/noticias');
+	}
+
+
+	public function noticias($id = NULL)
 	{
 		$noticias = $this->Admin_Model->getNoticias();
 		$vars['noticias'] = $noticias;
 		$vars['view'] = $this->view("noticias",true);
+		$vars['id'] = NULL;
+		if($id)
+		{
+			$vars['id'] = $id;
+			$n = $this->Admin_Model->getNoticia($id);
+			$vars['modnot'] = $n[0];
+		} 
+
 		$this->render("content", $vars);
 	}
 
@@ -260,27 +344,10 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content",$vars);
 	}
 
-	
-	public function contact($contactID) {
-		$data = $this->Default_Model->contact($contactID);
-		____($data);
-	}
-
-	public function page($page) {
-		$data = $this->Default_Model->page($page);
-		____($data);
-	}
-
-	public function test($param1, $param2) {
-		print "New dispatcher it's works fine: $param1, $param2";
-	}
-
-	public function show($message) {
-		$vars["message"] = $message;
-		$vars["view"]	 = $this->view("show", TRUE);
-		
+	public function listaclub()
+	{
+		$vars['view'] = $this->view("clubesalumnos",true);
 		$this->render("content", $vars);
-		#$this->view("show", $vars);
-	}
+ 	}
 
 }

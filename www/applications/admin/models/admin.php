@@ -66,10 +66,26 @@ class Admin_Model extends ZP_Model {
 		return $this->Db->query("select * from noticias where id_noticias != '1' order by fecha_modificacion desc, hora desc");
 	}
 
+	public function getNoticia($id)
+	{
+		return $this->Db->query("select * from noticias where id_noticias = '$id'");
+	}
+
 	public function saveNew($vars)
 	{
 		$query = "insert into noticias(id_noticias, nombre_noticia, texto_noticia, imagen_noticia, fecha_modificacion, hora, id_administrador)
 		 				values ('$vars[id_noticias]','$vars[nombre_noticia]','$vars[texto_noticia]','$vars[imagen_noticia]','$vars[fecha_modificacion]','$vars[hora]',$vars[id_administrador])";
+
+		$this->Db->query($query);
+		return $query;
+
+	}
+
+	public function updateNew($vars)
+	{
+		$query = "update noticias set nombre_noticia = '$vars[nombre_noticia]' , 
+			texto_noticia = '$vars[texto_noticia]', imagen_noticia = '$vars[imagen_noticia]', fecha_modificacion = '$vars[fecha_modificacion]', 
+				hora = '$vars[hora]', id_administrador = $vars[id_administrador] where id_noticias = '$vars[id_noticias]'";
 
 		$this->Db->query($query);
 		return $query;

@@ -59,15 +59,32 @@ function eliminar(id)
 
 <h2>Publica una nueva notica</h2><hr>
 <p>
-<form id="textoForm" action="<?php print get('webURL')._sh.'admin/guardarnoticia' ?>" method="post" enctype="multipart/form-data">
+<form id="textoForm" action="<?php print ($id) ? get('webURL')._sh.'admin/modnoticia/'.$id : get('webURL')._sh.'admin/guardarnoticia' ?>" method="post" enctype="multipart/form-data">
 	<label for="titulo">Título</label>
-	<input style="width: 300px" name="name" id="titulo" type="text" size="40" maxlength="40" />
-	
+	<input style="width: 300px" name="name" id="titulo" type="text" size="40" maxlength="40" value="<?php print ($id) ? $modnot['nombre_noticia'] : NULL ?>" />
+	<?php
+	if($id)
+		if($modnot['imagen_noticia'])
+		{ ?>
+		
+			<p>Foto actual de la noticia, para reemplazarla elija una nueva foto.</p>
+			<div style="border: 3px solid black; width: 330px; height: 250px; background-size: cover; background:url(<?php print _rs ?>/IMAGENES/fotosNoticias/<?php print $modnot['imagen_noticia'] ?>)">
+			</div>
+			<p>
+				<input type="checkbox" name="mostrarfoto" id="mostrarfoto" value="<?php echo $modnot['imagen_noticia'] ?>" checked="checked" />&nbsp;Mostrar esta foto.
+			</p>
+
+		<?php } 	?>
 	<label for="foto">Subir una foto</label>
 	<input name="foto" id="foto" type="file" />
 
 	<textarea style="width: 100%"  name="aviso" id="aviso" class="txtDefaultHtmlArea" cols="100" rows="15">
-
+	<?php 
+	if($id)
+	{
+		print $modnot['texto_noticia'];
+	}
+	?>
 	</textarea>
 	<input type="hidden" id="texto" name="texto" />
 </form>
@@ -105,7 +122,7 @@ function eliminar(id)
 			</td>
 			<td>
 				<?php if($not['texto_noticia']!=NULL) { ?>
-				<a href="#" rel="popover" data-content='<?php print $not['texto_noticia'] ?>' data-original-title="Imagen">ver</a>
+				<a href="#" rel="popover" data-content='<?php print $not['texto_noticia'] ?>' data-original-title="Descripción">ver</a>
 				<?php } ?>
 			</td>
 			<td><?php echo $not['fecha_modificacion'] ?></td>
@@ -114,40 +131,11 @@ function eliminar(id)
 				<a rel="tooltip" title="Eliminar" class="pull-right" onclick="eliminar('<?php print $not['id_noticias'] ?>');" href="#">
 					<i class="icon-trash"></i>
 				</a>
-				<a rel="tooltip" title="Editar noticia" data-toggle="modal" class="pull-right" href="#myModal<?php print $not['id_noticias'] ?>">
+				<a rel="tooltip" title="Editar noticia" class="pull-right" href="<?php print get('webURL')._sh.'admin/noticias/'.$not['id_noticias'] ?>">
 					<i class="icon-cog"></i>
 				</a>
 			</td>
 		</tr>
-		<!--  -->
-
-		<div class="modal hide fade" id="myModal<?php print $not['id_noticias'] ?>">
-		  <div class="modal-header">
-		    <button class="close" data-dismiss="modal">×</button>
-		    <h3>Edición de datos del alumno </h3>
-		  </div>
-		  <div class="modal-body">
-		    <p>Edite los campos correspondientes.</p>
-		    <form id="editalumno" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editalumno' ?>">
-		    <div class="control-group">
-		      <label class="control-label" for="input<?php print $not['id_noticias'] ?>01">Título</label>
-		      <div class="controls">
-		        <input type="text" name="titulo" class="input-xlarge" id="input<?php print $not['id_noticias'] ?>01" value="<?php print $not['nombre_noticia'] ?>">
-		      </div><br>
-		       <label class="control-label" for="input<?php print $not['id_noticias'] ?>02">Foto</label>
-		       <div class="controls">
-		        <input type="file" name="titulo" class="input-xlarge" id="input<?php print $not['id_noticias'] ?>02">
-		      </div><br>
-		    </div>
-			</form> 
-		  </div>
-		  <div class="modal-footer">
-		    <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
-		    <a href="#" class="btn btn-primary" onclick="$('#editalumno').submit()">Guardar cambios</a>
-		  </div>
-		</div>
-		<!-- -->
-
 
 		<?php } ?>
 	</tbody>
