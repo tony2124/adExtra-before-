@@ -8,10 +8,10 @@ if(!$alumno){
 ?>
 
 <div class="well"><h4>A continuación se muestra los datos del alumno seleccionado.</h4></div>
+<a data-toggle="modal" href="#myModal" class="pull-right"><i class="icon-cog"></i></a>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
-      <th></th>
       <th></th>
       <th></th>
     </tr>
@@ -20,57 +20,46 @@ if(!$alumno){
       <tr>
         <td>Número de control</td>
         <td><?php print $alumno['numero_control'] ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
       <tr>
         <td>Nombre</td>
         <td><?php print $alumno['nombre_alumno'] ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
        <tr>
         <td>Apellido paterno</td>
         <td><?php print $alumno['apellido_paterno_alumno'] ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
        <tr>
         <td>Apellido materno</td>
         <td><?php print $alumno['apellido_materno_alumno'] ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
       <tr>
         <td>Carrera</td>
         <td><?php print $alumno['nombre_carrera'] ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
       <tr>
         <td>Semestre</td>
         <td><?php print ($alumno['situacion_escolar'] == 1) ? semestre( $alumno['fecha_inscripcion']) : 'NO DISP.' ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
       <tr>
         <td>Edad</td>
         <td><?php print edad($alumno['fecha_nacimiento']) ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
       <tr>
         <td>Sexo</td>
         <td><?php print ($alumno['sexo']==1) ? 'HOMBRE' : 'MUJER' ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
       <tr>
         <td>Correo electrónico</td>
         <td><?php print $alumno['correo_electronico'] ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
       <tr>
         <td>Situación escolar (SE)</td>
         <td><?php print $alumno['situacion_escolar'] ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
       <tr>
         <td>Clave del sitio</td>
         <td><?php print $alumno['clave'] ?></td>
-        <td><a data-toggle="modal" href="#myModal">Editar</a></td>
       </tr>
   </tbody>
 </table>
@@ -123,7 +112,7 @@ if(!$alumno){
                 <td><?php print ($ins['acreditado']==1) ? '<span class="label label-success">ACREDITADO</span>' : '<span class="label label-important">NO ACREDITADO</span>' ?></td>
                 <td>
                   <?php if($ins['observaciones']!=NULL) { ?>
-                  <a href="#" class="btn" rel="popover" data-content="<?php print $ins['observaciones'] ?>" data-original-title="Observación">ver</a><?php } ?></td>
+                  <a href="#" rel="popover" data-content="<?php print $ins['observaciones'] ?>" data-original-title="Observación">ver</a><?php } ?></td>
                 <td><a href="" class="btn">Formato</a></td>
               </tr>
                 <?php
@@ -135,7 +124,7 @@ if(!$alumno){
       </table>
   
     </div>
-    
+  
     <?php } ?>
     
   </div>
@@ -152,7 +141,7 @@ if(!$alumno){
     <div class="control-group">
       <label class="control-label" for="input01">Nombre</label>
       <div class="controls">
-        <input type="text" name="usuario" class="input-xlarge" id="input01">
+        <input type="text" name="Nombre" class="input-xlarge" id="input01">
       </div><br>
       <label class="control-label" for="input02">Apellido paterno</label>
       <div class="controls">

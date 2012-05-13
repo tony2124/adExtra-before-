@@ -61,6 +61,26 @@ class Admin_Model extends ZP_Model {
 		return $this->Db->query("select * from inscripciones natural join clubes where numero_control = '$n'");
 	}
 
+	public function getNoticias()
+	{
+		return $this->Db->query("select * from noticias where id_noticias != '1' order by fecha_modificacion desc, hora desc");
+	}
+
+	public function saveNew($vars)
+	{
+		$query = "insert into noticias(id_noticias, nombre_noticia, texto_noticia, imagen_noticia, fecha_modificacion, hora, id_administrador)
+		 				values ('$vars[id_noticias]','$vars[nombre_noticia]','$vars[texto_noticia]','$vars[imagen_noticia]','$vars[fecha_modificacion]','$vars[hora]',$vars[id_administrador])";
+
+		$this->Db->query($query);
+		return $query;
+
+	}
+
+	public function elimNoticia($id)
+	{
+		$this->Db->query("delete from noticias where id_noticias = '$id'");
+	}
+
 	public function contact($id) {
 		$data = $this->Db->findAll($this->table);
 		return $data;
