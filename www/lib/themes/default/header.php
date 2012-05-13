@@ -27,11 +27,14 @@
 		 <script>
 		$(function(){
 		 	  $("a[rel=popover]")
-			      .popover()
-			      .click(function(e) {
+			      .popover().click(function(e) {
 			        e.preventDefault()
 			      });
+
+			   $("a[rel=tooltip]").tooltip();
+
 			  });
+
 		 </script>
 
 	</head>
@@ -56,7 +59,7 @@
 				      <b class="caret"></b>
 				    </a>
 				    <ul class="dropdown-menu">
-				      <li><a href="#">Buscar un alumno</a></li>
+				      <!--<li><a href="#">Buscar un alumno</a></li>-->
 				      <li><a href="#">Listas de clubes</a></li>
 				      <li><a href="#">Agregar un nuevo alumno</a></li>
 				    </ul>
@@ -90,7 +93,7 @@
 				      <b class="caret"></b>
 				    </a>
 				    <ul class="dropdown-menu">
-				      <li class><a href="#">Administrar noticias</a></li>
+				      <li class><a href="<?php print get('webURL'). _sh .'admin/noticias/'  ?>">Administrar noticias</a></li>
 				      <li><a href="#">Administrar avisos</a></li>
 				      <li><a href="#">Administrar álbumes</a></li>				      
 				      <li><a href="#">Administrar banners</a></li>
