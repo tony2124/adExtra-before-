@@ -142,7 +142,7 @@ class Admin_Controller extends ZP_Controller {
 
 		if (FILES("foto", "tmp_name")) 
 		{
-			$path = _spath; 
+			$path = _spath.'/IMAGENES/fotosNoticias/'; 
 
 		    $tmp_name = $_FILES["foto"]["tmp_name"];
 			$name = $_FILES["foto"]["name"];
@@ -345,12 +345,13 @@ class Admin_Controller extends ZP_Controller {
 
  	public function formatos($for, $club, $periodo)
  	{
+ 		require_once(_spath.'/APIs/tcpdf/config/lang/eng.php');
+		require_once(_spath.'/APIs/tcpdf/tcpdf.php');
  		switch($for)
  		{
  			case 'lista':
  				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
-				require_once('../APIs/tcpdf/config/lang/eng.php');
-				require_once('../APIs/tcpdf/tcpdf.php');
+				$prommotor = $this->Admin_Model->getPromotor($club);
 		
 				// create new PDF document
 				$pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -363,7 +364,7 @@ class Admin_Controller extends ZP_Controller {
 				$pdf->SetKeywords('lista, extraescolares, clubes, club');
 
 				// set default header data
-				$pdf->SetHeaderData("logo.png", 15, "Relación de alumnos del club de ".$data[0]['nombre_club'], "Instituto Tecnológico Superior de Apatzingán\n".$prommotor['nombre_promotor']." ".$prommotor['apellido_paterno_promotor']." ".$prommotor['apellido_materno_promotor']."\nwww.itsa.edu.mx");
+				$pdf->SetHeaderData("logo.png", 15, "Relación de alumnos del club de ".$data[0]['nombre_club'], "Instituto Tecnológico Superior de Apatzingán\n".$prommotor[0]['nombre_promotor']." ".$prommotor[0]['apellido_paterno_promotor']." ".$prommotor[0]['apellido_materno_promotor']."\nwww.itsa.edu.mx");
 
 				// set header and footer fonts
 				$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -401,7 +402,7 @@ class Admin_Controller extends ZP_Controller {
 				$html = '
 					<br>
 					<p align="center">
-					RELACIÓN DE ALUMNOS DEL CLUB DE '.$_CLUB['nombre_club'].' DEL PERIODO '.$periodo.'  
+					RELACIÓN DE ALUMNOS DEL CLUB DE '.$data[0]['nombre_club'].' DEL PERIODO '.$periodo.'  
 					</p>
 					<table border="1" width="850">
 						<tr height="80" align="center">
@@ -442,7 +443,7 @@ class Admin_Controller extends ZP_Controller {
 				// ---------------------------------------------------------
 
 				//Close and output PDF document
-				$pdf->Output($_SESSION['numero_control'].".pdf", 'I');
+				$pdf->Output("lista".$club.$periodo.".pdf", 'I');
 				 
  			break;
  		}

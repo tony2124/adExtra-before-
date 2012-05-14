@@ -98,6 +98,11 @@ class Admin_Model extends ZP_Model {
 		return $query;
 
 	}
+	
+	public function getPromotor($club)
+	{
+		return $this->Db->query("select * from promotores where id_club = '$club'");
+	}
 
 	public function elimNoticia($id)
 	{
