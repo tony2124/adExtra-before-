@@ -331,19 +331,121 @@ class Admin_Controller extends ZP_Controller {
 	public function listaclub($club = NULL, $periodo = NULL)
 	{
 		include(_corePath . _sh .'/libraries/funciones/funciones.php');
-		$club = GET("club");
-		$periodo = GET("periodo");
-		
+
 		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosClubes($club, $periodo);
+		$vars['par1'] = $club;
+		$vars['par2'] = $periodo;
 		$vars['alumnos'] = $alumnos;
 		$vars['clubes'] = $clubes;
 		$vars['periodos'] = periodos('2083');
 		$vars['view'] = $this->view("clubesalumnos", true);
-
-
-
 		$this->render("content", $vars);
+ 	}
+
+ 	public function formatos($for, $club, $periodo)
+ 	{
+ 		switch($for)
+ 		{
+ 			case 'lista':
+ 				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
+				require_once('../APIs/tcpdf/config/lang/eng.php');
+				require_once('../APIs/tcpdf/tcpdf.php');
+		
+				// create new PDF document
+				$pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+				// set document information
+				$pdf->SetCreator(PDF_CREATOR);
+				$pdf->SetAuthor('Alfonso Calderon');
+				$pdf->SetTitle('Lista de alumnos');
+				$pdf->SetSubject('Lista');
+				$pdf->SetKeywords('lista, extraescolares, clubes, club');
+
+				// set default header data
+				$pdf->SetHeaderData("logo.png", 15, "Relación de alumnos del club de ".$data[0]['nombre_club'], "Instituto Tecnológico Superior de Apatzingán\n".$prommotor['nombre_promotor']." ".$prommotor['apellido_paterno_promotor']." ".$prommotor['apellido_materno_promotor']."\nwww.itsa.edu.mx");
+
+				// set header and footer fonts
+				$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+				$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+				// set default monospaced font
+				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+				//set margins PDF_MARGIN_LEFT PDF_MARGIN_TOP
+				$pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
+				$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+				$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+				//set auto page breaks
+				$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+				//set image scale factor
+				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+				//set some language-dependent strings
+				$pdf->setLanguageArray($l);
+
+				// ---------------------------------------------------------
+
+				// set font
+				$pdf->SetFont('dejavusans', '', 10);
+
+				// add a page
+				$pdf->AddPage();
+
+				// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+				// writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
+
+				// create some HTML content
+				$html = '
+					<br>
+					<p align="center">
+					RELACIÓN DE ALUMNOS DEL CLUB DE '.$_CLUB['nombre_club'].' DEL PERIODO '.$periodo.'  
+					</p>
+					<table border="1" width="850">
+						<tr height="80" align="center">
+							<td width="400" height = "80"><br><br><br>Nombre del alumno</td>';
+							$i=0;
+							while($i<22)
+							{
+								$html .= '<td width="20"></td>';
+								$i++;
+							}
+							$html .='
+						</tr>';
+						foreach ($data as $row ) {
+							
+							$html .= '
+								<tr>
+									<td> '.$row['apellido_paterno_alumno'].' '.$row['apellido_materno_alumno'].' '.$row['nombre_alumno'].'</td>';
+									$i=0;
+							while($i<22)
+							{
+								$html .= '<td width="20"></td>';
+								$i++;
+							}
+							$html .='
+								
+								</tr>
+								';
+						}
+						$html .= '</table>';
+					
+
+				// output the HTML content
+				$pdf->writeHTML($html, true, false, true, false, '');
+
+				// reset pointer to the last page
+				$pdf->lastPage();
+
+				// ---------------------------------------------------------
+
+				//Close and output PDF document
+				$pdf->Output($_SESSION['numero_control'].".pdf", 'I');
+				 
+ 			break;
+ 		}
  	}
 
 }

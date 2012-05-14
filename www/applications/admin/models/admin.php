@@ -64,7 +64,7 @@ class Admin_Model extends ZP_Model {
 	public function getAlumnosClubes($club, $periodo)
 	{
 		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras 
-				where id_club = '$club' and periodo = '$periodo' order by apellido_paterno_alumno asc, 
+				natural join clubes where id_club = '$club' and periodo = '$periodo' order by apellido_paterno_alumno asc, 
 					apellido_materno_alumno asc, nombre_alumno asc");
 	}
 

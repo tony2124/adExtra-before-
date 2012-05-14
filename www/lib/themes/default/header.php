@@ -26,13 +26,8 @@
 
 		 <script>
 		$(function(){
-		 	  $("a[rel=popover]")
-			      .popover().click(function(e) {
-			        e.preventDefault()
-			      });
-
-			   $("a[rel=tooltip]").tooltip();
-
+		 	  $("a[rel=popover]").popover();
+			  $("a[rel=tooltip]").tooltip();
 			  });
 
 		 </script>
@@ -60,7 +55,7 @@
 				    </a>
 				    <ul class="dropdown-menu">
 				      <!--<li><a href="#">Buscar un alumno</a></li>-->
-				      <li><a href="<?php print get('webURL'). _sh .'admin/listaclub/'  ?>">Listas de clubes</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/listaclub/'  ?>">Listas de alumnos</a></li>
 				      <li><a href="#">Agregar un nuevo alumno</a></li>
 				    </ul>
 				  </li>
