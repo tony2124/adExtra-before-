@@ -61,6 +61,13 @@ class Admin_Model extends ZP_Model {
 		return $this->Db->query("select * from inscripciones natural join clubes where numero_control = '$n'");
 	}
 
+	public function getAlumnosClubes($club, $periodo)
+	{
+		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras 
+				where id_club = '$club' and periodo = '$periodo' order by apellido_paterno_alumno asc, 
+					apellido_materno_alumno asc, nombre_alumno asc");
+	}
+
 	public function getNoticias()
 	{
 		return $this->Db->query("select * from noticias where id_noticias != '1' order by fecha_modificacion desc, hora desc");
@@ -97,9 +104,4 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("delete from noticias where id_noticias = '$id'");
 	}
 
-	public function contact($id) {
-		$data = $this->Db->findAll($this->table);
-		return $data;
-	}
-	
 }

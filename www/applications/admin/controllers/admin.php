@@ -64,26 +64,10 @@ class Admin_Controller extends ZP_Controller {
 		$nombre = str_replace( "'", "\"", $nombre);
 
 		$name = "";
-		//Tratamiento de la imagen
+
 		if (FILES("foto", "tmp_name")) 
 		{
-
-			// $this->Files = $this->core("Files");
-			 
-			 $path = _spath; 
-			 
-			 //Assuming $_FILES["file"] is set and its a .rar file 
-		/*	 print $this->Files->filename  = FILES("foto", "name");
-			 print $this->Files->fileType  = FILES("foto", "type");
-			 print $this->Files->fileSize  = FILES("foto", "size");
-			 print $this->Files->fileError = FILES("foto", "error");
-			 print $this->Files->fileTmp   = FILES("foto", "tmp_name");
-			 print $path;
-
-			 //Uploading...
-			 $this->Files->uploadImage($path, "image","resize");
-		*/
-
+		    $path = _spath; 
 		    $tmp_name = $_FILES["foto"]["tmp_name"];
 			$name = $_FILES["foto"]["name"];
 	
@@ -344,9 +328,21 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content",$vars);
 	}
 
-	public function listaclub()
+	public function listaclub($club = NULL, $periodo = NULL)
 	{
-		$vars['view'] = $this->view("clubesalumnos",true);
+		include(_corePath . _sh .'/libraries/funciones/funciones.php');
+		$club = GET("club");
+		$periodo = GET("periodo");
+		
+		$clubes = $this->Admin_Model->getClubes();
+		$alumnos = $this->Admin_Model->getAlumnosClubes($club, $periodo);
+		$vars['alumnos'] = $alumnos;
+		$vars['clubes'] = $clubes;
+		$vars['periodos'] = periodos('2083');
+		$vars['view'] = $this->view("clubesalumnos", true);
+
+
+
 		$this->render("content", $vars);
  	}
 
