@@ -26,6 +26,11 @@ class Admin_Model extends ZP_Model {
 		return $data = $this->Db->query("select * from clubes order by nombre_club asc");
 	}
 
+	public function getCarreras()
+	{
+		return $data = $this->Db->query("select * from carreras order by abreviatura_carrera asc");
+	}
+
 	public function getAlumnosInscritos($periodo = NULL)
 	{
 		return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes where periodo = '$periodo'");	
@@ -48,7 +53,7 @@ class Admin_Model extends ZP_Model {
 
 	public function getRespuesta($datos, $sit)
 	{
-		return $this->Db->query("select * from alumnos natural join carreras where (numero_control like '$datos%' or nombre_alumno like '$datos%' or apellido_paterno_alumno like '$datos%') and (situacion_escolar = '$sit' or situacion_escolar = '1') order by apellido_paterno_alumno asc, apellido_materno_alumno asc, nombre_alumno asc");
+		return $this->Db->query("select * from alumnos natural join carreras where (numero_control like '$datos%' or nombre_alumno like '$datos%' or apellido_paterno_alumno like '$datos%') and situacion_escolar <= '$sit' order by apellido_paterno_alumno asc, apellido_materno_alumno asc, nombre_alumno asc");
 	}
 
 	public function getAlumno($n)

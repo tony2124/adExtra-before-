@@ -39,7 +39,7 @@ if(!$alumno){
       </tr>
       <tr>
         <td>Semestre</td>
-        <td><?php print ($alumno['situacion_escolar'] == 1) ? semestre( $alumno['fecha_inscripcion']) : 'NO DISP.' ?></td>
+        <td><?php print (semestre( $alumno['fecha_inscripcion']) > 12) ? 'NO DISP.' : semestre( $alumno['fecha_inscripcion']) ?></td>
       </tr>
       <tr>
         <td>Edad</td>
@@ -68,7 +68,9 @@ if(!$alumno){
 <hr>
 <p>A continuación se muestra todos los clubes y actividades que ha realizado <span class="label label-primary"><?php print $nombreAlumno ?> </span>.</p>
 <hr>
-
+<?php if($inscripciones == NULL) { ?>
+ <div class="alert"><h2>Advertencia</h2>Este alumno no se ha inscrito en ninguna actividad.</div>
+<?php }else{ ?>
 <div class="tabbable tabs-left"> 
   <ul class="nav nav-tabs">
     <?php $i=0; foreach ($periodos as $periodo) { 
@@ -128,7 +130,8 @@ if(!$alumno){
     <?php } ?>
     
   </div>
-</div> 
+</div>
+<?php } ?> 
 
 <div class="modal hide fade" id="myModal">
   <div class="modal-header">

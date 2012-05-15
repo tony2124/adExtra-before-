@@ -31,7 +31,7 @@ if($error){
         <td><?php print $alumno['situacion_escolar']?></td>
         <td><?php print $alumno['apellido_paterno_alumno'].' '.$alumno['apellido_materno_alumno'].' '.$alumno['nombre_alumno'] ?></td>
         <td><?php print $alumno['abreviatura_carrera']?></td>
-        <td><?php print ($alumno['situacion_escolar'] == 1) ? semestre($alumno['fecha_inscripcion']) : 'NO DISP.' ?></td>
+        <td><?php print  (semestre( $alumno['fecha_inscripcion']) > 12) ? 'NO DISP.' : semestre( $alumno['fecha_inscripcion'])  ?></td>
         <td><a href="<?php print get('webURL'). _sh . 'admin/alumno/'.$alumno['numero_control'] ?>" class="btn btn-mini">Ver</a></td>
       </tr>
     <?php } ?>

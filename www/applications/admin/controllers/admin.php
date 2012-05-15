@@ -111,6 +111,13 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
+	public function registroAlumno()
+	{
+		$vars['carreras'] = $this->Admin_Model->getCarreras();
+		$vars['view'] = $this->view('registroalumno',true);
+		$this->render("content",$vars);
+	}
+
 	public function elimnoticia($id)
 	{
 		$this->Admin_Model->elimNoticia($id);
