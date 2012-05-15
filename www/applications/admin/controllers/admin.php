@@ -98,7 +98,17 @@ class Admin_Controller extends ZP_Controller {
 
 	public function editalumno()
 	{
-		print 'script para actualizar los datos del alumno';
+		$vars['numero_control'] = POST('numero_control');
+		$vars['nombre'] = POST('nombre');
+		$vars['ap'] = POST('ap');
+		$vars['am'] = POST('am');
+		$vars['fecha_nac'] = POST('fecha_nac');
+		$vars['sexo'] = POST('sexo');
+		$vars['email'] = POST('email');
+		$vars['se'] = POST('se');
+		$vars['clave'] = POST('clave');
+		$this->Admin_Model->updateAlumno($vars);
+		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
 	public function elimnoticia($id)

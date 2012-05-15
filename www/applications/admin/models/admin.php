@@ -48,7 +48,7 @@ class Admin_Model extends ZP_Model {
 
 	public function getRespuesta($datos, $sit)
 	{
-		return $this->Db->query("select * from alumnos natural join carreras where (numero_control like '$datos%' or nombre_alumno like '$datos%' or apellido_paterno_alumno like '$datos%') and situacion_escolar = '$sit' order by apellido_paterno_alumno asc, apellido_materno_alumno asc, nombre_alumno asc");
+		return $this->Db->query("select * from alumnos natural join carreras where (numero_control like '$datos%' or nombre_alumno like '$datos%' or apellido_paterno_alumno like '$datos%') and (situacion_escolar = '$sit' or situacion_escolar = '1') order by apellido_paterno_alumno asc, apellido_materno_alumno asc, nombre_alumno asc");
 	}
 
 	public function getAlumno($n)
@@ -108,4 +108,13 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("delete from noticias where id_noticias = '$id'");
 	}
 
+	public function updateAlumno($vars)
+	{
+		$query = "update alumnos set nombre_alumno = '$vars[nombre]' , apellido_paterno_alumno = '$vars[ap]', apellido_materno_alumno = '$vars[am]',
+			sexo = $vars[sexo], fecha_nacimiento = '$vars[fecha_nac]', correo_electronico = '$vars[email]', 
+				situacion_escolar = $vars[se], clave = '$vars[clave]' where numero_control = '$vars[numero_control]'";
+
+		$this->Db->query($query);
+		return $query;
+	}
 }

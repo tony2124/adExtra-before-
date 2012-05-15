@@ -47,11 +47,12 @@
 </form>
 <?php 
 if($alumnos != NULL) { ?>
-<br><div class="btn-group pull-right">
-  <button class="btn">Descargar</button>
-  <button class="btn dropdown-toggle" data-toggle="dropdown">
+<br>
+<div class="btn-group pull-right">
+  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+    Descarga
     <span class="caret"></span>
-  </button>
+  </a>
   <ul class="dropdown-menu">
     <li><a href="<?php print get('webURL')._sh.'admin/formatos/lista/'.$par1.'/'.$par2 ?>" target="_blank">Lista de alumnos</a></li>
     <li><a href="<?php print get('webURL')._sh.'admin/formatos/cedula/'.$par1.'/'.$par2 ?>" target="_blank">Cédula de inscripción</a></li>

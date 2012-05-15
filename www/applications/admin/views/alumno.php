@@ -141,36 +141,40 @@ if(!$alumno){
     <div class="control-group">
       <label class="control-label" for="input01">Nombre</label>
       <div class="controls">
-        <input type="text" name="Nombre" class="input-xlarge" id="input01" value="<?php print $alumno['nombre_alumno'] ?>">
+  <!-- -->  <input type="text" name="nombre" class="input-xlarge" id="input01" value="<?php print $alumno['nombre_alumno'] ?>">
       </div><br>
       <label class="control-label" for="input02">Apellido paterno</label>
       <div class="controls">
-        <input type="text" name="contrasena" class="input-xlarge" id="input02" value="<?php print $alumno['apellido_paterno_alumno'] ?>">
+  <!-- -->  <input type="text" name="am" class="input-xlarge" id="input02" value="<?php print $alumno['apellido_paterno_alumno'] ?>">
       </div><br>
       <label class="control-label" for="input03">Apellido materno</label>
       <div class="controls">
-        <input type="text" name="nombre" class="input-xlarge" id="input03"  value="<?php print $alumno['apellido_materno_alumno'] ?>">
+  <!-- -->  <input type="text" name="ap" class="input-xlarge" id="input03"  value="<?php print $alumno['apellido_materno_alumno'] ?>">
       </div><br>
       <label class="control-label" for="input04">Fecha de nacimiento</label>
       <div class="controls">
-        <input type="text" name="ap" class="input-xlarge selectorfecha" id="input04"  value="<?php print $alumno['fecha_nacimiento'] ?>">
+  <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge selectorfecha" id="input04"  value="<?php print $alumno['fecha_nacimiento'] ?>">
       </div><br>
       <label class="control-label" for="input05">Sexo</label>
       <div class="controls">
-        <input type="text" name="am" class="input-xlarge" id="input05"  value="<?php print $alumno['sexo'] ?>">
+  <!-- -->  <select name="sexo" >
+              <option value="1">HOMBRE</option>
+              <option value="2" <?php if($alumno['sexo']!=1) print 'selected="selected"' ?>>MUJER</option>
+            </select>
       </div><br>
       <label class="control-label" for="input06">Correo electrónico</label>
       <div class="controls">
-        <input type="text" name="email" class="input-xlarge" id="input06"  value="<?php print $alumno['correo_electronico'] ?>">
+  <!-- -->  <input type="text" name="email" class="input-xlarge" id="input06"  value="<?php print $alumno['correo_electronico'] ?>">
       </div><br>
       <label class="control-label" for="input07">Situación escolar</label>
       <div class="controls">
-        <input type="text" name="direccion" class="input-xlarge" id="input07"  value="<?php print $alumno['situacion_escolar'] ?>">
+  <!-- -->  <input type="text" name="se" class="input-xlarge" id="input07"  value="<?php print $alumno['situacion_escolar'] ?>">
       </div><br>
       <label class="control-label" for="input08">Clave del sitio</label>
       <div class="controls">
-        <input type="text" name="prof" class="input-xlarge" id="input08"  value="<?php print $alumno['clave'] ?>">
+  <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $alumno['clave'] ?>">
       </div>
+      <input type="hidden" name="numero_control" value="<?php print $alumno['numero_control'] ?>"> 
     </div>
 </form> 
   </div>
