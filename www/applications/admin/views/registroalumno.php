@@ -24,7 +24,7 @@
                   <?php foreach ($carreras as $carrera) { 
                     print '<option value="'.$carrera['id_carrera'].'">'.$carrera['abreviatura_carrera'].' ('.$carrera['id_carrera'].')</option>';
                   } ?>
-                  
+  
                 </select>
           </div><br>
           <label class="control-label" for="input05">Fecha de nacimiento</label>

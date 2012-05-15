@@ -8,7 +8,7 @@ if(!$alumno){
 ?>
 
 <div class="well"><h4>A continuación se muestra los datos del alumno seleccionado.</h4></div>
-<a rel="tooltip" title="Modificar datos del alumno" data-toggle="modal" href="#myModal" class="pull-right"><i class="icon-cog"></i></a>
+<a rel="tooltip" title="Modificar datos del alumno" data-toggle="modal" href="#miModal" class="pull-right"><i class="icon-cog"></i></a>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
@@ -158,7 +158,7 @@ if(!$alumno){
   </div>
   <div class="modal-body">
     <p>En el siguiente formulario se cambiará la acreditación del periodo <span id="periodo">per</span> en la actividad <span id="actividad">act</span>.</p>
-    <form id="editalumno" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editalumno' ?>">
+    <form id="editres" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editalumno' ?>">
     <div class="control-group">
 
     </div>
@@ -172,14 +172,14 @@ if(!$alumno){
 
 
 
-<div class="modal hide fade" id="myModal">
+<div class="modal hide fade" id="miModal">
   <div class="modal-header">
     <button class="close" data-dismiss="modal">×</button>
     <h3>Edición de datos del alumno </h3>
   </div>
   <div class="modal-body">
     <p>En el siguiente formulario se muestran los datos del alumno, por favor edite el campo correspondiente y haga clic en guardar cambios.</p>
-    <form id="editalumno" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editalumno' ?>">
+    <form id="editalumno" class="form-horizontal" method="POST" action="<?php print get('webURL')._sh.'admin/editalumno/' ?>">
     <div class="control-group">
       <label class="control-label" for="input01">Nombre</label>
       <div class="controls">
@@ -195,7 +195,7 @@ if(!$alumno){
       </div><br>
       <label class="control-label" for="input04">Fecha de nacimiento</label>
       <div class="controls">
-  <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge selectorfecha" id="input04"  value="<?php print $alumno['fecha_nacimiento'] ?>">
+  <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $alumno['fecha_nacimiento'] ?>">
       </div><br>
       <label class="control-label" for="input05">Sexo</label>
       <div class="controls">
@@ -217,12 +217,13 @@ if(!$alumno){
   <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $alumno['clave'] ?>">
       </div>
       <input type="hidden" name="numero_control" value="<?php print $alumno['numero_control'] ?>"> 
+     
     </div>
 </form> 
   </div>
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
-    <a href="#" class="btn btn-primary" onclick="$('#editalumno').submit()">Guardar cambios</a>
+    <button class="btn btn-primary" onclick="$('#editalumno').submit()">Guardar cambios</button>
   </div>
 </div>
 

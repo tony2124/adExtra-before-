@@ -98,6 +98,7 @@ class Admin_Controller extends ZP_Controller {
 
 	public function editalumno()
 	{
+		
 		$vars['numero_control'] = POST('numero_control');
 		$vars['nombre'] = POST('nombre');
 		$vars['ap'] = POST('ap');
@@ -107,6 +108,7 @@ class Admin_Controller extends ZP_Controller {
 		$vars['email'] = POST('email');
 		$vars['se'] = POST('se');
 		$vars['clave'] = POST('clave');
+		
 		$this->Admin_Model->updateAlumno($vars);
 		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
@@ -132,9 +134,9 @@ class Admin_Controller extends ZP_Controller {
 		$vars['se'] = POST('se');
 		$vars['clave'] = POST('clave');
 		$vars['car'] = POST('carrera');
-		
-		print $this->Admin_Model->regAlumno($vars);
-		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
+		____($vars);
+		//$this->Admin_Model->regAlumno($vars);
+		//redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
 
