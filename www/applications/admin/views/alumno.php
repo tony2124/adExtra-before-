@@ -67,16 +67,17 @@ if(!$alumno){
 <h2>Historial de liberación de horas extraescolares</h2>
 <hr>
 <p>A continuación se muestra todos los clubes y actividades que ha realizado <span class="label label-primary"><?php print $nombreAlumno ?> </span>.</p>
-<hr>
-<?php if($inscripciones == NULL) { ?>
+<hr><!--
+<?php // if($inscripciones == NULL) { ?>
  <div class="alert"><h2>Advertencia</h2>Este alumno no se ha inscrito en ninguna actividad.</div>
-<?php }else{ ?>
+<?php //}else{ ?> -->
 <div class="tabbable tabs-left"> 
   <ul class="nav nav-tabs">
     <?php $i=0; 
     foreach ($periodos as $periodo) 
     { 
         $liberado = false;
+        if($inscripciones!=NULL)
         foreach ($inscripciones as $ins) 
         {
           if($ins['periodo'] == $periodo && $ins['acreditado'] == 1)
@@ -111,6 +112,7 @@ if(!$alumno){
         <tbody>
             <?php
             $band = false;
+            if($inscripciones!=NULL)
             foreach ($inscripciones as $ins) 
             {
               if($ins['periodo'] == $periodo)
@@ -122,7 +124,7 @@ if(!$alumno){
                 <td><?php print $ins['fecha_liberacion_club'] ?></td>
                 <td><?php print $ins['nombre_club'] ?></td>
                 <td>
-                  <a data-toggle="modal"  href="#cambiarAcreditado">
+                  <a data-toggle="modal" onclick="('#periodo').value = " href="#cambiarAcreditado">
                     <?php print ($ins['acreditado']==1) ? 'ACREDITADO' : 'NO ACREDITADO' ?>
                   </a>
                 </td>
@@ -147,7 +149,7 @@ if(!$alumno){
     
   </div>
 </div>
-<?php } ?> 
+<!--<?php // } ?> -->
 
 <div class="modal hide fade" id="cambiarAcreditado">
   <div class="modal-header">

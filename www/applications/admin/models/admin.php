@@ -122,4 +122,13 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query($query);
 		return $query;
 	}
+
+	public function regAlumno($vars)
+	{
+		$query = "insert into alumnos (numero_control, nombre_alumno, apellido_paterno_alumno, apellido_materno_alumno, id_carrera, sexo, fecha_nacimiento, fecha_inscripcion, correo_electronico, situacion_escolar, clave)
+				values('$vars[numero_control]', '$vars[nombre]', '$vars[ap]','$vars[am]', '$vars[car]',  $vars[sexo],  '$vars[fecha_nac]', '$vars[fecha_ins]', '$vars[email]', $vars[se],  '$vars[clave]')";
+
+		$this->Db->query($query);
+		return $query;
+	}
 }

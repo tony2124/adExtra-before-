@@ -1,4 +1,4 @@
- <form id="registroalumno" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/registraralumno' ?>">
+ <form id="registroalumno" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/regisalumno' ?>">
     <fieldset>
       <legend>Inscripción de un nuevo alumno</legend>
         <div class="control-group">
