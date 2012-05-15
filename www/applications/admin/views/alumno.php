@@ -8,7 +8,7 @@ if(!$alumno){
 ?>
 
 <div class="well"><h4>A continuación se muestra los datos del alumno seleccionado.</h4></div>
-<a data-toggle="modal" href="#myModal" class="pull-right"><i class="icon-cog"></i></a>
+<a rel="tooltip" title="Modificar datos del alumno" data-toggle="modal" href="#myModal" class="pull-right"><i class="icon-cog"></i></a>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
@@ -73,9 +73,12 @@ if(!$alumno){
 <?php }else{ ?>
 <div class="tabbable tabs-left"> 
   <ul class="nav nav-tabs">
-    <?php $i=0; foreach ($periodos as $periodo) { 
+    <?php $i=0; 
+    foreach ($periodos as $periodo) 
+    { 
         $liberado = false;
-        foreach ($inscripciones as $ins) {
+        foreach ($inscripciones as $ins) 
+        {
           if($ins['periodo'] == $periodo && $ins['acreditado'] == 1)
           {
               $liberado = true; break;
@@ -88,10 +91,13 @@ if(!$alumno){
         <span class="label label-<?php print ($liberado) ? 'success' : 'important' ?>"><?php print $periodo ?></span>
       </a>
     </li>
-    <?php } ?>
+    <?php 
+  } ?>
   </ul>
+  
   <div class="tab-content">
-    <?php $i=0; foreach ($periodos as $periodo) { ?>
+    <?php $i=0; foreach ($periodos as $periodo) 
+    { ?>
     
     <div class="tab-pane <?php print ($i==0) ? 'active' : NULL; $i++; ?>" id="tab<?php print $i ?>">
       <table class="table table-striped table-condensed">
@@ -104,14 +110,22 @@ if(!$alumno){
         <th></th></thead>
         <tbody>
             <?php
-            foreach ($inscripciones as $ins) {
+            $band = false;
+            foreach ($inscripciones as $ins) 
+            {
               if($ins['periodo'] == $periodo)
-              { ?>
+              { 
+                $band = true;
+                ?>
               <tr>
                 <td><?php print $ins['fecha_inscripcion_club'] ?></td>
                 <td><?php print $ins['fecha_liberacion_club'] ?></td>
                 <td><?php print $ins['nombre_club'] ?></td>
-                <td><?php print ($ins['acreditado']==1) ? '<span class="label label-success">ACREDITADO</span>' : '<span class="label label-important">NO ACREDITADO</span>' ?></td>
+                <td>
+                  <a data-toggle="modal"  href="#cambiarAcreditado">
+                    <?php print ($ins['acreditado']==1) ? 'ACREDITADO' : 'NO ACREDITADO' ?>
+                  </a>
+                </td>
                 <td>
                   <?php if($ins['observaciones']!=NULL) { ?>
                   <a href="#" rel="popover" data-content="<?php print $ins['observaciones'] ?>" data-original-title="Observación">ver</a><?php } ?></td>
@@ -119,12 +133,14 @@ if(!$alumno){
               </tr>
                 <?php
               }
-                
+              
             }
+            if(!$band) 
+              print '<tr><td colspan="6">No se encuentra inscrito en ningún club ó actividad</td></tr>';
             ?>
         </tbody>
       </table>
-  
+      <a rel="tooltip" title="Inscribir a una actividad" class="pull-right btn btn-success" href="#mod"><i class="icon-pencil icon-white"></i></a>
     </div>
   
     <?php } ?>
@@ -132,6 +148,27 @@ if(!$alumno){
   </div>
 </div>
 <?php } ?> 
+
+<div class="modal hide fade" id="cambiarAcreditado">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Edición de acreditación </h3>
+  </div>
+  <div class="modal-body">
+    <p>En el siguiente formulario se cambiará la acreditación del periodo <span id="periodo">per</span> en la actividad <span id="actividad">act</span>.</p>
+    <form id="editalumno" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editalumno' ?>">
+    <div class="control-group">
+
+    </div>
+</form> 
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
+    <a href="#" class="btn btn-primary" onclick="$('#editalumno').submit()">Guardar cambios</a>
+  </div>
+</div>
+
+
 
 <div class="modal hide fade" id="myModal">
   <div class="modal-header">
