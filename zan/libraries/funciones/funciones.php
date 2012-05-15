@@ -1,5 +1,4 @@
 <?php
-
 function convertirFecha($date)
 {
 	$f = explode("-", $date);
@@ -45,6 +44,21 @@ function edad($edad){
 		return $anio_dif;
 	}
 	
+
+function calcularEdad($fecha1, $fecha2){
+		list($anio1,$mes1,$dia1) = explode("-",$fecha1);
+		list($anio2,$mes2,$dia2) = explode("-",$fecha2);
+		$anio_dif = $anio2 - $anio1;
+		$mes_dif = $mes2 - $mes1;
+		$dia_dif = $dia2 - $dia1;
+		if ($mes_dif < 0)
+			$anio_dif--;
+		if($mes_dif == 0 && $dia_dif < 0)
+			$anio_dif--;
+			
+		return $anio_dif;
+	}
+
 function semestre($fecha)
 {
 		$fec = substr($fecha,1,2);

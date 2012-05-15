@@ -54,7 +54,7 @@ if($alumnos != NULL) { ?>
   </button>
   <ul class="dropdown-menu">
     <li><a href="<?php print get('webURL')._sh.'admin/formatos/lista/'.$par1.'/'.$par2 ?>" target="_blank">Lista de alumnos</a></li>
-    <li><a href="#" target="_blank">Cédula de inscripción</a></li>
+    <li><a href="<?php print get('webURL')._sh.'admin/formatos/cedula/'.$par1.'/'.$par2 ?>" target="_blank">Cédula de inscripción</a></li>
   </ul>
 </div>
 <table class="table table-striped table-condensed">
@@ -80,7 +80,7 @@ foreach ($alumnos as $alum) {	?>
         <td><?php echo $alum['apellido_paterno_alumno']." ".$alum['apellido_materno_alumno']." ".$alum['nombre_alumno'] ?></td>
         <td><?php echo $alum['abreviatura_carrera'] ?></td>
         <td><?php echo ($alum['sexo']==1) ? 'H' : 'M' ?></td>
-        <td><?php echo $alum['edad'] ?></td>
+        <td><?php echo calcularEdad($alum['fecha_nacimiento'],$alum['fecha_inscripcion_club']) ?></td>
         <td><?php echo ($alum['acreditado']==0) ? 'NO' :'SI'  ?></td>
       </tr>
 <?php	

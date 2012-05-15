@@ -11,7 +11,7 @@ if($error){
   <?php
   return;
 }
-include(_corePath . _sh .'/libraries/funciones/funciones.php'); ?>
+//include(_corePath . _sh .'/libraries/funciones/funciones.php'); ?>
 <div class="well"><h4>La búsqueda se ha realizado mediante la palabra <span class="label label-success"><?php print $palabra ?></span>. Los resultados encontrados fueron los siguientes:</h4></div>
 <table class="table table-striped table-condensed">
   <thead>

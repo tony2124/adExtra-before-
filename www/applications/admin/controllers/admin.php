@@ -6,6 +6,65 @@ if(!defined("_access")) {
 	die("Error: You don't have permission to access here...");
 }
 
+// Extend the TCPDF class to create custom Header and Footer
+require_once(_spath.'/APIs/tcpdf/config/lang/eng.php');
+require_once(_spath.'/APIs/tcpdf/tcpdf.php');
+include(_corePath . _sh .'/libraries/funciones/funciones.php');
+
+class MYPDF extends TCPDF {
+
+    //Page header
+    public function Header() {
+        // Set font
+        $this->SetFont('helvetica', 'N', 10);
+        $this->SetY(15);
+        
+        // Title
+        $html = '<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" cellspacing="0" cellpadding="0" width="620">
+        <tr>
+          <td height="110" width="150" rowspan="3" align="center" valign="middle">
+          &nbsp;<br><img src="'._spath.'/formatos/formatoliberacionhoras_clip_image002.jpg" />
+        </td>
+          
+        <td height="60" width="450" align="center" valign="middle">
+          <strong> Formato para Boleta de Acreditación de Actividades Culturales, Deportivas y Recreativas.</strong>
+        </td>
+          
+        <td width="250" valign="middle">
+          <strong> Código:SNEST/D-VI-PO-003-05</strong>
+        </td> 
+        </tr>
+
+        <tr>    
+        <td rowspan="2" valign="middle" align="center">
+          <strong><br> Referencia a la Norma ISO 9001:2008  7.2.1</strong>
+        </td>
+
+        <td height="25" valign="middle">
+          <strong> Revisión: 3</strong>
+        </td>  
+        </tr>
+
+        <tr>
+          <td valign="top">
+          <strong> Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages().'</strong>
+        </td>
+        </tr>
+      </table>';
+       $this->writeHTML($html, true, false, true, false, '');
+    }
+
+    // Page footer
+    public function Footer() {
+        // Position at 15 mm from bottom
+        $this->SetY(-15);
+        // Set font
+        $this->SetFont('helvetica', 'I', 8);
+        // Page number
+        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+    }
+}
+
 class Admin_Controller extends ZP_Controller {
 	
 	public function __construct() {
@@ -273,7 +332,7 @@ class Admin_Controller extends ZP_Controller {
 
 		if(!isset($periodo)) 
 		{
-			include(_corePath . _sh .'/libraries/funciones/funciones.php');
+			//include(_corePath . _sh .'/libraries/funciones/funciones.php');
 			$periodo = periodo_actual();
 		}
 		$clubes = $this->Admin_Model->getClubes();
@@ -312,7 +371,7 @@ class Admin_Controller extends ZP_Controller {
 
 	public function alumno($nctrl = NULL)
 	{
-		include(_corePath . _sh .'/libraries/funciones/funciones.php');
+		//include(_corePath . _sh .'/libraries/funciones/funciones.php');
 		$datos = $this->Admin_Model->getAlumno($nctrl);
 		$inscripciones = $this->Admin_Model->getClubesInscritosAlumno($nctrl);
 
@@ -330,7 +389,6 @@ class Admin_Controller extends ZP_Controller {
 
 	public function listaclub($club = NULL, $periodo = NULL)
 	{
-		include(_corePath . _sh .'/libraries/funciones/funciones.php');
 
 		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosClubes($club, $periodo);
@@ -345,8 +403,7 @@ class Admin_Controller extends ZP_Controller {
 
  	public function formatos($for, $club, $periodo)
  	{
- 		require_once(_spath.'/APIs/tcpdf/config/lang/eng.php');
-		require_once(_spath.'/APIs/tcpdf/tcpdf.php');
+ 		
  		switch($for)
  		{
  			case 'lista':
@@ -385,7 +442,7 @@ class Admin_Controller extends ZP_Controller {
 				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 				//set some language-dependent strings
-				$pdf->setLanguageArray($l);
+				//$pdf->setLanguageArray($l);
 
 				// ---------------------------------------------------------
 
@@ -444,6 +501,141 @@ class Admin_Controller extends ZP_Controller {
 
 				//Close and output PDF document
 				$pdf->Output("lista".$club.$periodo.".pdf", 'I');
+				 
+ 			break;
+
+ 			case 'cedula':
+
+				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
+				$prommotor = $this->Admin_Model->getPromotor($club);
+				/*********************************************************************************************************/
+
+				// se crea un nuevo documento
+				$pdf = new MYPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+				// set document information
+				$pdf->SetCreator(PDF_CREATOR);
+				$pdf->SetAuthor('Alfonso Calderon');
+				$pdf->SetTitle('Lista de alumnos');
+				$pdf->SetSubject('Lista');
+				$pdf->SetKeywords('lista, extraescolares, clubes, club');
+
+				// set default monospaced font
+				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+				//set margins PDF_MARGIN_LEFT PDF_MARGIN_TOP
+				$pdf->SetMargins(20, 60, 20);
+				$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+				$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+				//set auto page breaks
+				$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+				//set image scale factor
+				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+				//set some language-dependent strings
+				//$pdf->setLanguageArray($l);
+
+				// ---------------------------------------------------------
+
+				// set font
+				$pdf->SetFont('dejavusans', '', 10);
+
+				// add a page
+				$pdf->AddPage();
+
+				// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+				// writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
+
+				// create some HTML content
+				$html = '<p align="center">
+					<b>
+						DEPARTAMENTO DE ACTIVIDADES CULTURALES, DEPORTIVAS Y RECREATIVAS
+					</b> 
+				</p>
+					
+				<p align="center">
+					<b>
+						INSCRIPCIÓN - PERIODO: '.$periodo.'
+					</b>
+				</p>
+
+				<br>
+
+				<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="0" 
+						cellspacing="0" cellpadding="0">
+				  <tr>
+				    <td width="100">
+				   		<b>ACTIVIDAD:</b>
+					</td>
+					<td width="250">
+				   		<b>'.$data[0]['nombre_club'].'</b>
+					</td>
+					<td  width="100">
+				   		<b>GRUPO:</b> 
+					</td>
+					<td width="150">
+				   		
+					</td>
+					<td width="80">
+				   		<b>HORA:</b>
+					</td>
+					<td width="150">
+				   		
+					</td>
+					
+				  </tr>
+				</table>
+				<br>&nbsp;<br>
+				<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" 
+						cellspacing="0" cellpadding="0">
+				  <tr align = "center">
+				    <td width = "25">No.</td>
+				    <td width = "300">ALUMNOS</td>
+				    <td width = "90">No. CONTROL</td>
+				    <td width = "150">CARRERA</td>
+				    <td width = "45">SEM</td>
+				    <td width = "45">EDAD</td>
+				    <td width = "45">SEXO</td>
+				    <td width = "150">OBSERVACIONES</td>
+				  </tr>';
+				  $contador = 1;
+				  foreach($data as $row)
+				  {
+				  	$html .= '
+					<tr>
+						<td>&nbsp;'.($contador++).'</td>
+						<td>&nbsp;'.$row['apellido_paterno_alumno'].' '.$row['apellido_materno_alumno'].' '.$row['nombre_alumno'].'</td>
+						<td>&nbsp;'.$row['numero_control'].'</td>
+						<td>&nbsp;'.$row['abreviatura_carrera'].'</td>
+						<td>&nbsp;'.semestre($row['fecha_inscripcion']).'</td>
+						<td>&nbsp;'.calcularEdad($row['fecha_nacimiento'], $row['fecha_inscripcion_club']).'</td>
+						<td>&nbsp;';
+						
+						if($row['sexo'] == 1) $html .= "H"; else $html.= "M";
+						
+						$html .= '</td>
+						<td>&nbsp;</td>
+						
+					</tr>
+					';
+					
+				  }
+
+				  $html.='</table>';
+
+
+				// output the HTML content
+				$pdf->writeHTML($html, true, false, true, false, '');
+
+				// reset pointer to the last page
+				$pdf->lastPage();
+
+				// ---------------------------------------------------------
+
+				//Close and output PDF document
+				$pdf->Output("cedulaInscripcion.pdf", 'I');
 				 
  			break;
  		}

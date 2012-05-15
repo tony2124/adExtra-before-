@@ -96,7 +96,6 @@ class Admin_Model extends ZP_Model {
 
 		$this->Db->query($query);
 		return $query;
-
 	}
 	
 	public function getPromotor($club)
