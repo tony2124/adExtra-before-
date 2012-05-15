@@ -134,9 +134,9 @@ class Admin_Controller extends ZP_Controller {
 		$vars['se'] = POST('se');
 		$vars['clave'] = POST('clave');
 		$vars['car'] = POST('carrera');
-		____($vars);
-		//$this->Admin_Model->regAlumno($vars);
-		//redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
+		
+		$this->Admin_Model->regAlumno($vars);
+		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
 
