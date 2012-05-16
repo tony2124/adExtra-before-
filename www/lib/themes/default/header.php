@@ -67,7 +67,7 @@
 				    <ul class="dropdown-menu">
 				      <!--<li><a href="#">Buscar un alumno</a></li>-->
 				      <li><a href="<?php print get('webURL'). _sh .'admin/listaclub/'  ?>">Listas de alumnos</a></li>
-				      <li><a href="<?php print get('webURL'). _sh .'admin/formRegistroalumno/'  ?>">Agregar un nuevo alumno</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/registroalumno/'  ?>">Agregar un nuevo alumno</a></li>
 				    </ul>
 				  </li>
 				  <li class="dropdown" id="menu2">
