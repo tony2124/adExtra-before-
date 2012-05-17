@@ -16,6 +16,12 @@ class Admin_Model extends ZP_Model {
 		$this->table = "contacts";
 	}
 
+	public function updateRes($acred, $folio)
+	{
+		return $data = $this->Db->query("update inscripciones set acreditado = '$acred' where folio = '$folio'");
+
+	}
+
 	public function getConfiguracion()
 	{
 		return $data = $this->Db->query("select * from configuracion");

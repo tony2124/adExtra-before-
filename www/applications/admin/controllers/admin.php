@@ -113,6 +113,15 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
+	public function editResultado()
+	{
+		$resultado = POST('acreditado');
+		$folio = POST('folio');
+		$numero_control = POST('numero_control');
+		$this->Admin_Model->updateRes($resultado, $folio);
+		redirect(get('webURL').'/admin/alumno/'.$numero_control);
+	}
+
 	public function formRegistroAlumno()
 	{
 		$vars['carreras'] = $this->Admin_Model->getCarreras();
