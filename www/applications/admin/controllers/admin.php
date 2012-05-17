@@ -65,6 +65,62 @@ class MYPDF extends TCPDF {
     }
 }
 
+
+class MYPDFv extends TCPDF {
+
+    //Page header
+    public function Header() {
+        // Set font
+        $this->SetFont('helvetica', 'N', 10);
+        $this->SetY(15);
+        
+        // Title
+        $html = '<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" cellspacing="0" cellpadding="0" width="620">
+        <tr>
+          <td height="110" width="150" rowspan="3" align="center" valign="middle">
+          &nbsp;<br><img src="'._spath.'/formatos/formatoliberacionhoras_clip_image002.jpg" />
+        </td>
+          
+        <td height="60" width="280" align="center" valign="middle">
+          <strong> Formato para Boleta de Acreditación de Actividades Culturales, Deportivas y Recreativas.</strong>
+        </td>
+          
+        <td width="190" valign="middle">
+          <strong> Código:SNEST/D-VI-PO-003-05</strong>
+        </td> 
+        </tr>
+
+        <tr>    
+        <td rowspan="2" valign="middle" align="center">
+          <strong><br> Referencia a la Norma ISO 9001:2008  7.2.1</strong>
+        </td>
+
+        <td height="25" valign="middle">
+          <strong> Revisión: 3</strong>
+        </td>  
+        </tr>
+
+        <tr>
+          <td valign="top">
+          <strong> Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages().'</strong>
+        </td>
+        </tr>
+      </table>';
+       $this->writeHTML($html, true, false, true, false, '');
+    }
+
+    // Page footer
+    public function Footer() {
+        // Position at 15 mm from bottom
+        $this->SetY(-15);
+        // Set font
+        $this->SetFont('helvetica', 'I', 8);
+        // Page number
+        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+    }
+}
+
+
 class Admin_Controller extends ZP_Controller {
 	
 	public function __construct() {
@@ -75,7 +131,7 @@ class Admin_Controller extends ZP_Controller {
 	}
 	
 	public function index() {	
-		$this->Admin_Model->acentos();
+		
 		if( SESSION('user_admin') )
 			return redirect(get('webURL') .  _sh .'admin/estadistica');
 
@@ -98,7 +154,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function editalumno()
 	{
-		
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
 		$vars['numero_control'] = POST('numero_control');
 		$vars['nombre'] = POST('nombre');
 		$vars['ap'] = POST('ap');
@@ -115,15 +173,22 @@ class Admin_Controller extends ZP_Controller {
 
 	public function editResultado()
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
 		$resultado = POST('acreditado');
 		$folio = POST('folio');
 		$numero_control = POST('numero_control');
-		$this->Admin_Model->updateRes($resultado, $folio);
+		$obs = $_POST['obs'];
+		$this->Admin_Model->updateRes($resultado, $folio, $obs);
 		redirect(get('webURL').'/admin/alumno/'.$numero_control);
 	}
 
 	public function formRegistroAlumno()
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
 		$vars['carreras'] = $this->Admin_Model->getCarreras();
 		$vars['view'] = $this->view('registroalumno',true);
 		$this->render("content",$vars);
@@ -132,6 +197,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function regisalumno()
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
 		$vars['numero_control'] = POST('numero_control');
 		$vars['nombre'] = POST('nombre');
 		$vars['ap'] = POST('ap');
@@ -151,6 +219,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function elimnoticia($id)
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
 		$this->Admin_Model->elimNoticia($id);
 		redirect(get('webURL')._sh.'admin/noticias');
 		
@@ -158,6 +229,8 @@ class Admin_Controller extends ZP_Controller {
 
 	public function guardarnoticia()
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
 
 		$nombre = POST('name');
 		$texto = POST('texto');
@@ -233,15 +306,12 @@ class Admin_Controller extends ZP_Controller {
 
 	public function modnoticia($id_not)
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
 
 		$nombre = POST('name');
-		//print $texto1 = POST('texto');
-		print $texto = $_POST['texto'];
-	/*	$vars["var1"] = $texto1;
-		$vars["var2"] = $texto2;
-		$vars["view"] = $this->view("show",true);
-		$this->render("content",$vars);
-		*/
+		$texto = $_POST['texto'];
+
 		$cadena = str_replace( "'", "\"", $texto);
 		$nombre = str_replace( "'", "\"", $nombre);
 
@@ -316,6 +386,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function noticias($id = NULL)
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
 		$noticias = $this->Admin_Model->getNoticias();
 		$vars['noticias'] = $noticias;
 		$vars['view'] = $this->view("noticias",true);
@@ -396,6 +469,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function buscar()
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
 		$busqueda = POST('bus');
 		$sit = POST('sit');
 
@@ -420,6 +496,8 @@ class Admin_Controller extends ZP_Controller {
 
 	public function alumno($nctrl = NULL)
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
 		//include(_corePath . _sh .'/libraries/funciones/funciones.php');
 		$datos = $this->Admin_Model->getAlumno($nctrl);
 		$inscripciones = $this->Admin_Model->getClubesInscritosAlumno($nctrl);
@@ -438,6 +516,8 @@ class Admin_Controller extends ZP_Controller {
 
 	public function listaclub($club = NULL, $periodo = NULL)
 	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
 
 		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosClubes($club, $periodo);
@@ -450,244 +530,6 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content", $vars);
  	}
 
- 	public function formatos($for, $club, $periodo)
- 	{
- 		
- 		switch($for)
- 		{
- 			case 'lista':
- 				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
-				$prommotor = $this->Admin_Model->getPromotor($club);
-		
-				// create new PDF document
-				$pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-				// set document information
-				$pdf->SetCreator(PDF_CREATOR);
-				$pdf->SetAuthor('Alfonso Calderon');
-				$pdf->SetTitle('Lista de alumnos');
-				$pdf->SetSubject('Lista');
-				$pdf->SetKeywords('lista, extraescolares, clubes, club');
-
-				// set default header data
-				$pdf->SetHeaderData("logo.png", 15, "Relación de alumnos del club de ".$data[0]['nombre_club'], "Instituto Tecnológico Superior de Apatzingán\n".$prommotor[0]['nombre_promotor']." ".$prommotor[0]['apellido_paterno_promotor']." ".$prommotor[0]['apellido_materno_promotor']."\nwww.itsa.edu.mx");
-
-				// set header and footer fonts
-				$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-				$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-				// set default monospaced font
-				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-				//set margins PDF_MARGIN_LEFT PDF_MARGIN_TOP
-				$pdf->SetMargins(20, PDF_MARGIN_TOP, 20);
-				$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-				$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-				//set auto page breaks
-				$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-				//set image scale factor
-				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-				//set some language-dependent strings
-				//$pdf->setLanguageArray($l);
-
-				// ---------------------------------------------------------
-
-				// set font
-				$pdf->SetFont('dejavusans', '', 10);
-
-				// add a page
-				$pdf->AddPage();
-
-				// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
-				// writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
-
-				// create some HTML content
-				$html = '
-					<br>
-					<p align="center">
-					RELACIÓN DE ALUMNOS DEL CLUB DE '.$data[0]['nombre_club'].' DEL PERIODO '.$periodo.'  
-					</p>
-					<table border="1" width="850">
-						<tr height="80" align="center">
-							<td width="400" height = "80"><br><br><br>Nombre del alumno</td>';
-							$i=0;
-							while($i<22)
-							{
-								$html .= '<td width="20"></td>';
-								$i++;
-							}
-							$html .='
-						</tr>';
-						foreach ($data as $row ) {
-							
-							$html .= '
-								<tr>
-									<td> '.$row['apellido_paterno_alumno'].' '.$row['apellido_materno_alumno'].' '.$row['nombre_alumno'].'</td>';
-									$i=0;
-							while($i<22)
-							{
-								$html .= '<td width="20"></td>';
-								$i++;
-							}
-							$html .='
-								
-								</tr>
-								';
-						}
-						$html .= '</table>';
-					
-
-				// output the HTML content
-				$pdf->writeHTML($html, true, false, true, false, '');
-
-				// reset pointer to the last page
-				$pdf->lastPage();
-
-				// ---------------------------------------------------------
-
-				//Close and output PDF document
-				$pdf->Output("lista".$club.$periodo.".pdf", 'I');
-				 
- 			break;
-
- 			case 'cedula':
-
-				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
-				$prommotor = $this->Admin_Model->getPromotor($club);
-				/*********************************************************************************************************/
-
-				// se crea un nuevo documento
-				$pdf = new MYPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-				// set document information
-				$pdf->SetCreator(PDF_CREATOR);
-				$pdf->SetAuthor('Alfonso Calderon');
-				$pdf->SetTitle('Lista de alumnos');
-				$pdf->SetSubject('Lista');
-				$pdf->SetKeywords('lista, extraescolares, clubes, club');
-
-				// set default monospaced font
-				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-				//set margins PDF_MARGIN_LEFT PDF_MARGIN_TOP
-				$pdf->SetMargins(20, 60, 20);
-				$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-				$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-				//set auto page breaks
-				$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-				//set image scale factor
-				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-				//set some language-dependent strings
-				//$pdf->setLanguageArray($l);
-
-				// ---------------------------------------------------------
-
-				// set font
-				$pdf->SetFont('dejavusans', '', 10);
-
-				// add a page
-				$pdf->AddPage();
-
-				// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
-				// writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
-
-				// create some HTML content
-				$html = '<p align="center">
-					<b>
-						DEPARTAMENTO DE ACTIVIDADES CULTURALES, DEPORTIVAS Y RECREATIVAS
-					</b> 
-				</p>
-					
-				<p align="center">
-					<b>
-						INSCRIPCIÓN - PERIODO: '.$periodo.'
-					</b>
-				</p>
-
-				<br>
-
-				<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="0" 
-						cellspacing="0" cellpadding="0">
-				  <tr>
-				    <td width="100">
-				   		<b>ACTIVIDAD:</b>
-					</td>
-					<td width="250">
-				   		<b>'.$data[0]['nombre_club'].'</b>
-					</td>
-					<td  width="100">
-				   		<b>GRUPO:</b> 
-					</td>
-					<td width="150">
-				   		
-					</td>
-					<td width="80">
-				   		<b>HORA:</b>
-					</td>
-					<td width="150">
-				   		
-					</td>
-					
-				  </tr>
-				</table>
-				<br>&nbsp;<br>
-				<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" 
-						cellspacing="0" cellpadding="0">
-				  <tr align = "center">
-				    <td width = "25">No.</td>
-				    <td width = "300">ALUMNOS</td>
-				    <td width = "90">No. CONTROL</td>
-				    <td width = "150">CARRERA</td>
-				    <td width = "45">SEM</td>
-				    <td width = "45">EDAD</td>
-				    <td width = "45">SEXO</td>
-				    <td width = "150">OBSERVACIONES</td>
-				  </tr>';
-				  $contador = 1;
-				  foreach($data as $row)
-				  {
-				  	$html .= '
-					<tr>
-						<td>&nbsp;'.($contador++).'</td>
-						<td>&nbsp;'.$row['apellido_paterno_alumno'].' '.$row['apellido_materno_alumno'].' '.$row['nombre_alumno'].'</td>
-						<td>&nbsp;'.$row['numero_control'].'</td>
-						<td>&nbsp;'.$row['abreviatura_carrera'].'</td>
-						<td>&nbsp;'.semestre($row['fecha_inscripcion']).'</td>
-						<td>&nbsp;'.calcularEdad($row['fecha_nacimiento'], $row['fecha_inscripcion_club']).'</td>
-						<td>&nbsp;';
-						
-						if($row['sexo'] == 1) $html .= "H"; else $html.= "M";
-						
-						$html .= '</td>
-						<td>&nbsp;</td>
-						
-					</tr>
-					';
-					
-				  }
-
-				  $html.='</table>';
-
-
-				// output the HTML content
-				$pdf->writeHTML($html, true, false, true, false, '');
-
-				// reset pointer to the last page
-				$pdf->lastPage();
-
-				// ---------------------------------------------------------
-
-				//Close and output PDF document
-				$pdf->Output("cedulaInscripcion.pdf", 'I');
-				 
- 			break;
- 		}
- 	}
+ 	
 
 }

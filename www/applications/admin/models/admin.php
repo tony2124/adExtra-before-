@@ -21,9 +21,12 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("SET NAMES 'utf8'");
 	}
 
-	public function updateRes($acred, $folio)
+	public function updateRes($acred, $folio, $obs)
 	{
-		return $data = $this->Db->query("update inscripciones set acreditado = '$acred' where folio = '$folio'");
+		$dat = $this->Db->query("select * from inscripciones where folio = '$folio'");
+		$observaciones = $dat[0]['observaciones']."<br>".date("y-m-d")."&nbsp;".$obs;
+		$this->acentos();
+		return $data = $this->Db->query("update inscripciones set acreditado = '$acred', observaciones = '$observaciones' where folio = '$folio'");
 
 	}
 
@@ -141,5 +144,10 @@ class Admin_Model extends ZP_Model {
 
 		$this->Db->query($query);
 		return $query;
+	}
+
+	public function getAlumnoInscrito($folio)
+	{
+		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where folio = '$folio'");
 	}
 }

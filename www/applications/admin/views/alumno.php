@@ -144,7 +144,9 @@ if(!$alumno){
                 <td>
                   <?php if($ins['observaciones']!=NULL) { ?>
                   <a href="#" rel="popover" data-content="<?php print $ins['observaciones'] ?>" data-original-title="Observación">ver</a><?php } ?></td>
-                <td><a href="" class="btn">Formato</a></td>
+                <td>
+                  <a href="<?php print get('webURL')._sh.'admin/pdf/formatos/liberacion/'.$ins['folio'] ?>" target="_blank" title="Descargar formato de liberación de horas" rel="tooltip" class="btn">Formato</a>
+                </td>
               </tr>
                 <?php
               }
@@ -190,7 +192,7 @@ if(!$alumno){
       </div><br>
       <label class="control-label">Observación</label> 
       <div class="controls">
-          <textarea id="obs"></textarea>
+          <textarea name="obs" id="obs"></textarea>
       </div><br>
       <input type="hidden" value="" id ="folio" name="folio">
       <input type="hidden" value="<?php print $alumno['numero_control'] ?>" name="numero_control">
@@ -202,8 +204,6 @@ if(!$alumno){
     <a href="#" class="btn btn-primary" onclick="$('#editres').submit()">Guardar cambios</a>
   </div>
 </div>
-
-
 
 <div class="modal hide fade" id="miModal">
   <div class="modal-header">
