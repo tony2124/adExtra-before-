@@ -75,7 +75,7 @@ class Admin_Controller extends ZP_Controller {
 	}
 	
 	public function index() {	
-
+		$this->Admin_Model->acentos();
 		if( SESSION('user_admin') )
 			return redirect(get('webURL') .  _sh .'admin/estadistica');
 
@@ -160,7 +160,7 @@ class Admin_Controller extends ZP_Controller {
 	{
 
 		$nombre = POST('name');
-		$texto = $_POST['texto'];
+		$texto = POST('texto');
 
 		$cadena = str_replace( "'", "\"", $texto);
 		$nombre = str_replace( "'", "\"", $nombre);
@@ -235,8 +235,13 @@ class Admin_Controller extends ZP_Controller {
 	{
 
 		$nombre = POST('name');
-		$texto = $_POST['texto'];
-
+		//print $texto1 = POST('texto');
+		print $texto = $_POST['texto'];
+	/*	$vars["var1"] = $texto1;
+		$vars["var2"] = $texto2;
+		$vars["view"] = $this->view("show",true);
+		$this->render("content",$vars);
+		*/
 		$cadena = str_replace( "'", "\"", $texto);
 		$nombre = str_replace( "'", "\"", $nombre);
 
@@ -304,6 +309,7 @@ class Admin_Controller extends ZP_Controller {
 		$vars["id_administrador"] = SESSION('id_admin');
 
 		print $this->Admin_Model->updateNew($vars);
+
 		redirect(get('webURL')._sh.'admin/noticias');
 	}
 

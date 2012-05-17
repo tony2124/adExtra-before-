@@ -16,6 +16,11 @@ class Admin_Model extends ZP_Model {
 		$this->table = "contacts";
 	}
 
+	public function acentos()
+	{
+		$this->Db->query("SET NAMES 'utf8'");
+	}
+
 	public function updateRes($acred, $folio)
 	{
 		return $data = $this->Db->query("update inscripciones set acreditado = '$acred' where folio = '$folio'");
@@ -104,7 +109,7 @@ class Admin_Model extends ZP_Model {
 		$query = "update noticias set nombre_noticia = '$vars[nombre_noticia]' , 
 			texto_noticia = '$vars[texto_noticia]', imagen_noticia = '$vars[imagen_noticia]', fecha_modificacion = '$vars[fecha_modificacion]', 
 				hora = '$vars[hora]', id_administrador = $vars[id_administrador] where id_noticias = '$vars[id_noticias]'";
-
+		$this->acentos();
 		$this->Db->query($query);
 		return $query;
 	}
