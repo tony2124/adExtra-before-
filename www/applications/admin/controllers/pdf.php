@@ -450,12 +450,14 @@ class Pdf_Controller extends ZP_Controller {
 				  <tr>
 				    <td valign="top"><strong> ACTIVIDAD:</strong></td>
 				    <td colspan="4" valign="top"> '.$row[0]['nombre_club'];
-				    if($row[0]['observaciones'] != '') $html .= " (".$row[0]['observaciones'].")";
+				    if($row[0]['observaciones'] != '' && $row[0]['tipo_club'] == 3 ) $html .= " (".$row[0]['observaciones'].")";
 				    $html .= '</td>
 				  </tr>
 				  <tr>
 				    <td valign="top"><strong> RESULTADO:</strong></td>
-				    <td colspan="4" valign="top"> ACREDITADO </td>
+				    <td colspan="4" valign="top">';
+				    if($row[0]['acreditado'] == 0 ) $html.=' NO ACREDITADO'; else $html.=' ACREDITADO';
+				    $html.='</td>
 				  </tr>
 				  <tr>
 				    <td align="center" height="137" valign="middle">

@@ -21,12 +21,14 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("SET NAMES 'utf8'");
 	}
 
-	public function updateRes($acred, $folio, $obs)
+	public function updateRes($acred, $folio, $obs, $fl)
 	{
-		$dat = $this->Db->query("select * from inscripciones where folio = '$folio'");
-		$observaciones = $dat[0]['observaciones']."<br>".date("y-m-d")."&nbsp;".$obs;
+		$dat = $this->Db->query("select * from inscripciones where folio = $folio");
+		$observaciones = $dat[0]['observaciones']."<br>".$fl."&nbsp;".$obs;
 		$this->acentos();
-		return $data = $this->Db->query("update inscripciones set acreditado = '$acred', observaciones = '$observaciones' where folio = '$folio'");
+		$query = "update inscripciones set acreditado = $acred, fecha_liberacion_club = '$fl', observaciones = '$observaciones' where folio = '$folio'";
+	    $this->Db->query($query);
+	    return $query;
 
 	}
 

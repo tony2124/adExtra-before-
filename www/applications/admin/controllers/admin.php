@@ -67,7 +67,8 @@ class Admin_Controller extends ZP_Controller {
 		$folio = POST('folio');
 		$numero_control = POST('numero_control');
 		$obs = $_POST['obs'];
-		$this->Admin_Model->updateRes($resultado, $folio, $obs);
+		$fecha_lib = date("Y-m-d");
+		$this->Admin_Model->updateRes($resultado, $folio, $obs, $fecha_lib);
 		redirect(get('webURL').'/admin/alumno/'.$numero_control);
 	}
 

@@ -13,9 +13,9 @@ if(!$alumno){
        $('#actividad').html(actividad);
        $('#obs').val('');
        $('#folio').val(folio);
-       if(acred==1)
+       if(acred=='1')
           $("#selectRes > option[value='1']").attr("selected","selected");
-       else $("#selectRes > option[value='2']").attr("selected","selected");
+       else $("#selectRes > option[value='0']").attr("selected","selected");
   }
 
 
@@ -28,6 +28,16 @@ $().ready(function() {
     },
     messages: {
       obs: "Debe incluir un comentario para que realice el cambio."
+    }
+  });
+
+   $("#editalumno").validate({
+    rules: {
+      input01: "required"
+      
+    },
+    messages: {
+      input01: "El nombre debe ser mayor a 1 caracter"
     }
   });
 
@@ -206,7 +216,7 @@ $().ready(function() {
       <div class="controls">
           <select name="acreditado" id="selectRes">
               <option value="1">ACREDITADO</option>
-              <option value="2">NO ACREDITADO</option>
+              <option value="0">NO ACREDITADO</option>
           </select>
       </div><br>
       <label class="control-label">Observación</label> 
@@ -251,7 +261,7 @@ $().ready(function() {
       </div><br>
       <label class="control-label" for="input05">Sexo</label>
       <div class="controls">
-  <!-- -->  <select name="sexo" >
+  <!-- -->  <select name="sexo">
               <option value="1">HOMBRE</option>
               <option value="2" <?php if($alumno['sexo']!=1) print 'selected="selected"' ?>>MUJER</option>
             </select>
