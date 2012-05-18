@@ -99,42 +99,48 @@
     <p>En el siguiente formulario se muestran los datos del administrador, por favor edite los campos correspondientes y haga clic en guardar cambios.</p>
     <form id="#" class="form-horizontal" method="POST" action="<?php print get('webURL')._sh.'admin/adminconfig' ?>">
       <div class="control-group">
-        <label class="control-label" for="input01">Nombre</label>
+        <label class="control-label" for="input01">Usuario</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="nombre" class="input-xlarge" id="input01" value="<?php print $datosAdmin[0]['nombre_administrador'] ?>">
+    <!-- -->  <input type="text" name="usuario" class="input-xlarge" id="input01" value="<?php print $datosAdmin[0]['usuario_administrador'] ?>">
         </div><br>
-        <label class="control-label" for="input02">Apellido paterno</label>
+        <label class="control-label" for="input02">Contraseña <a class="icon-exclamation-sign" rel="popover" data-content="Actual: Ingresa la vieja contraseña <br> Nueva: Ingresa una nueva contraseña <br> Re-nueva: Vuelve a ingresar la nueva contraseña" data-original-title="AYUDA"></a></label>
         <div class="controls">
-    <!-- -->  <input type="text" name="am" class="input-xlarge" id="input02" value="<?php print $alumno['apellido_paterno_alumno'] ?>">
+    <!-- -->  <input type="password" name="lastpass" class="input-xlarge" id="input02" placeholder="Actual">
+        </div>
+        <div class="controls">
+    <!-- -->  <input type="password" name="newpass1" class="input-xlarge" id="input02" placeholder="Nueva">
+        </div>
+        <div class="controls">
+    <!-- -->  <input type="password" name="newpass2" class="input-xlarge" id="input02" placeholder="Re-nueva">
+        </div><hr>
+        <label class="control-label" for="input03">Nombre(s)</label>
+        <div class="controls">
+    <!-- -->  <input type="text" name="nombre" class="input-xlarge" id="input03"  value="<?php print $datosAdmin[0]['nombre_administrador'] ?>">
         </div><br>
-        <label class="control-label" for="input03">Apellido materno</label>
+        <label class="control-label" for="input04">Apellido paterno</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="ap" class="input-xlarge" id="input03"  value="<?php print $alumno['apellido_materno_alumno'] ?>">
+    <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_paterno_administrador'] ?>">
         </div><br>
-        <label class="control-label" for="input04">Fecha de nacimiento</label>
+        <label class="control-label" for="input04">Apellido materno</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $alumno['fecha_nacimiento'] ?>">
-        </div><br>
-        <label class="control-label" for="input05">Sexo</label>
-        <div class="controls">
-    <!-- -->  <select name="sexo" >
-                <option value="1">HOMBRE</option>
-                <option value="2" <?php if($alumno['sexo']!=1) print 'selected="selected"' ?>>MUJER</option>
-              </select>
+    <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_materno_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input06">Correo electrónico</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="email" class="input-xlarge" id="input06"  value="<?php print $alumno['correo_electronico'] ?>">
-        </div><br>
-        <label class="control-label" for="input07">Situación escolar</label>
+    <!-- -->  <input type="text" name="email" class="input-xlarge" id="input06"  value="<?php print $datosAdmin[0]['correo_electronico'] ?>">
+        </div><hr>
+        <label class="control-label" for="input07">Profeción</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="se" class="input-xlarge" id="input07"  value="<?php print $alumno['situacion_escolar'] ?>">
+    <!-- -->  <input type="text" name="se" class="input-xlarge" id="input07"  value="<?php print $datosAdmin[0]['profesion_administrador'] ?>">
         </div><br>
-        <label class="control-label" for="input08">Clave del sitio</label>
+        <label class="control-label" for="input08">Abreviatura de la profeción</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $alumno['clave'] ?>">
+    <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['abreviatura_profesion'] ?>">
+        </div><br>
+        <label class="control-label" for="input08">Dirección</label>
+        <div class="controls">
+    <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['direccion_administrador'] ?>">
         </div>
-        <input type="hidden" name="numero_control" value="<?php print $alumno['numero_control'] ?>"> 
       </div>
     </form> 
   </div>
