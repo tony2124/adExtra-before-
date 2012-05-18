@@ -98,6 +98,7 @@ class Admin_Controller extends ZP_Controller {
 
 	public function editalumno()
 	{
+		
 		$vars['numero_control'] = POST('numero_control');
 		$vars['nombre'] = POST('nombre');
 		$vars['ap'] = POST('ap');
@@ -107,27 +108,43 @@ class Admin_Controller extends ZP_Controller {
 		$vars['email'] = POST('email');
 		$vars['se'] = POST('se');
 		$vars['clave'] = POST('clave');
+		
 		$this->Admin_Model->updateAlumno($vars);
 		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
-	public function registroAlumno()
+	public function formRegistroAlumno()
 	{
 		$vars['carreras'] = $this->Admin_Model->getCarreras();
 		$vars['view'] = $this->view('registroalumno',true);
 		$this->render("content",$vars);
 	}
 
+
+	public function regisalumno()
+	{
+		$vars['numero_control'] = POST('numero_control');
+		$vars['nombre'] = POST('nombre');
+		$vars['ap'] = POST('ap');
+		$vars['am'] = POST('am');
+		$vars['fecha_nac'] = POST('fecha_nac');
+		$vars['fecha_ins'] = '2'.substr(POST('numero_control'), 0, 2).'3';
+		$vars['sexo'] = POST('sexo');
+		$vars['email'] = POST('email');
+		$vars['se'] = POST('se');
+		$vars['clave'] = POST('clave');
+		$vars['car'] = POST('carrera');
+		
+		$this->Admin_Model->regAlumno($vars);
+		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
+	}
+
+
 	public function elimnoticia($id)
 	{
 		$this->Admin_Model->elimNoticia($id);
 		redirect(get('webURL')._sh.'admin/noticias');
 		
-	}
-
-	public function editnoticia($id)
-	{
-		print "Script para editar la noticia";
 	}
 
 	public function guardarnoticia()
@@ -143,7 +160,7 @@ class Admin_Controller extends ZP_Controller {
 
 		if (FILES("foto", "tmp_name")) 
 		{
-		    $path = _spath; 
+		    $path = _spath.'/IMAGENES/fotosNoticias/';  
 		    $tmp_name = $_FILES["foto"]["tmp_name"];
 			$name = $_FILES["foto"]["name"];
 	

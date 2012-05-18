@@ -1,4 +1,4 @@
- <form id="registroalumno" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/registraralumno' ?>">
+ <form id="registroalumno" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/regisalumno' ?>">
     <fieldset>
       <legend>Inscripción de un nuevo alumno</legend>
         <div class="control-group">
@@ -24,7 +24,7 @@
                   <?php foreach ($carreras as $carrera) { 
                     print '<option value="'.$carrera['id_carrera'].'">'.$carrera['abreviatura_carrera'].' ('.$carrera['id_carrera'].')</option>';
                   } ?>
-                  
+  
                 </select>
           </div><br>
           <label class="control-label" for="input05">Fecha de nacimiento</label>
