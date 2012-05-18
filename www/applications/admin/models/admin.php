@@ -152,4 +152,9 @@ class Admin_Model extends ZP_Model {
 	{
 		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where folio = '$folio'");
 	}
+
+	public function setCampo($tabla, $campo, $argumento, $where, $condicion)
+	{
+		$this->Db->query("update $tabla set $campo=$argumento where $where=$condicion");
+	}
 }

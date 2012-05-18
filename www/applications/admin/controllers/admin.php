@@ -303,8 +303,8 @@ class Admin_Controller extends ZP_Controller {
 
 		$vars['datosAdmin'] = $datosAdmin;
 		$vars['allAdmin'] = $datosAllAdmin;
-		$vars["view"]['adminConfig'] = $this->view("adminconfig",true);
-		$vars["view"]['registroAdmin'] = $this->view("registroAdmin",true);
+		$vars["view"] = $this->view("adminconfig",true);
+		//$vars["view"]['registroAdmin'] = $this->view("registroAdmin",true);
 		$this->render("contAdminConfig",$vars);
 	}
 
@@ -418,6 +418,16 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content", $vars);
  	}
 
- 	
+ 	public function cambiarEstado ($estado = NULL)
+ 	{
+ 		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+		echo $estado;
+		if($estado == 'Vigente')
+ 			$this->Admin_Model->setCampo("administradores","actual",1,"id_administrador",SESSION('id_admin'));
+ 		else if($estado == 'noVigente')
+ 			$this->Admin_Model->setCampo("administradores","actual",0,"id_administrador",SESSION('id_admin'));
+ 		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
+ 	}
 
 }

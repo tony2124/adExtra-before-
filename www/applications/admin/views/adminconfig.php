@@ -10,10 +10,10 @@
 <?php }else{ ?>
 <a rel="tooltip" title="Modificar datos del administrador" data-toggle="modal" href="#editaAdmin" class="pull-right"><i class="icon-cog"></i></a>
 <table class="table table-striped table-bordered table-condensed">
-  <thead>
+  <!-- <thead>
     <th>Descripción</th>
     <th>Valor asociado</th>
-  </thead>
+  </thead> -->
   <tbody>
     <tr>
       <td width="200">Usuario</td>
@@ -55,9 +55,9 @@
       <td>Estado</td>
       <td><span class="label <?php print  ($datosAdmin[0]['actual']==1) ? 'label-success' : 'label-important'  ?> ?>"><?php print  ($datosAdmin[0]['actual']==1) ? 'VIGENTE' : 'NO VIGENTE'  ?></span>
         <?php if($datosAdmin[0]['actual']==1) { ?> 
-          <a href="#" class="btn btn-danger" rel="popover" data-content="Cambia el estado de este administrador a NO VIGENTE" data-original-title="CAMBIAR A NO VIGENTE">NO VIGENTE</a>
+          <a href="<?php print get('webURL')._sh.'admin/cambiarEstado/noVigente'?>" class="btn btn-danger" rel="popover" data-content="Cambia el estado de este administrador a NO VIGENTE" data-original-title="CAMBIAR A NO VIGENTE">NO VIGENTE</a>
         <?php }else{ ?>
-          <a href="#" class="btn btn-success" rel="popover" data-content="Cambia el estado de este administrador a VIGENTE" data-original-title="CAMBIAR A VIGENTE">VIGENTE</a>
+          <a href="<?php print get('webURL')._sh.'admin/cambiarEstado/Vigente'?>" class="btn btn-success" rel="popover" data-content="Cambia el estado de este administrador a VIGENTE" data-original-title="CAMBIAR A VIGENTE">VIGENTE</a>
         <?php } ?>
       </td>
     </tr>
@@ -88,7 +88,6 @@
     <?php } ?>
   </tbody>
 </table>
-<h2>Registro de un nuevo administrador</h2><hr>
 
 <div class="modal hide fade" id="editaAdmin">
   <div class="modal-header">
@@ -103,7 +102,7 @@
         <div class="controls">
     <!-- -->  <input type="text" name="usuario" class="input-xlarge" id="input01" value="<?php print $datosAdmin[0]['usuario_administrador'] ?>">
         </div><br>
-        <label class="control-label" for="input02">Contraseña <a class="icon-exclamation-sign" rel="popover" data-content="Actual: Ingresa la vieja contraseña <br> Nueva: Ingresa una nueva contraseña <br> Re-nueva: Vuelve a ingresar la nueva contraseña" data-original-title="AYUDA"></a></label>
+        <label class="control-label" for="input02">Contraseña <a rel="popover" data-content="Actual: Ingresa la vieja contraseña <br> Nueva: Ingresa una nueva contraseña <br> Re-nueva: Vuelve a ingresar la nueva contraseña" data-original-title="AYUDA"><i class="icon-exclamation-sign"></i></a></label>
         <div class="controls">
     <!-- -->  <input type="password" name="lastpass" class="input-xlarge" id="input02" placeholder="Actual">
         </div>
