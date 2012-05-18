@@ -6,120 +6,7 @@ if(!defined("_access")) {
 	die("Error: You don't have permission to access here...");
 }
 
-// Extend the TCPDF class to create custom Header and Footer
-require_once(_spath.'/APIs/tcpdf/config/lang/eng.php');
-require_once(_spath.'/APIs/tcpdf/tcpdf.php');
 include(_corePath . _sh .'/libraries/funciones/funciones.php');
-
-class MYPDF extends TCPDF {
-
-    //Page header
-    public function Header() {
-        // Set font
-        $this->SetFont('helvetica', 'N', 10);
-        $this->SetY(15);
-        
-        // Title
-        $html = '<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" cellspacing="0" cellpadding="0" width="620">
-        <tr>
-          <td height="110" width="150" rowspan="3" align="center" valign="middle">
-          &nbsp;<br><img src="'._spath.'/formatos/formatoliberacionhoras_clip_image002.jpg" />
-        </td>
-          
-        <td height="60" width="450" align="center" valign="middle">
-          <strong> Formato para Boleta de Acreditación de Actividades Culturales, Deportivas y Recreativas.</strong>
-        </td>
-          
-        <td width="250" valign="middle">
-          <strong> Código:SNEST/D-VI-PO-003-05</strong>
-        </td> 
-        </tr>
-
-        <tr>    
-        <td rowspan="2" valign="middle" align="center">
-          <strong><br> Referencia a la Norma ISO 9001:2008  7.2.1</strong>
-        </td>
-
-        <td height="25" valign="middle">
-          <strong> Revisión: 3</strong>
-        </td>  
-        </tr>
-
-        <tr>
-          <td valign="top">
-          <strong> Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages().'</strong>
-        </td>
-        </tr>
-      </table>';
-       $this->writeHTML($html, true, false, true, false, '');
-    }
-
-    // Page footer
-    public function Footer() {
-        // Position at 15 mm from bottom
-        $this->SetY(-15);
-        // Set font
-        $this->SetFont('helvetica', 'I', 8);
-        // Page number
-        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
-    }
-}
-
-
-class MYPDFv extends TCPDF {
-
-    //Page header
-    public function Header() {
-        // Set font
-        $this->SetFont('helvetica', 'N', 10);
-        $this->SetY(15);
-        
-        // Title
-        $html = '<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" cellspacing="0" cellpadding="0" width="620">
-        <tr>
-          <td height="110" width="150" rowspan="3" align="center" valign="middle">
-          &nbsp;<br><img src="'._spath.'/formatos/formatoliberacionhoras_clip_image002.jpg" />
-        </td>
-          
-        <td height="60" width="280" align="center" valign="middle">
-          <strong> Formato para Boleta de Acreditación de Actividades Culturales, Deportivas y Recreativas.</strong>
-        </td>
-          
-        <td width="190" valign="middle">
-          <strong> Código:SNEST/D-VI-PO-003-05</strong>
-        </td> 
-        </tr>
-
-        <tr>    
-        <td rowspan="2" valign="middle" align="center">
-          <strong><br> Referencia a la Norma ISO 9001:2008  7.2.1</strong>
-        </td>
-
-        <td height="25" valign="middle">
-          <strong> Revisión: 3</strong>
-        </td>  
-        </tr>
-
-        <tr>
-          <td valign="top">
-          <strong> Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages().'</strong>
-        </td>
-        </tr>
-      </table>';
-       $this->writeHTML($html, true, false, true, false, '');
-    }
-
-    // Page footer
-    public function Footer() {
-        // Position at 15 mm from bottom
-        $this->SetY(-15);
-        // Set font
-        $this->SetFont('helvetica', 'I', 8);
-        // Page number
-        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
-    }
-}
-
 
 class Admin_Controller extends ZP_Controller {
 	
@@ -454,12 +341,12 @@ class Admin_Controller extends ZP_Controller {
 
 		if(!isset($periodo)) 
 		{
-			//include(_corePath . _sh .'/libraries/funciones/funciones.php');
 			$periodo = periodo_actual();
 		}
+
 		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
-
+		//____($alumnos);
 		$vars["view"]	 = $this->view("alumnosInscritos", TRUE);
 		$vars["periodo"] = $periodo;
 		$vars["clubes"] = $clubes;

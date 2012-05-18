@@ -18,10 +18,29 @@ if(!$alumno){
        else $("#selectRes > option[value='2']").attr("selected","selected");
   }
 
+
+$().ready(function() {
+
+  // validate signup form on keyup and submit
+  $("#editres").validate({
+    rules: {
+      obs: "required"
+    },
+    messages: {
+      obs: "Debe incluir un comentario para que realice el cambio."
+    }
+  });
+
+  // propose username by combining first- and lastname
+ 
+});
+
 </script>
 
 <div class="well"><h4>A continuación se muestra los datos del alumno seleccionado.</h4></div>
-<a rel="tooltip" title="Modificar datos del alumno" data-toggle="modal" href="#miModal" class="pull-right"><i class="icon-cog"></i> Editar</a>
+<a rel="tooltip" title="Modificar datos del alumno" data-toggle="modal" href="#miModal" class="pull-right">
+  <i class="icon-cog"></i> Editar
+</a>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
