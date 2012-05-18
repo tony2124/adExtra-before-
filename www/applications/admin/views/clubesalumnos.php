@@ -54,8 +54,8 @@ if($alumnos != NULL) { ?>
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu">
-    <li><a href="<?php print get('webURL')._sh.'admin/formatos/lista/'.$par1.'/'.$par2 ?>" target="_blank">Lista de alumnos</a></li>
-    <li><a href="<?php print get('webURL')._sh.'admin/formatos/cedula/'.$par1.'/'.$par2 ?>" target="_blank">Cédula de inscripción</a></li>
+    <li><a href="<?php print get('webURL')._sh.'admin/pdf/formatos/lista/'.$par1.'/'.$par2 ?>" target="_blank">Lista de alumnos</a></li>
+    <li><a href="<?php print get('webURL')._sh.'admin/pdf/formatos/cedula/'.$par1.'/'.$par2 ?>" target="_blank">Cédula de inscripción</a></li>
   </ul>
 </div>
 <table class="table table-striped table-condensed">

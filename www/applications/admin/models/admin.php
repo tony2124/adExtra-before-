@@ -16,6 +16,22 @@ class Admin_Model extends ZP_Model {
 		$this->table = "contacts";
 	}
 
+	public function acentos()
+	{
+		$this->Db->query("SET NAMES 'utf8'");
+	}
+
+	public function updateRes($acred, $folio, $obs, $fl)
+	{
+		$dat = $this->Db->query("select * from inscripciones where folio = $folio");
+		$observaciones = $dat[0]['observaciones']."<br>".$fl."&nbsp;".$obs;
+		$this->acentos();
+		$query = "update inscripciones set acreditado = $acred, fecha_liberacion_club = '$fl', observaciones = '$observaciones' where folio = '$folio'";
+	    $this->Db->query($query);
+	    return $query;
+
+	}
+
 	public function getConfiguracion()
 	{
 		return $data = $this->Db->query("select * from configuracion");
@@ -98,7 +114,7 @@ class Admin_Model extends ZP_Model {
 		$query = "update noticias set nombre_noticia = '$vars[nombre_noticia]' , 
 			texto_noticia = '$vars[texto_noticia]', imagen_noticia = '$vars[imagen_noticia]', fecha_modificacion = '$vars[fecha_modificacion]', 
 				hora = '$vars[hora]', id_administrador = $vars[id_administrador] where id_noticias = '$vars[id_noticias]'";
-
+		$this->acentos();
 		$this->Db->query($query);
 		return $query;
 	}
@@ -130,5 +146,10 @@ class Admin_Model extends ZP_Model {
 
 		$this->Db->query($query);
 		return $query;
+	}
+
+	public function getAlumnoInscrito($folio)
+	{
+		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where folio = '$folio'");
 	}
 }

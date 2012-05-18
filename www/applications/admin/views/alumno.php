@@ -6,9 +6,51 @@ if(!$alumno){
   return;
 }
 ?>
+<script>
+  function modAcreditacion(periodo, actividad, acred, folio)
+  {
+       $('#periodo').html(periodo); 
+       $('#actividad').html(actividad);
+       $('#obs').val('');
+       $('#folio').val(folio);
+       if(acred=='1')
+          $("#selectRes > option[value='1']").attr("selected","selected");
+       else $("#selectRes > option[value='0']").attr("selected","selected");
+  }
+
+
+$().ready(function() {
+
+  // validate signup form on keyup and submit
+  $("#editres").validate({
+    rules: {
+      obs: "required"
+    },
+    messages: {
+      obs: "Debe incluir un comentario para que realice el cambio."
+    }
+  });
+
+   $("#editalumno").validate({
+    rules: {
+      input01: "required"
+      
+    },
+    messages: {
+      input01: "El nombre debe ser mayor a 1 caracter"
+    }
+  });
+
+  // propose username by combining first- and lastname
+ 
+});
+
+</script>
 
 <div class="well"><h4>A continuación se muestra los datos del alumno seleccionado.</h4></div>
-<a rel="tooltip" title="Modificar datos del alumno" data-toggle="modal" href="#miModal" class="pull-right"><i class="icon-cog"></i></a>
+<a rel="tooltip" title="Modificar datos del alumno" data-toggle="modal" href="#miModal" class="pull-right">
+  <i class="icon-cog"></i> Editar
+</a>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
@@ -124,14 +166,16 @@ if(!$alumno){
                 <td><?php print $ins['fecha_liberacion_club'] ?></td>
                 <td><?php print $ins['nombre_club'] ?></td>
                 <td>
-                  <a data-toggle="modal" onclick="('#periodo').value = " href="#cambiarAcreditado">
+                  <a data-toggle="modal" onclick="modAcreditacion(<?php print "'".$periodo."','".$ins['nombre_club']."','".$ins['acreditado']."','".$ins['folio']."'" ?>)" href="#cambiarAcreditado">
                     <?php print ($ins['acreditado']==1) ? 'ACREDITADO' : 'NO ACREDITADO' ?>
                   </a>
                 </td>
                 <td>
                   <?php if($ins['observaciones']!=NULL) { ?>
                   <a href="#" rel="popover" data-content="<?php print $ins['observaciones'] ?>" data-original-title="Observación">ver</a><?php } ?></td>
-                <td><a href="" class="btn">Formato</a></td>
+                <td>
+                  <a href="<?php print get('webURL')._sh.'admin/pdf/formatos/liberacion/'.$ins['folio'] ?>" target="_blank" title="Descargar formato de liberación de horas" rel="tooltip" class="btn">Formato</a>
+                </td>
               </tr>
                 <?php
               }
@@ -146,7 +190,6 @@ if(!$alumno){
     </div>
   
     <?php } ?>
-    
   </div>
 </div>
 <!--<?php // } ?> -->
@@ -157,20 +200,39 @@ if(!$alumno){
     <h3>Edición de acreditación </h3>
   </div>
   <div class="modal-body">
-    <p>En el siguiente formulario se cambiará la acreditación del periodo <span id="periodo">per</span> en la actividad <span id="actividad">act</span>.</p>
-    <form id="editres" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editalumno' ?>">
+    <p>En el siguiente formulario se cambiará la acreditación.</p>
+   
+    <form id="editres" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editResultado' ?>">
     <div class="control-group">
-
+        <label class="control-label">Actividad</label> 
+      <div class="controls">
+            <span id="actividad" type="text" class="uneditable-input"></span>
+      </div><br>
+      <label class="control-label">Periodo</label> 
+      <div class="controls">
+          <span id="periodo" type="text" class="uneditable-input"></span>
+      </div><br>
+      <label class="control-label">Resultado</label> 
+      <div class="controls">
+          <select name="acreditado" id="selectRes">
+              <option value="1">ACREDITADO</option>
+              <option value="0">NO ACREDITADO</option>
+          </select>
+      </div><br>
+      <label class="control-label">Observación</label> 
+      <div class="controls">
+          <textarea name="obs" id="obs"></textarea>
+      </div><br>
+      <input type="hidden" value="" id ="folio" name="folio">
+      <input type="hidden" value="<?php print $alumno['numero_control'] ?>" name="numero_control">
     </div>
 </form> 
   </div>
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
-    <a href="#" class="btn btn-primary" onclick="$('#editalumno').submit()">Guardar cambios</a>
+    <a href="#" class="btn btn-primary" onclick="$('#editres').submit()">Guardar cambios</a>
   </div>
 </div>
-
-
 
 <div class="modal hide fade" id="miModal">
   <div class="modal-header">
@@ -199,7 +261,7 @@ if(!$alumno){
       </div><br>
       <label class="control-label" for="input05">Sexo</label>
       <div class="controls">
-  <!-- -->  <select name="sexo" >
+  <!-- -->  <select name="sexo">
               <option value="1">HOMBRE</option>
               <option value="2" <?php if($alumno['sexo']!=1) print 'selected="selected"' ?>>MUJER</option>
             </select>
@@ -217,7 +279,7 @@ if(!$alumno){
   <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $alumno['clave'] ?>">
       </div>
       <input type="hidden" name="numero_control" value="<?php print $alumno['numero_control'] ?>"> 
-     
+
     </div>
 </form> 
   </div>
