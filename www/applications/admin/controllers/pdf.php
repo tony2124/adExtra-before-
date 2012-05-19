@@ -6,7 +6,7 @@ if(!defined("_access")) {
 	die("Error: You don't have permission to access here...");
 }
 
-// Extend the TCPDF class to create custom Header and Footer
+
 require_once(_spath.'/APIs/tcpdf/config/lang/eng.php');
 require_once(_spath.'/APIs/tcpdf/tcpdf.php');
 include(_corePath . _sh .'/libraries/funciones/funciones.php');

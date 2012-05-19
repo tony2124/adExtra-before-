@@ -18,19 +18,35 @@ if(!$alumno){
        else $("#selectRes > option[value='0']").attr("selected","selected");
   }
 
+  function updateDataInsForm(semestre, periodo)
+  {
+     $('#periodoIns').val(periodo);
+     $('#semestre').val(semestre);
+     $('#obsIns').val('');
+  }
+
 
 $().ready(function() {
 
   // validate signup form on keyup and submit
-  $("#editres").validate({
+  /*$("#editres").validate({
     rules: {
       obs: "required"
     },
     messages: {
       obs: "Debe incluir un comentario para que realice el cambio."
     }
-  });
+  });*/
 
+  $("#insActForm").validate({
+    rules: {
+      obsIns: "required"
+    },
+    messages: {
+      obsIns: "Debe incluir un comentario para que realice el cambio."
+    }
+  });
+/*
    $("#editalumno").validate({
     rules: {
       input01: "required"
@@ -40,7 +56,7 @@ $().ready(function() {
       input01: "El nombre debe ser mayor a 1 caracter"
     }
   });
-
+*/
   // propose username by combining first- and lastname
  
 });
@@ -186,7 +202,9 @@ $().ready(function() {
             ?>
         </tbody>
       </table>
-      <a rel="tooltip" title="Inscribir a una actividad" class="pull-right btn btn-success" href="#mod"><i class="icon-pencil icon-white"></i></a>
+      <a rel="tooltip" title="Inscribir a una actividad" onclick="updateDataInsForm(<?php print $i.",'".$periodo."'" ?>)" class="pull-right btn btn-success" data-toggle="modal" href="#insActDialog" >
+        <i class="icon-pencil icon-white"></i>
+      </a>
     </div>
   
     <?php } ?>
@@ -231,6 +249,47 @@ $().ready(function() {
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
     <a href="#" class="btn btn-primary" onclick="$('#editres').submit()">Guardar cambios</a>
+  </div>
+</div>
+
+<div class="modal hide fade" id="insActDialog">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Inscripción a una actividad</h3>
+  </div>
+  <div class="modal-body">
+    <p>Complete el siguiente formulario para inscribir a este alumno a una actividad.</p>
+   
+    <form id="insActForm" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/inscipcionActividad' ?>">
+    <div class="control-group">
+        <label class="control-label">Actividad</label> 
+      <div class="controls">
+             <select name="actividad">
+                <?php foreach ($clubes as $club) { if($club['tipo_club'] != 1 && $club['tipo_club'] != 2) { ?>
+                <option value="<?php print $club['id_club'] ?>"><?php print $club['nombre_club'] ?></option>
+              <?php } } ?>
+          </select>
+      </div><br>
+      <label class="control-label">Resultado</label> 
+      <div class="controls">
+          <select name="acreditado" id="selectRes">
+              <option value="1">ACREDITADO</option>
+              <option value="0">NO ACREDITADO</option>
+          </select>
+      </div><br>
+      <label class="control-label">Observación</label> 
+      <div class="controls">
+          <textarea name="obsIns" id="obsIns"></textarea>
+      </div><br>
+      <input type="hidden" value="" id ="periodoIns" name="periodo">
+      <input type="hidden" value="" id ="semestre" name="semestre">
+      <input type="hidden" value="<?php print $alumno['numero_control'] ?>" name="numero_control">
+    </div>
+</form> 
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
+    <a href="#" class="btn btn-primary" onclick="$('#insActForm').submit()">Guardar cambios</a>
   </div>
 </div>
 

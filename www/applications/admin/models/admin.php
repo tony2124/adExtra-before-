@@ -37,6 +37,17 @@ class Admin_Model extends ZP_Model {
 		return $data = $this->Db->query("select * from configuracion");
 	}
 
+	public function inscribirActividad($vars)
+	{
+		$this->acentos();
+		$query = "insert into inscripciones(id_administrador, numero_control, id_club, periodo, semestre, 
+					fecha_inscripcion_club, fecha_liberacion_club, observaciones, acreditado ) 
+						values('$vars[id_administrador]','$vars[numero_control]','$vars[club]','$vars[periodo]','$vars[semestre]','$vars[fecha_inscripcion]',
+							'$vars[fecha_modificacion]','$vars[observaciones]',$vars[acreditado])";
+		$data = $this->Db->query($query);
+		return $query;
+	}
+
 	public function getClubes()
 	{
 		return $data = $this->Db->query("select * from clubes order by nombre_club asc");

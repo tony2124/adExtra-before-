@@ -58,6 +58,20 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
+	public function inscipcionActividad()
+	{
+		$vars['numero_control'] = POST('numero_control');
+		$vars['id_administrador'] = SESSION('id_admin');
+		$vars['club'] = POST('actividad');
+		$vars['periodo'] = POST('periodo');
+		$vars['semestre'] = POST('semestre');
+		$vars['fecha_inscripcion'] = date('Y-m-d');
+		$vars['fecha_modificacion'] = date('Y-m-d');
+		$vars['observaciones'] = POST('obsIns');
+		$vars['acreditado'] = POST('acreditado');
+		print $this->Admin_Model->inscribirActividad($vars);
+
+	}
 	public function editResultado()
 	{
 		if (!SESSION('user_admin'))
@@ -389,11 +403,11 @@ class Admin_Controller extends ZP_Controller {
 		//include(_corePath . _sh .'/libraries/funciones/funciones.php');
 		$datos = $this->Admin_Model->getAlumno($nctrl);
 		$inscripciones = $this->Admin_Model->getClubesInscritosAlumno($nctrl);
-
+		$clubes = $this->Admin_Model->getClubes();
 		$vars["nombreAlumno"] = $datos[0]['apellido_paterno_alumno'].' '.$datos[0]['apellido_materno_alumno'].' '.$datos[0]['nombre_alumno'];
 		$vars["periodos"] = periodos($datos[0]['fecha_inscripcion']);
 		
-
+		$vars['clubes'] = $clubes;
 		$vars["alumno"] = $datos[0];
 		$vars["inscripciones"] = $inscripciones;
 
