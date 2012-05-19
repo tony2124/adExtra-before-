@@ -11,6 +11,7 @@ $().ready(function() {
       email: { required: true, email: true},
       fecha_nac: {required: true, date: true},
       se: { required: true, digits: true, maxlength: 1},
+      tel: {digits: true, minlength: 7, maxlength: 10},
       ocupacion: "required",
       direccion: "required"
     },
@@ -24,7 +25,8 @@ $().ready(function() {
       fecha_nac: { required: "* Este campo es obligatorio", date: "Ingrese una fecha válida en el formato aaaa-mm-dd"},
       se: { required: "* Este campo es obligatorio", digits: "Solo se aceptan números", maxlength: "Ingrese no más de 1 dígito."},
       ocupacion: "* Este campo es obligatorio",
-      direccion: "* Este campo es obligatorio"
+      direccion: "* Este campo es obligatorio",
+      tel: {digits: "Este campo solo admite números", minlength: "El teléfono debe contener de 7 a 10 números", maxlength: "El teléfono debe contener de 7 a 10 números"}
     }
   });
 });
@@ -44,19 +46,19 @@ $().ready(function() {
           </div><br>
           <label class="control-label" for="pass">Contraseña</label>
           <div class="controls">
-    <!-- -->  <input type="pass" name="pass" class="input-xlarge" id="pass">
+    <!-- -->  <input type="password" name="pass" class="input-xlarge" id="pass">
           </div><br>
           <label class="control-label" for="nombre">Nombre</label>
           <div class="controls">
     <!-- -->  <input type="text" name="nombre" class="input-xlarge" id="nombre">
           </div><br>
-          <label class="control-label" for="am">Apellido paterno</label>
-          <div class="controls">
-      <!-- -->  <input type="text" name="am" class="input-xlarge" id="am">
-          </div><br>
-          <label class="control-label" for="ap">Apellido materno</label>
+          <label class="control-label" for="ap">Apellido paterno</label>
           <div class="controls">
       <!-- -->  <input type="text" name="ap" class="input-xlarge" id="ap">
+          </div><br>
+          <label class="control-label" for="am">Apellido materno</label>
+          <div class="controls">
+      <!-- -->  <input type="text" name="am" class="input-xlarge" id="am">
           </div><br>
           <label class="control-label" for="fecha_nac">Fecha de nacimiento</label>
           <div class="controls">
@@ -81,6 +83,10 @@ $().ready(function() {
           <label class="control-label" for="email">Correo electrónico</label>
           <div class="controls">
       <!-- -->  <input type="text" name="email" class="input-xlarge" id="email">
+          </div><br>
+           <label class="control-label" for="tel">Teléfono</label>
+          <div class="controls">
+      <!-- -->  <input type="text" name="tel" class="input-xlarge" id="tel">
           </div><br>
           <label class="control-label" for="direccion">Dirección</label>
           <div class="controls">

@@ -169,6 +169,16 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 
+	public function regPromotor($vars)
+	{
+		
+		$query = "insert into promotores (usuario_promotor, contrasena_promotor, nombre_promotor, apellido_paterno_promotor, apellido_materno_promotor, id_club, sexo_promotor, fecha_nacimiento_promotor, fecha_registro_promotor, correo_electronico_promotor, telefono_promotor, ocupacion_promotor, direccion_promotor)
+				values('$vars[user]', '$vars[pass]', '$vars[nombre]' ,'$vars[ap]','$vars[am]', $vars[club],  $vars[sexo],  '$vars[fecha_nac]', '$vars[fecha_reg]', '$vars[email]','$vars[tel]' ,'$vars[ocupacion]',  '$vars[direccion]')";
+		$this->acentos();
+		$this->Db->query($query);
+		return $query;
+	}
+
 	public function getAlumnoInscrito($folio)
 	{
 		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where folio = '$folio'");

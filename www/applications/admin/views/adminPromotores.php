@@ -34,11 +34,11 @@ function promotor(usuario, name)
         <td><?php print $promotor['usuario_promotor']?></td>
         <td><?php print $promotor['contrasena_promotor']?></td>
         <td><?php print $promotor['apellido_paterno_promotor'].' '.$promotor['apellido_materno_promotor'].' '.$promotor['nombre_promotor'] ?></td>
-        <td><?php print ($promotor['sexo'] == 1) ? 'H' : 'M' ?></td>
-        <td><?php print $promotor['correo_electronico']?></td>
-        <td><?php print edad($promotor['fecha_nacimiento']) ?></td>
-        <td><?php print $promotor['ocupacion']?></td>
-        <td><?php print $promotor['direccion_promotor']?></td>
+        <td><?php print ($promotor['sexo_promotor'] == 1) ? 'H' : 'M' ?></td>
+        <td><?php print $promotor['correo_electronico_promotor'] ?></td>
+        <td><?php print edad($promotor['fecha_nacimiento_promotor']) ?></td>
+        <td><?php print $promotor['ocupacion_promotor']?></td>
+        <td><?php print $promotor['direccion_promotor'].' Teléfono: '.$promotor['telefono_promotor'] ?></td>
         <td>
           <a rel="tooltip" title="Editar" href="<?php print get('webURL'). _sh . 'admin/editPromotor' ?>">
             <i class="icon-edit"></i>
@@ -53,7 +53,8 @@ function promotor(usuario, name)
   </tbody>
 </table>
 
-
+<hr>
+<a href="#">Agregar un nuevo promotor</a>
 
 <div class="modal hide fade" id="confirmModal">
   <div class="modal-header">
