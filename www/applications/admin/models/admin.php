@@ -32,6 +32,11 @@ class Admin_Model extends ZP_Model {
 
 	}
 
+	public function getPromotores()
+	{
+		return $this->Db->query("select * from promotores");
+	}
+
 	public function getConfiguracion()
 	{
 		return $data = $this->Db->query("select * from configuracion");

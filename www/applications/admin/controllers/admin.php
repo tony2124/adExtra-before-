@@ -29,6 +29,14 @@ class Admin_Controller extends ZP_Controller {
 		unsetSessions(get('webURL') . _sh . 'admin');
 	}
 
+	function promotores()
+	{
+		$vars['promotores']  = $this->Admin_Model->getPromotores();
+		$vars['view'] = $this->view('adminPromotores',true);
+
+		$this->render('content', $vars);
+	}
+
 	function login()
 	{
 		if (SESSION('user_admin'))
