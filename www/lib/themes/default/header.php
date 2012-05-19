@@ -79,8 +79,8 @@
 				    </a>
 				    <ul class="dropdown-menu">
 				      <li><a href="<?php print get('webURL'). _sh .'admin/promotores/'  ?>">Ver promotores</a></li>
-				      <li><a href="#">Agregar un nuevo promotor</a></li>
-				      <li><a href="#">Configuración de liberación</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/formRegistroPromotor/' ?>">Agregar un nuevo promotor</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/configLiberacion/'  ?>">Configuración de liberación</a></li>
 				    </ul>
 				  </li>
 				   <li class="dropdown" id="menu3">

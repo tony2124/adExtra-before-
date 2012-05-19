@@ -34,7 +34,7 @@ class Admin_Model extends ZP_Model {
 
 	public function getPromotores()
 	{
-		return $this->Db->query("select * from promotores");
+		return $this->Db->query("select * from promotores where eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
 	}
 
 	public function getConfiguracion()
@@ -55,7 +55,7 @@ class Admin_Model extends ZP_Model {
 
 	public function getClubes()
 	{
-		return $data = $this->Db->query("select * from clubes order by nombre_club asc");
+		return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club!=3 order by nombre_club asc");
 	}
 
 	public function getCarreras()
@@ -143,6 +143,11 @@ class Admin_Model extends ZP_Model {
 	public function elimNoticia($id)
 	{
 		$this->Db->query("delete from noticias where id_noticias = '$id'");
+	}
+
+	public function elimPromotor($id)
+	{
+		$this->Db->query("update promotores set eliminado_promotor = true where usuario_promotor = '$id' ");
 	}
 
 	public function updateAlumno($vars)

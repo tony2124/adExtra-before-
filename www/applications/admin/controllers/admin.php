@@ -31,6 +31,9 @@ class Admin_Controller extends ZP_Controller {
 
 	function promotores()
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$vars['promotores']  = $this->Admin_Model->getPromotores();
 		$vars['view'] = $this->view('adminPromotores',true);
 
@@ -293,6 +296,19 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/noticias');
 	}
 
+	public function elimPromotor()
+	{
+		$usuario_promotor = POST('usuario_promotor');
+		$this->Admin_Model->elimPromotor($usuario_promotor);
+		redirect(get('webURL'). _sh . 'admin/promotores');
+	}
+
+	public function formRegistroPromotor()
+	{
+		$vars['clubes'] = $this->Admin_Model->getClubes();
+		$vars['view'] = $this->view('registroPromotor', true);
+		$this->render('content', $vars);
+	}
 
 	public function noticias($id = NULL)
 	{
