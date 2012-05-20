@@ -33,7 +33,6 @@ class Admin_Controller extends ZP_Controller {
 
 		$vars['promotores']  = $this->Admin_Model->getPromotores();
 		$vars['view'] = $this->view('adminPromotores',true);
-
 		$this->render('content', $vars);
 	}
 
@@ -193,8 +192,6 @@ class Admin_Controller extends ZP_Controller {
 				imagedestroy($img_original);
 				$calidad = 95;
 				imagejpeg($tmp,$path."tm".$name,$calidad);
-					
-				
 				chmod($path."tm".$name,0777);
 				unlink($path.$name);
 				$name = "tm".$name;
