@@ -101,9 +101,9 @@
 				    </a>
 				    <ul class="dropdown-menu">
 				      <li class><a href="<?php print get('webURL'). _sh .'admin/noticias/'  ?>">Administrar noticias</a></li>
-				      <li><a href="#">Administrar avisos</a></li>
-				      <li><a href="#">Administrar álbumes</a></li>				      
-				      <li><a href="#">Administrar banners</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/avisos/' ?>">Administrar avisos</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/albumes/' ?>">Administrar álbumes</a></li>				      
+				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Administrar banners</a></li>
 				    </ul>
 				  </li>
 				</ul>

@@ -492,4 +492,22 @@ class Admin_Controller extends ZP_Controller {
  		$this->render('content', $vars);
  	}
 
+ 	public function avisos()
+ 	{
+ 		$vars['view'] = $this->view('avisos',true);
+ 		$this->render('content', $vars);
+ 	}
+
+ 	public function albumes()
+ 	{
+ 		$vars['view'] = $this->view('albumes',true);
+ 		$this->render('content', $vars);
+ 	}
+
+ 	public function banners()
+ 	{
+ 		$vars['view'] = $this->view('banners',true);
+ 		$this->render('content', $vars);
+ 	}
+
 }

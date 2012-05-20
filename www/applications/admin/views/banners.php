@@ -1,0 +1,1 @@
+Este es la sección para banners
