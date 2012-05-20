@@ -103,7 +103,6 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content",$vars);
 	}
 
-
 	public function regisalumno()
 	{
 		if (!SESSION('user_admin'))
@@ -481,6 +480,16 @@ class Admin_Controller extends ZP_Controller {
  		else if($estado == 'noVigente')
  			$this->Admin_Model->setCampo("administradores","actual",0,"id_administrador",SESSION('id_admin'));
  		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
+ 	}
+
+ 	public function configLiberacion()
+ 	{
+ 		$vars['view'] = $this->view('configLiberacion', true);
+ 		$config = $this->Admin_Model->getConfiguracion();
+ 		$vars['periodos'] = periodos('1082');
+ 		$vars['config'] = $config[0];
+
+ 		$this->render('content', $vars);
  	}
 
 }
