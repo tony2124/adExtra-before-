@@ -3,119 +3,7 @@ if(!defined("_access")) {
 	die("Error: You don't have permission to access here...");
 }
 
-require_once(_spath.'/APIs/tcpdf/config/lang/eng.php');
-require_once(_spath.'/APIs/tcpdf/tcpdf.php');
 include(_corePath . _sh .'/libraries/funciones/funciones.php');
-
-class MYPDF extends TCPDF {
-
-    //Page header
-    public function Header() {
-        // Set font
-        $this->SetFont('helvetica', 'N', 10);
-        $this->SetY(15);
-        
-        // Title
-        $html = '<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" cellspacing="0" cellpadding="0" width="620">
-        <tr>
-          <td height="110" width="150" rowspan="3" align="center" valign="middle">
-          &nbsp;<br><img src="'._spath.'/formatos/formatoliberacionhoras_clip_image002.jpg" />
-        </td>
-          
-        <td height="60" width="450" align="center" valign="middle">
-          <strong> Formato para Boleta de Acreditación de Actividades Culturales, Deportivas y Recreativas.</strong>
-        </td>
-          
-        <td width="250" valign="middle">
-          <strong> Código:SNEST/D-VI-PO-003-05</strong>
-        </td> 
-        </tr>
-
-        <tr>    
-        <td rowspan="2" valign="middle" align="center">
-          <strong><br> Referencia a la Norma ISO 9001:2008  7.2.1</strong>
-        </td>
-
-        <td height="25" valign="middle">
-          <strong> Revisión: 3</strong>
-        </td>  
-        </tr>
-
-        <tr>
-          <td valign="top">
-          <strong> Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages().'</strong>
-        </td>
-        </tr>
-      </table>';
-       $this->writeHTML($html, true, false, true, false, '');
-    }
-
-    // Page footer
-    public function Footer() {
-        // Position at 15 mm from bottom
-        $this->SetY(-15);
-        // Set font
-        $this->SetFont('helvetica', 'I', 8);
-        // Page number
-        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
-    }
-}
-
-
-class MYPDFv extends TCPDF {
-
-    //Page header
-    public function Header() {
-        // Set font
-        $this->SetFont('helvetica', 'N', 10);
-        $this->SetY(15);
-        
-        // Title
-        $html = '<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" cellspacing="0" cellpadding="0" width="620">
-        <tr>
-          <td height="110" width="150" rowspan="3" align="center" valign="middle">
-          &nbsp;<br><img src="'._spath.'/formatos/formatoliberacionhoras_clip_image002.jpg" />
-        </td>
-          
-        <td height="60" width="280" align="center" valign="middle">
-          <strong> Formato para Boleta de Acreditación de Actividades Culturales, Deportivas y Recreativas.</strong>
-        </td>
-          
-        <td width="190" valign="middle">
-          <strong> Código:SNEST/D-VI-PO-003-05</strong>
-        </td> 
-        </tr>
-
-        <tr>    
-        <td rowspan="2" valign="middle" align="center">
-          <strong><br> Referencia a la Norma ISO 9001:2008  7.2.1</strong>
-        </td>
-
-        <td height="25" valign="middle">
-          <strong> Revisión: 3</strong>
-        </td>  
-        </tr>
-
-        <tr>
-          <td valign="top">
-          <strong> Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages().'</strong>
-        </td>
-        </tr>
-      </table>';
-       $this->writeHTML($html, true, false, true, false, '');
-    }
-
-    // Page footer
-    public function Footer() {
-        // Position at 15 mm from bottom
-        $this->SetY(-15);
-        // Set font
-        $this->SetFont('helvetica', 'I', 8);
-        // Page number
-        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
-    }
-}
-
 
 class Admin_Controller extends ZP_Controller {
 	
@@ -136,6 +24,17 @@ class Admin_Controller extends ZP_Controller {
 
 	public function logout() {
 		unsetSessions(get('webURL') . _sh . 'admin');
+	}
+
+	function promotores()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$vars['promotores']  = $this->Admin_Model->getPromotores();
+		$vars['view'] = $this->view('adminPromotores',true);
+
+		$this->render('content', $vars);
 	}
 
 	function login()
@@ -167,6 +66,20 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
+	public function inscipcionActividad()
+	{
+		$vars['numero_control'] = POST('numero_control');
+		$vars['id_administrador'] = SESSION('id_admin');
+		$vars['club'] = POST('actividad');
+		$vars['periodo'] = POST('periodo');
+		$vars['semestre'] = POST('semestre');
+		$vars['fecha_inscripcion'] = date('Y-m-d');
+		$vars['fecha_modificacion'] = date('Y-m-d');
+		$vars['observaciones'] = POST('obsIns');
+		$vars['acreditado'] = POST('acreditado');
+		print $this->Admin_Model->inscribirActividad($vars);
+
+	}
 	public function editResultado()
 	{
 		if (!SESSION('user_admin'))
@@ -176,7 +89,8 @@ class Admin_Controller extends ZP_Controller {
 		$folio = POST('folio');
 		$numero_control = POST('numero_control');
 		$obs = $_POST['obs'];
-		$this->Admin_Model->updateRes($resultado, $folio, $obs);
+		$fecha_lib = date("Y-m-d");
+		$this->Admin_Model->updateRes($resultado, $folio, $obs, $fecha_lib);
 		redirect(get('webURL').'/admin/alumno/'.$numero_control);
 	}
 
@@ -379,6 +293,40 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/noticias');
 	}
 
+	public function elimPromotor()
+	{
+		$usuario_promotor = POST('usuario_promotor');
+		$this->Admin_Model->elimPromotor($usuario_promotor);
+		redirect(get('webURL'). _sh . 'admin/promotores');
+	}
+
+	public function formRegistroPromotor()
+	{
+		$vars['clubes'] = $this->Admin_Model->getClubes();
+		$vars['view'] = $this->view('registroPromotor', true);
+		$this->render('content', $vars);
+	}
+
+	public function regProm()
+	{
+		$vars['user'] = POST('user');
+		$vars['pass'] = POST('pass');
+		$vars['nombre'] = POST('nombre');
+		$vars['ap'] = POST('ap');
+		$vars['am'] = POST('am');
+		$vars['fecha_nac'] = POST('fecha_nac');
+		$vars['fecha_reg'] = date("Y-m-d");
+		$vars['sexo'] = POST('sexo');
+		$vars['club'] = POST('club');
+		$vars['sexo'] = POST('sexo');
+		$vars['email'] = POST('email');
+		$vars['tel'] = POST('tel');
+		$vars['direccion'] = POST('direccion');
+		$vars['ocupacion'] = POST('ocupacion');
+		//____($vars);
+		print $this->Admin_Model->regPromotor($vars);
+		redirect(get('webURL'). _sh . 'admin/promotores');
+	}
 
 	public function noticias($id = NULL)
 	{
@@ -411,8 +359,8 @@ class Admin_Controller extends ZP_Controller {
 
 		$vars['datosAdmin'] = $datosAdmin;
 		$vars['allAdmin'] = $datosAllAdmin;
-		$vars["view"]['adminConfig'] = $this->view("adminconfig",true);
-		$vars["view"]['registroAdmin'] = $this->view("registroAdmin",true);
+		$vars["view"] = $this->view("adminconfig",true);
+		//$vars["view"]['registroAdmin'] = $this->view("registroAdmin",true);
 		$this->render("contAdminConfig",$vars);
 	}
 
@@ -450,12 +398,12 @@ class Admin_Controller extends ZP_Controller {
 
 		if(!isset($periodo)) 
 		{
-			//include(_corePath . _sh .'/libraries/funciones/funciones.php');
 			$periodo = periodo_actual();
 		}
+
 		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
-
+		//____($alumnos);
 		$vars["view"]	 = $this->view("alumnosInscritos", TRUE);
 		$vars["periodo"] = $periodo;
 		$vars["clubes"] = $clubes;
@@ -497,11 +445,11 @@ class Admin_Controller extends ZP_Controller {
 		//include(_corePath . _sh .'/libraries/funciones/funciones.php');
 		$datos = $this->Admin_Model->getAlumno($nctrl);
 		$inscripciones = $this->Admin_Model->getClubesInscritosAlumno($nctrl);
-
+		$clubes = $this->Admin_Model->getClubes('all');
 		$vars["nombreAlumno"] = $datos[0]['apellido_paterno_alumno'].' '.$datos[0]['apellido_materno_alumno'].' '.$datos[0]['nombre_alumno'];
 		$vars["periodos"] = periodos($datos[0]['fecha_inscripcion']);
 		
-
+		$vars['clubes'] = $clubes;
 		$vars["alumno"] = $datos[0];
 		$vars["inscripciones"] = $inscripciones;
 
@@ -515,7 +463,7 @@ class Admin_Controller extends ZP_Controller {
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$clubes = $this->Admin_Model->getClubes();
+		$clubes = $this->Admin_Model->getClubes('all');
 		$alumnos = $this->Admin_Model->getAlumnosClubes($club, $periodo);
 		$vars['par1'] = $club;
 		$vars['par2'] = $periodo;
@@ -526,6 +474,16 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content", $vars);
  	}
 
- 	
+ 	public function cambiarEstado ($estado = NULL)
+ 	{
+ 		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+		echo $estado;
+		if($estado == 'Vigente')
+ 			$this->Admin_Model->setCampo("administradores","actual",1,"id_administrador",SESSION('id_admin'));
+ 		else if($estado == 'noVigente')
+ 			$this->Admin_Model->setCampo("administradores","actual",0,"id_administrador",SESSION('id_admin'));
+ 		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
+ 	}
 
 }

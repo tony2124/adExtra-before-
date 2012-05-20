@@ -5,8 +5,5 @@
 	
 ?>
 	<div class="span9">
-		<?php $this->load(isset($view['adminConfig']) ? $view['adminConfig'] : NULL, TRUE); ?>		
-		<?php $this->load(isset($view['registroAdmin']) ? $view['registroAdmin'] : NULL, TRUE); ?>
-
-
+		<?php $this->load(isset($view['adminConfig']) ? $view : NULL, TRUE); ?>		
 	</div>

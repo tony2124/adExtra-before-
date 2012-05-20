@@ -19,7 +19,9 @@
 		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>-->
 		<script src="<?php print path("vendors/js/jquery-1.7.1.min.js","zan") ?>"></script>
 		<script src="<?php print path("vendors/css/frameworks/bootstrapnew/js/bootstrap.min.js", "zan"); ?>"></script>
-		<script src="<?php print path("vendors/js/jquery-ui-1.7.2.custom.min.js","zan") ?>"></script>
+		<script src="<?php print path("vendors/js/jquery.validate.js","zan") ?>"></script>
+		<!--<script src="<?php print path("vendors/js/jquery-ui-1.7.2.custom.min.js","zan") ?>"></script>-->
+		
 		 <style>
 		      body {
 		        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -30,7 +32,7 @@
 		$(function(){
 		 	  $("a[rel=popover]").popover();
 			  $("a[rel=tooltip]").tooltip();
-			  $( ".selectorfecha" ).datepicker({ 
+			/*  $( ".selectorfecha" ).datepicker({ 
     			defaultDate: "-15y", 
                 yearRange: "1900:-15",
 				dateFormat: 'yy-mm-dd',  
@@ -38,7 +40,7 @@
 				duration: 'normal',
 				changeMonth: true,
                 changeYear: true
-			});
+			});*/
 			  });
 
 		 </script>
@@ -76,9 +78,9 @@
 				      <b class="caret"></b>
 				    </a>
 				    <ul class="dropdown-menu">
-				      <li><a href="#">Ver promotores</a></li>
-				      <li><a href="#">Agregar un nuevo promotor</a></li>
-				      <li><a href="#">Configuración de liberación</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/promotores/'  ?>">Ver promotores</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/formRegistroPromotor/' ?>">Agregar un nuevo promotor</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/configLiberacion/'  ?>">Configuración de liberación</a></li>
 				    </ul>
 				  </li>
 				   <li class="dropdown" id="menu3">

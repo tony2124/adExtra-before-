@@ -21,13 +21,20 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("SET NAMES 'utf8'");
 	}
 
-	public function updateRes($acred, $folio, $obs)
+	public function updateRes($acred, $folio, $obs, $fl)
 	{
-		$dat = $this->Db->query("select * from inscripciones where folio = '$folio'");
-		$observaciones = $dat[0]['observaciones']."<br>".date("y-m-d")."&nbsp;".$obs;
+		$dat = $this->Db->query("select * from inscripciones where folio = $folio");
+		$observaciones = $dat[0]['observaciones']."<br>".$fl."&nbsp;".$obs;
 		$this->acentos();
-		return $data = $this->Db->query("update inscripciones set acreditado = '$acred', observaciones = '$observaciones' where folio = '$folio'");
+		$query = "update inscripciones set acreditado = $acred, fecha_liberacion_club = '$fl', observaciones = '$observaciones' where folio = '$folio'";
+	    $this->Db->query($query);
+	    return $query;
 
+	}
+
+	public function getPromotores()
+	{
+		return $this->Db->query("select * from promotores where eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
 	}
 
 	public function getConfiguracion()
@@ -35,9 +42,22 @@ class Admin_Model extends ZP_Model {
 		return $data = $this->Db->query("select * from configuracion");
 	}
 
-	public function getClubes()
+	public function inscribirActividad($vars)
 	{
-		return $data = $this->Db->query("select * from clubes order by nombre_club asc");
+		$this->acentos();
+		$query = "insert into inscripciones(id_administrador, numero_control, id_club, periodo, semestre, 
+					fecha_inscripcion_club, fecha_liberacion_club, observaciones, acreditado ) 
+						values('$vars[id_administrador]','$vars[numero_control]','$vars[club]','$vars[periodo]','$vars[semestre]','$vars[fecha_inscripcion]',
+							'$vars[fecha_modificacion]','$vars[observaciones]',$vars[acreditado])";
+		$data = $this->Db->query($query);
+		return $query;
+	}
+
+	public function getClubes($hm = NULL)
+	{
+		if(strcmp($hm, "all") == 0)
+			return $data = $this->Db->query("select * from clubes where eliminado_club = 0 order by nombre_club asc");			
+		return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club!=3 order by nombre_club asc");
 	}
 
 	public function getCarreras()
@@ -127,6 +147,11 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("delete from noticias where id_noticias = '$id'");
 	}
 
+	public function elimPromotor($id)
+	{
+		$this->Db->query("update promotores set eliminado_promotor = true where usuario_promotor = '$id' ");
+	}
+
 	public function updateAlumno($vars)
 	{
 		$query = "update alumnos set nombre_alumno = '$vars[nombre]' , apellido_paterno_alumno = '$vars[ap]', apellido_materno_alumno = '$vars[am]',
@@ -146,8 +171,23 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 
+	public function regPromotor($vars)
+	{
+		
+		$query = "insert into promotores (usuario_promotor, contrasena_promotor, nombre_promotor, apellido_paterno_promotor, apellido_materno_promotor, id_club, sexo_promotor, fecha_nacimiento_promotor, fecha_registro_promotor, correo_electronico_promotor, telefono_promotor, ocupacion_promotor, direccion_promotor)
+				values('$vars[user]', '$vars[pass]', '$vars[nombre]' ,'$vars[ap]','$vars[am]', $vars[club],  $vars[sexo],  '$vars[fecha_nac]', '$vars[fecha_reg]', '$vars[email]','$vars[tel]' ,'$vars[ocupacion]',  '$vars[direccion]')";
+		//$this->acentos();
+		$this->Db->query($query);
+		return $query;
+	}
+
 	public function getAlumnoInscrito($folio)
 	{
 		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where folio = '$folio'");
+	}
+
+	public function setCampo($tabla, $campo, $argumento, $where, $condicion)
+	{
+		$this->Db->query("update $tabla set $campo=$argumento where $where=$condicion");
 	}
 }
