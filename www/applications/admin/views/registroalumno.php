@@ -32,7 +32,8 @@ $().ready(function() {
  <form id="registroalumno" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/regisalumno' ?>">
     <fieldset>
       <legend>Inscripción de un nuevo alumno</legend>
-       <p>Antes de registrar el alumno debe tomar en cuenta los siguientes aspectos:</p>
+       <div class="well">
+       <h5>Antes de registrar el alumno debe tomar en cuenta los siguientes aspectos:</h5>
         <ul>
           <li>No debe usarse acentos en el nombre y apellidos del alumno.</li>
           <li>El nombre y apellidos debe escribirse con letra mayúscula.</li>
@@ -40,6 +41,7 @@ $().ready(function() {
           <li>Debe asignársele una clave al alumno para que acceda al sitio de extraescolares.</li>
           <li>Verifique el número de control del alumno ya que <span class="label label-important">NO SERÁ POSIBLE</span> editarlo más tarde.</li>
         </ul>
+      </div>
         <hr>
         <div class="control-group">
           <label class="control-label" for="numero_control">Número de control</label>
@@ -89,9 +91,10 @@ $().ready(function() {
           <label class="control-label" for="clave">Clave del sitio</label>
           <div class="controls">
       <!-- -->  <input type="text" name="clave" class="input-xlarge" id="clave">
-          </div><br>
-
-          <input type="submit" class="btn btn-success span2 pull-center" value="Registrar">  
+          </div>
+          <div class="form-actions">
+            <input type="submit" class="btn btn-success span2 pull-center" value="Registrar">  
+          </div>
         </div>
       </fieldset>
 </form> 

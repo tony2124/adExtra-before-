@@ -448,7 +448,7 @@ class Admin_Controller extends ZP_Controller {
 		//include(_corePath . _sh .'/libraries/funciones/funciones.php');
 		$datos = $this->Admin_Model->getAlumno($nctrl);
 		$inscripciones = $this->Admin_Model->getClubesInscritosAlumno($nctrl);
-		$clubes = $this->Admin_Model->getClubes();
+		$clubes = $this->Admin_Model->getClubes('all');
 		$vars["nombreAlumno"] = $datos[0]['apellido_paterno_alumno'].' '.$datos[0]['apellido_materno_alumno'].' '.$datos[0]['nombre_alumno'];
 		$vars["periodos"] = periodos($datos[0]['fecha_inscripcion']);
 		
@@ -466,7 +466,7 @@ class Admin_Controller extends ZP_Controller {
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$clubes = $this->Admin_Model->getClubes();
+		$clubes = $this->Admin_Model->getClubes('all');
 		$alumnos = $this->Admin_Model->getAlumnosClubes($club, $periodo);
 		$vars['par1'] = $club;
 		$vars['par2'] = $periodo;

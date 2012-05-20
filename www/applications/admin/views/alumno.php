@@ -119,7 +119,7 @@ $().ready(function() {
         <td>Edad</td>
         <td><?php print edad($alumno['fecha_nacimiento']) ?></td>
       </tr>
-      <tr>
+      <tr> 
         <td>Sexo</td>
         <td><?php print ($alumno['sexo']==1) ? 'HOMBRE' : 'MUJER' ?></td>
       </tr>

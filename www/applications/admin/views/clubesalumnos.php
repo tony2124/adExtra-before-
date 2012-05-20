@@ -74,18 +74,18 @@ Número de registros encontrados: <?php print count($alumnos) ?>
   </thead>
   <tbody>
 <?php
-$i=1;
 
+$i=1;
 foreach ($alumnos as $alum) {	?>
-      <tr>
-        <td><?php print $i++ ?></td>
-        <td><?php print $alum['numero_control'] ?></td>
-        <td><?php echo $alum['apellido_paterno_alumno']." ".$alum['apellido_materno_alumno']." ".$alum['nombre_alumno'] ?></td>
-        <td><?php echo $alum['abreviatura_carrera'] ?></td>
-        <td><?php echo ($alum['sexo']==1) ? 'H' : 'M' ?></td>
-        <td><?php echo calcularEdad($alum['fecha_nacimiento'],$alum['fecha_inscripcion_club']) ?></td>
-        <td><?php echo ($alum['acreditado']==0) ? 'NO' :'SI'  ?></td>
-      </tr>
+  <tr>
+    <td><?php print $i++ ?></td>
+    <td><?php print $alum['numero_control'] ?></td>
+    <td><?php echo $alum['apellido_paterno_alumno']." ".$alum['apellido_materno_alumno']." ".$alum['nombre_alumno'] ?></td>
+    <td><?php echo $alum['abreviatura_carrera'] ?></td>
+    <td><?php echo ($alum['sexo']==1) ? 'H' : 'M' ?></td>
+    <td><?php echo calcularEdad($alum['fecha_nacimiento'],$alum['fecha_inscripcion_club']) ?></td>
+    <td><?php echo ($alum['acreditado']==0) ? 'NO' :'SI'  ?></td>
+  </tr>
 <?php	
 }
 ?>

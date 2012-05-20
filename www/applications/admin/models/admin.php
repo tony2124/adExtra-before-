@@ -53,8 +53,10 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 
-	public function getClubes()
+	public function getClubes($hm = NULL)
 	{
+		if(strcmp($hm, "all") == 0)
+			return $data = $this->Db->query("select * from clubes where eliminado_club = 0 order by nombre_club asc");			
 		return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club!=3 order by nombre_club asc");
 	}
 

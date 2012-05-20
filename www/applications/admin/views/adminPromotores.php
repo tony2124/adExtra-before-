@@ -71,7 +71,7 @@ function promotor(usuario, name)
 </table>
 
 <hr>
-<a href="#">Agregar un nuevo promotor</a>
+<a href="<?php print get('webURL'). _sh . 'admin/formRegistroPromotor' ?>">Agregar un nuevo promotor</a>
 
 <div class="modal hide fade" id="confirmModal">
   <div class="modal-header">

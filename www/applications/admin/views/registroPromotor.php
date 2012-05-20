@@ -28,7 +28,7 @@ $().ready(function() {
     }
   });
 });
-</script>
+</script> 
 
 <style type="text/css">
   label.error { color: red; display: inline; margin-left: 10px;}
@@ -37,6 +37,16 @@ $().ready(function() {
  <form id="registropromotor" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/regProm' ?>">
     <fieldset>
       <legend>Inscripción de un nuevo promotor</legend>
+      <div class="well">
+      <h5>Antes de registrar al promotor debe tomar en cuenta los siguientes aspectos:</h5>
+        <ul>
+          <li>No debe usarse acentos en el nombre y apellidos del promotor.</li>
+          <li>El nombre y apellidos debe escribirse con letra mayúscula.</li>
+          <li>El correo electrónico del promotor es indispensable.</li>
+          <li>El usuario del promotor NO PODRÁ SER MODIFICADO DESPUÉS.</li>
+        </ul>
+      </div>
+        <hr>
         <div class="control-group">
           <label class="control-label" for="user">Usuario</label>
           <div class="controls">
@@ -93,8 +103,10 @@ $().ready(function() {
           <label class="control-label" for="ocupacion">Ocupación</label>
           <div class="controls">
       <!-- -->  <input type="text" name="ocupacion" class="input-xlarge" id="ocupacion">
-          </div><br><label>&nbsp;</label>
-          <input type="submit" class="btn btn-success span2 pull-center" value="Registrar">  
+          </div>
+          <div class="form-actions">
+            <input type="submit" class="btn btn-success span2 pull-center" value="Registrar">  
+          </div>
         </div>
       </fieldset>
 </form> 
