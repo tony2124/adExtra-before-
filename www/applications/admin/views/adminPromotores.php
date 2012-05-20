@@ -13,7 +13,24 @@ function promotor(usuario, name)
    $('#usuario_promotor').val(usuario);
 }
 </script>
-
+   <div class="btn-group">
+    <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+      OPCIONES
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="<?php print get('webURL'). _sh .'admin/adminconfig/' ?>">
+          <b class="icon-envelope"></b> Enviar email a todos</a></li>
+      <li class="divider"></li>
+      <li>
+        <a href="<?php print get('webURL') .  _sh .'admin/logout' ?>">
+          <b class="icon-ban-circle"></b> Bloquear acceso a todos
+        </a>
+      </li>
+    </ul>
+  </div>
+  <hr>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>

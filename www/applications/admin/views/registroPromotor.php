@@ -10,7 +10,6 @@ $().ready(function() {
       am:  "required",
       email: { required: true, email: true},
       fecha_nac: {required: true, date: true},
-      se: { required: true, digits: true, maxlength: 1},
       tel: {digits: true, minlength: 7, maxlength: 10},
       ocupacion: "required",
       direccion: "required"
@@ -23,7 +22,6 @@ $().ready(function() {
       am: "* Este campo es obligatorio",
       email: { required: "* Este campo es obligatorio", email: "Ingrese un correo electrónico válido"},
       fecha_nac: { required: "* Este campo es obligatorio", date: "Ingrese una fecha válida en el formato aaaa-mm-dd"},
-      se: { required: "* Este campo es obligatorio", digits: "Solo se aceptan números", maxlength: "Ingrese no más de 1 dígito."},
       ocupacion: "* Este campo es obligatorio",
       direccion: "* Este campo es obligatorio",
       tel: {digits: "Este campo solo admite números", minlength: "El teléfono debe contener de 7 a 10 números", maxlength: "El teléfono debe contener de 7 a 10 números"}

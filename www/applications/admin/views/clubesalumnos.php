@@ -1,4 +1,4 @@
-<form action="<?php print get('webURL')._sh.'admin/listaclub/' ?>" method="get" class="form-horizontal span8">
+<form action="<?php print get('webURL')._sh.'admin/listaclub/' ?>" method="get" class="form-horizontal span9">
 	<fieldset>
 		<legend>Elije un club y un periodo</legend>
 		<div class="control-group">
@@ -39,15 +39,16 @@
 			</div>
 			<br>
 			<p align="center">
-				<input type="button" value="Enviar" class="btn btn-primary" onclick="location.href='<?php print get("webURL")._sh."admin/listaclub/" ?>'+$('#club').val()+'/'+$('#periodo').val()" />
+				<input type="button" value="Ver alumnos" class="btn btn-primary" onclick="location.href='<?php print get("webURL")._sh."admin/listaclub/" ?>'+$('#club').val()+'/'+$('#periodo').val()" />
 			</p>
 		</div>
 		<hr>
 	</fieldset>
 </form>
+
 <?php 
 if($alumnos != NULL) { ?>
-<br>
+Número de registros encontrados: <?php print count($alumnos) ?>
 <div class="btn-group pull-right">
   <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
     Descarga
@@ -57,7 +58,8 @@ if($alumnos != NULL) { ?>
     <li><a href="<?php print get('webURL')._sh.'admin/pdf/formatos/lista/'.$par1.'/'.$par2 ?>" target="_blank">Lista de alumnos</a></li>
     <li><a href="<?php print get('webURL')._sh.'admin/pdf/formatos/cedula/'.$par1.'/'.$par2 ?>" target="_blank">Cédula de inscripción</a></li>
   </ul>
-</div>
+</div><br>
+<hr>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
