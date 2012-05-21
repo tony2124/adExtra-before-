@@ -11,7 +11,7 @@
 		<title><?php print $this->getTitle(); ?></title>
 		
 		<link href="<?php print path("vendors/css/frameworks/bootstrapnew/css/bootstrap.min.css", "zan"); ?>" rel="stylesheet">
-		<?php print $this->getCSS(); ?>
+		<?php //print $this->getCSS(); ?>
 		<link href="<?php print path("vendors/css/frameworks/bootstrapnew/css/bootstrap-responsive.min.css", "zan"); ?>" rel="stylesheet">
 		<link href="<?php print path("vendors/css/frameworks/smoothness/jquery-ui-1.8.16.custom.css", "zan"); ?>" rel="stylesheet">
 		
@@ -31,7 +31,7 @@
 		$(function(){
 		 	  $("a[rel=popover]").popover();
 			  $("a[rel=tooltip]").tooltip();
-			  $( "#ins_ini" ).datepicker({ 
+			  $( ".selectorFecha" ).datepicker({ 
     			defaultDate: "-15y", 
                 yearRange: "1900:-15",
 				dateFormat: 'yy-mm-dd',  
@@ -115,12 +115,11 @@
 		            </a>
 		            <ul class="dropdown-menu">
 		              <li><a href="<?php print get('webURL'). _sh .'admin/adminconfig/' ?>"><b class="icon-wrench"></b> Configuración del administrador</a></li>
+		              <li><a href="<?php print get('webURL'). _sh .'admin/adminconfig/' ?>"><b class="icon-pencil"></b> Registrar administrador</a></li>
 		              <li class="divider"></li>
-		              <li><a href="<?php print get('webURL') .  _sh .'admin/logout' ?>">Salir de la sesión</a></li>
+		              <li><a href="<?php print get('webURL') .  _sh .'admin/logout' ?>"><b class="icon-off"></b> Salir de la sesión</a></li>
 		            </ul>
 		          </div>
-	
-
 	          </div><!--/.nav-collapse -->
 	        </div>
 	      </div>
