@@ -16,6 +16,7 @@
 		<link href="<?php print path("vendors/css/frameworks/smoothness/jquery-ui-1.8.16.custom.css", "zan"); ?>" rel="stylesheet">
 		
 		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>-->
+		<script src="<?php print path("www/lib/scripts/ouwScript.js","www") ?>"></script>
 		<script src="<?php print path("vendors/js/jquery-1.7.1.min.js","zan") ?>"></script>
 		<script src="<?php print path("vendors/css/frameworks/bootstrapnew/js/bootstrap.min.js", "zan"); ?>"></script>
 		<script src="<?php print path("vendors/js/jquery.validate.js","zan") ?>"></script>

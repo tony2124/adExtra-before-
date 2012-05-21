@@ -100,7 +100,7 @@
       <div class="control-group">
         <label class="control-label" for="input01">Usuario</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="usuario" class="input-xlarge" id="input01" value="<?php print $datosAdmin[0]['usuario_administrador'] ?>">
+    <!-- -->  <input type="text" onfocus="activo(this)" oninput="cambio(this)" name="usuario" class="input-xlarge" id="input01" value="<?php print $datosAdmin[0]['usuario_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input02">Contraseña <a rel="popover" data-content="Actual: Ingresa la vieja contraseña <br> Nueva: Ingresa una nueva contraseña <br> Re-nueva: Vuelve a ingresar la nueva contraseña" data-original-title="AYUDA"><i class="icon-exclamation-sign"></i></a></label>
         <div class="controls">
@@ -114,37 +114,37 @@
         </div><hr>
         <label class="control-label" for="input03">Nombre(s)</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="nombre" class="input-xlarge" id="input03"  value="<?php print $datosAdmin[0]['nombre_administrador'] ?>">
+    <!-- -->  <input type="text" onfocus="activo(this)" oninput="cambio(this)" name="nombre" class="input-xlarge" id="input03"  value="<?php print $datosAdmin[0]['nombre_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input04">Apellido paterno</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_paterno_administrador'] ?>">
+    <!-- -->  <input type="text" onfocus="activo(this)" oninput="cambio(this)" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_paterno_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input04">Apellido materno</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_materno_administrador'] ?>">
+    <!-- -->  <input type="text" onfocus="activo(this)" oninput="cambio(this)" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_materno_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input06">Correo electrónico</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="email" class="input-xlarge" id="input06"  value="<?php print $datosAdmin[0]['correo_electronico'] ?>">
+    <!-- -->  <input type="text" onfocus="activo(this)" oninput="cambio(this)" name="email" class="input-xlarge" id="input06"  value="<?php print $datosAdmin[0]['correo_electronico'] ?>">
         </div><hr>
         <label class="control-label" for="input07">Profeción</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="se" class="input-xlarge" id="input07"  value="<?php print $datosAdmin[0]['profesion_administrador'] ?>">
+    <!-- -->  <input type="text" onfocus="activo(this)" oninput="cambio(this)" name="se" class="input-xlarge" id="input07"  value="<?php print $datosAdmin[0]['profesion_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input08">Abreviatura de la profeción</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['abreviatura_profesion'] ?>">
+    <!-- -->  <input type="text" onfocus="activo(this)" oninput="cambio(this)" name="clave" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['abreviatura_profesion'] ?>">
         </div><br>
         <label class="control-label" for="input08">Dirección</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['direccion_administrador'] ?>">
+    <!-- -->  <input type="text" onfocus="activo(this)" oninput="cambio(this)" name="clave" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['direccion_administrador'] ?>">
         </div>
       </div>
     </form> 
   </div>
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
-    <button class="btn btn-primary" onclick="$('#editaAdmin').submit()">Guardar cambios</button>
+    <button class="btn btn-primary" id="guardarCambios" disabled="disabled" onclick="$('#editaAdmin').submit()">Guardar cambios</button>
   </div>
 </div>
