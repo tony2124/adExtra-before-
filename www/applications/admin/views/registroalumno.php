@@ -71,7 +71,7 @@ $().ready(function() {
           </div><br>
           <label class="control-label" for="fecha_nac">Fecha de nacimiento</label>
           <div class="controls">
-      <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge selectorfecha" id="fecha_nac">
+      <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge selectorFecha" id="fecha_nac">
           </div><br>
           <label class="control-label">Sexo</label>
           <div class="controls">
