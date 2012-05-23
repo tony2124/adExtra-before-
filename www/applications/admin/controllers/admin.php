@@ -494,6 +494,8 @@ class Admin_Controller extends ZP_Controller {
 
  	public function avisos()
  	{
+ 		$mensaje = $this->Admin_Model->getAviso();
+ 		$vars['mensaje'] = $mensaje[0]; 
  		$vars['view'] = $this->view('avisos',true);
  		$this->render('content', $vars);
  	}

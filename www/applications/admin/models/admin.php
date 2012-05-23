@@ -53,6 +53,10 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 
+	public function getAviso()
+	{
+		return $this->Db->query("select * from noticias where id_noticias = 1");
+	}
 	public function getClubes($hm = NULL)
 	{
 		if(strcmp($hm, "all") == 0)

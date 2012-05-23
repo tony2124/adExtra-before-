@@ -33,7 +33,7 @@ $(document).ready(function() {
 
 <form name="textoForm" action="#" method="post">
 	<textarea style="width: 100%" name="aviso" id="aviso" class="txtDefaultHtmlArea" cols="50" rows="15">
-		<?php echo $mensaje ?>
+		<?php echo $mensaje['texto_noticia'] ?>
 	</textarea>
 	<input type="hidden" id="texto" name="texto" value="" />
 </form>
