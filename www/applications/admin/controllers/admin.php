@@ -360,7 +360,6 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("contAdminConfig",$vars);
 	}
 
-
 	public function iniciarsesion()
 	{
 		$usuario = POST('usuario');
@@ -474,9 +473,9 @@ class Admin_Controller extends ZP_Controller {
  	{
  		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
-		echo $estado;
+		$array = array ("actual" => "1");
 		if($estado == 'Vigente')
- 			$this->Admin_Model->setCampo("administradores","actual",1,"id_administrador",SESSION('id_admin'));
+ 			$this->Admin_Model->setCampo("administradores",$array,SESSION('id_admin'));
  		else if($estado == 'noVigente')
  			$this->Admin_Model->setCampo("administradores","actual",0,"id_administrador",SESSION('id_admin'));
  		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
