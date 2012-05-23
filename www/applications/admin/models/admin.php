@@ -23,13 +23,22 @@ class Admin_Model extends ZP_Model {
 
 	public function updateRes($acred, $folio, $obs, $fl)
 	{
+		//$this->acentos();
 		$dat = $this->Db->query("select * from inscripciones where folio = $folio");
 		$observaciones = $dat[0]['observaciones']."<br>".$fl."&nbsp;".$obs;
 		$this->acentos();
 		$query = "update inscripciones set acreditado = $acred, fecha_liberacion_club = '$fl', observaciones = '$observaciones' where folio = '$folio'";
 	    $this->Db->query($query);
 	    return $query;
+	}
 
+	public function guardarAviso($texto, $mostrar)
+	{
+		$this->Db->query("update configuracion set mostraraviso = $mostrar");
+		$this->acentos();
+		$query = "update noticias set texto_noticia = '$texto' where id_noticiaS = 1";
+	    $this->Db->query($query);
+	    return $query;
 	}
 
 	public function getPromotores()
@@ -53,6 +62,10 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 
+	public function getAviso()
+	{
+		return $this->Db->query("select * from noticias where id_noticias = 1");
+	}
 	public function getClubes($hm = NULL)
 	{
 		if(strcmp($hm, "all") == 0)
