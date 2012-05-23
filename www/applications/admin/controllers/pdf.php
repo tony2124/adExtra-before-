@@ -199,6 +199,7 @@ class Pdf_Controller extends ZP_Controller {
 
 				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
 				$prommotor = $this->Admin_Model->getPromotor($club);
+				$admin = $this->Admin_Model->getAdminData(SESSION('id_admin'));
 
 				$pdf = new MYPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 				$pdf->SetCreator(PDF_CREATOR);
@@ -232,12 +233,13 @@ class Pdf_Controller extends ZP_Controller {
 				   		<b>ACTIVIDAD:</b>
 					</td>
 					<td width="250">
-				   		<b>'.$data[0]['nombre_club'].'</b>
+				   		'.$data[0]['nombre_club'].'
 					</td>
 					<td  width="100">
 				   		<b>GRUPO:</b> 
 					</td>
 					<td width="150">
+					ÚNICO
 					</td>
 					<td width="80">
 				   		<b>HORA:</b>
@@ -274,12 +276,12 @@ class Pdf_Controller extends ZP_Controller {
 						if($row['sexo'] == 1) $html .= "H"; else $html.= "M";
 						
 						$html .= '</td>
-						<td>&nbsp;</td>
+						<td class="margin-left:10px"> '.$row['observaciones'].'</td>
 					</tr>';
 					
 				  }
 
-				$html.='</table>';
+				$html.='</table><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>Jefe de Departamento de Actividades Culturales, Deportivas y Recreativas: <b>'.strtoupper($admin[0]['abreviatura_profesion'].' '.$admin[0]['nombre_administrador'].' '.$admin[0]['apellido_paterno_administrador'].' '.$admin[0]['apellido_materno_administrador']).'</b>';
 				$pdf->writeHTML($html, true, false, true, false, '');
 				$pdf->lastPage();
 				$pdf->Output("cedulaInscripcion.pdf", 'I');
@@ -354,7 +356,7 @@ class Pdf_Controller extends ZP_Controller {
 						'.convertirFecha($row[0]['fecha_liberacion_club']).'
 					 </td>
 				    <td align="center" colspan="3" valign="top">
-					<br><br>ATENTAMENTE<br><br><br><br>'.$admin[0]['abreviatura_profesion'].' '.$admin[0]['nombre_administrador'].' '.$admin[0]['apellido_paterno_administrador'].' '.$admin[0]['apellido_materno_administrador'].'&nbsp;
+					<br><br>ATENTAMENTE<br><br><br><br>'.strtoupper($admin[0]['abreviatura_profesion'].' '.$admin[0]['nombre_administrador'].' '.$admin[0]['apellido_paterno_administrador'].' '.$admin[0]['apellido_materno_administrador']).'&nbsp;
 					<br>
 				      <br><strong>JEFE DEL DEPARTAMENTO DE ACTIVIDADES CULTURALES, DEPORTIVAS Y RECREATIVAS</strong>
 					</td>

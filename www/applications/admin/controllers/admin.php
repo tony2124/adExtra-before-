@@ -74,10 +74,10 @@ class Admin_Controller extends ZP_Controller {
 		$vars['semestre'] = POST('semestre');
 		$vars['fecha_inscripcion'] = date('Y-m-d');
 		$vars['fecha_modificacion'] = date('Y-m-d');
-		$vars['observaciones'] = POST('obsIns');
+		$vars['observaciones'] = str_replace( "'", "\"", $_POST['obsIns']);
 		$vars['acreditado'] = POST('acreditado');
 		print $this->Admin_Model->inscribirActividad($vars);
-
+		redirect(get('webURL').'/admin/alumno/'.POST('numero_control'));
 	}
 	public function editResultado()
 	{
@@ -87,9 +87,9 @@ class Admin_Controller extends ZP_Controller {
 		$resultado = POST('acreditado');
 		$folio = POST('folio');
 		$numero_control = POST('numero_control');
-		$obs = $_POST['obs'];
+		$obs = str_replace( "'", "\"", $_POST['obs']);
 		$fecha_lib = date("Y-m-d");
-		$this->Admin_Model->updateRes($resultado, $folio, $obs, $fecha_lib);
+		print $this->Admin_Model->updateRes($resultado, $folio, $obs, $fecha_lib);
 		redirect(get('webURL').'/admin/alumno/'.$numero_control);
 	}
 
@@ -135,13 +135,22 @@ class Admin_Controller extends ZP_Controller {
 		
 	}
 
+	public function guardarAviso()
+	{
+		$cuerpo =str_replace( "'", "\"",  $_POST['texto'] );
+		$mostrar = POST('mostrarAviso');
+		if($mostrar) $mostrar = 1; else $mostrar = 0;
+		print $this->Admin_Model->guardarAviso($cuerpo, $mostrar);
+		//redirect(get('webURL')._sh.'admin/avisos');
+	}
+
 	public function guardarnoticia()
 	{
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$nombre = POST('name');
-		$texto = POST('texto');
+		$nombre = $_POST['name'];
+		$texto = $_POST['texto']; //porque necesito el código en formato HTML NO FORMATEADO
 
 		$cadena = str_replace( "'", "\"", $texto);
 		$nombre = str_replace( "'", "\"", $nombre);
@@ -216,7 +225,7 @@ class Admin_Controller extends ZP_Controller {
 			return redirect(get('webURL') .  _sh .'admin/login');
 
 		$nombre = POST('name');
-		$texto = $_POST['texto'];
+		$texto = $_POST['texto']; //porque necesito el código en formato HTML NO FORMATEADO
 
 		$cadena = str_replace( "'", "\"", $texto);
 		$nombre = str_replace( "'", "\"", $nombre);

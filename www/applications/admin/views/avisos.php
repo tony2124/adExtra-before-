@@ -30,13 +30,14 @@ $(document).ready(function() {
 			 });
 });
 </script>
-
-<form name="textoForm" action="#" method="post">
+<h2>Publica un aviso</h2><hr>
+<p>En el siguiente apartado usted podrá escribir un aviso o varios avisos a las personas que visiten el sitio de Servicios Extraescolores.</p>
+<hr>
+<form id="textoForm" name="textoForm" action="<?php print get('webURL'). _sh . 'admin/guardarAviso' ?>" method="post">
 	<textarea style="width: 100%" name="aviso" id="aviso" class="txtDefaultHtmlArea" cols="50" rows="15">
 		<?php echo $mensaje['texto_noticia'] ?>
 	</textarea>
 	<input type="hidden" id="texto" name="texto" value="" />
-</form>
 <p>
 	<input type="button" style="background:red; width:20px" value="" onclick="$('#aviso').htmlarea('forecolor', 'red');" />
 	<input type="button" style="background:blue; width:20px" value="" onclick="$('#aviso').htmlarea('forecolor', 'blue');" />
@@ -45,5 +46,10 @@ $(document).ready(function() {
 	<input type="button" style="background:yellow; width:20px" value="" onclick="$('#aviso').htmlarea('forecolor', 'yellow');" />
 	<input type="button" style="background:orange; width:20px" value="" onclick="$('#aviso').htmlarea('forecolor', 'orange');" />
 	<input type="button" style="background:purple; width:20px" value="" onclick="$('#aviso').htmlarea('forecolor', 'purple');" />
-	<input type="button" class="btn btn-primary pull-right" value="Guardar noticia" onclick="document.getElementById('texto').value = $('#aviso').htmlarea('toHtmlString'); $('#textoForm').submit();" />
+	<input type="button" class="btn btn-primary pull-right" value="Guardar aviso" onclick="document.getElementById('texto').value = $('#aviso').htmlarea('toHtmlString'); $('#textoForm').submit();" />
 </p>
+<p>
+	<label class="checkbox" >
+	<input type="checkbox" name="mostrarAviso"> Mostrar el aviso cuando se entre al sitio de extraescolres.</label>
+</p>
+</form>
