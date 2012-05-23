@@ -30,15 +30,13 @@ class Admin_Model extends ZP_Model {
 		$query = "update inscripciones set acreditado = $acred, fecha_liberacion_club = '$fl', observaciones = '$observaciones' where folio = '$folio'";
 	    $this->Db->query($query);
 	    return $query;
-
 	}
 
 	public function guardarAviso($texto, $mostrar)
 	{
-
 		$this->Db->query("update configuracion set mostraraviso = $mostrar");
 		$this->acentos();
-		$query = "update noticias set texto_noticia = '$texto' where id_noticia = 1";
+		$query = "update noticias set texto_noticia = '$texto' where id_noticiaS = 1";
 	    $this->Db->query($query);
 	    return $query;
 	}

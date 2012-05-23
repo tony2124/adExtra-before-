@@ -6,7 +6,6 @@ if(!defined("_access")) {
 	die("Error: You don't have permission to access here...");
 }
 
-
 require_once(_spath.'/APIs/tcpdf/config/lang/eng.php');
 require_once(_spath.'/APIs/tcpdf/tcpdf.php');
 include(_corePath . _sh .'/libraries/funciones/funciones.php');
@@ -281,7 +280,7 @@ class Pdf_Controller extends ZP_Controller {
 					
 				  }
 
-				$html.='</table><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>Jefe de Departamento de Actividades Culturales, Deportivas y Recreativas: <b>'.strtoupper($admin[0]['abreviatura_profesion'].' '.$admin[0]['nombre_administrador'].' '.$admin[0]['apellido_paterno_administrador'].' '.$admin[0]['apellido_materno_administrador']).'</b>';
+				$html.='</table><p>Jefe de Departamento de Actividades Culturales, Deportivas y Recreativas: <b>'.strtoupper($admin[0]['abreviatura_profesion'].' '.$admin[0]['nombre_administrador'].' '.$admin[0]['apellido_paterno_administrador'].' '.$admin[0]['apellido_materno_administrador']).'</b></p>';
 				$pdf->writeHTML($html, true, false, true, false, '');
 				$pdf->lastPage();
 				$pdf->Output("cedulaInscripcion.pdf", 'I');

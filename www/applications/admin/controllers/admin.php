@@ -140,8 +140,8 @@ class Admin_Controller extends ZP_Controller {
 		$cuerpo =str_replace( "'", "\"",  $_POST['texto'] );
 		$mostrar = POST('mostrarAviso');
 		if($mostrar) $mostrar = 1; else $mostrar = 0;
-		print $this->Admin_Model->guardarAviso($cuerpo, $mostrar);
-		//redirect(get('webURL')._sh.'admin/avisos');
+		$this->Admin_Model->guardarAviso($cuerpo, $mostrar);
+		redirect(get('webURL')._sh.'admin/avisos');
 	}
 
 	public function guardarnoticia()
@@ -504,6 +504,8 @@ class Admin_Controller extends ZP_Controller {
  	public function avisos()
  	{
  		$mensaje = $this->Admin_Model->getAviso();
+ 		$conf = $this->Admin_Model->getConfiguracion();
+ 		$vars['conf'] = $conf[0];
  		$vars['mensaje'] = $mensaje[0]; 
  		$vars['view'] = $this->view('avisos',true);
  		$this->render('content', $vars);

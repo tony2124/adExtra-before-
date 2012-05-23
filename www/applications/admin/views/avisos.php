@@ -50,6 +50,8 @@ $(document).ready(function() {
 </p>
 <p>
 	<label class="checkbox" >
-	<input type="checkbox" name="mostrarAviso"> Mostrar el aviso cuando se entre al sitio de extraescolres.</label>
+	<input type="checkbox"  
+	<?php if($conf['mostraraviso'] == 1) print 'checked="checked"' ?>
+	name="mostrarAviso"> Mostrar el aviso cuando se entre al sitio de extraescolares.</label>
 </p>
 </form>
