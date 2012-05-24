@@ -31,6 +31,12 @@ $(document).ready(function() {
 });
 </script>
 <h2>Publica un aviso</h2><hr>
+<?php if($conf['mostraraviso'] == 0) { ?>
+<div class="alert">
+	<a href="#" class="close" data-dismiss="close">x</a>
+	<p>La configuración actual indica que el aviso NO se está mostrando en el sitio web.</p>
+	</div>
+<?php } ?>
 <p>En el siguiente apartado usted podrá escribir un aviso o varios avisos a las personas que visiten el sitio de Servicios Extraescolores.</p>
 <hr>
 <form id="textoForm" name="textoForm" action="<?php print get('webURL'). _sh . 'admin/guardarAviso' ?>" method="post">
