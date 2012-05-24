@@ -100,10 +100,12 @@
 				      <b class="caret"></b>
 				    </a>
 				    <ul class="dropdown-menu">
-				      <li class><a href="<?php print get('webURL'). _sh .'admin/noticias/'  ?>">Administrar noticias</a></li>
-				      <li><a href="<?php print get('webURL'). _sh .'admin/avisos/' ?>">Administrar avisos</a></li>
-				      <li><a href="<?php print get('webURL'). _sh .'admin/albumes/' ?>">Administrar álbumes</a></li>				      
-				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Administrar banners</a></li>
+				      <li class><a href="<?php print get('webURL'). _sh .'admin/noticias/'  ?>">Noticias</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/avisos/' ?>">Avisos</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/galeria/' ?>">Galería</a></li>				      
+				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Banners</a></li>
+				      <li class="divider"></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Administrar clubes</a></li>
 				    </ul>
 				  </li>
 				</ul>
