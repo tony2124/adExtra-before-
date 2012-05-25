@@ -481,9 +481,20 @@ class Admin_Controller extends ZP_Controller {
  		$this->render('content', $vars);
  	}
 
- 	public function albumes()
+ 
+
+ 	public function galeria($tipo=NULL, $club = NULL, $album = NULL, $subalbum = NULL)
  	{
- 		$vars['view'] = $this->view('albumes',true);
+ 		$vars['tipo'] = $tipo;
+ 		if(isset($tipo))	$vars['clubes'] = $this->Admin_Model->getClubes($tipo);
+ 		if(isset($club)) 	$vars['albumes'] = $this->Admin_Model->getAlbumes('club',$club);
+ 		if(isset($album))
+ 		{  
+ 			$vars['subalbumes'] = $this->Admin_Model->getAlbumes('album', $album);
+ 			$vars['fotos'] = $this->Admin_Model->getFotos($album);
+ 		}
+
+ 		$vars['view'] = $this->view('galeria',true);
  		$this->render('content', $vars);
  	}
 

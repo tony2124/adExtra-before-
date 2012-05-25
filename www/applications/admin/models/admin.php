@@ -70,7 +70,19 @@ class Admin_Model extends ZP_Model {
 	{
 		if(strcmp($hm, "all") == 0)
 			return $data = $this->Db->query("select * from clubes where eliminado_club = 0 order by nombre_club asc");			
+		if($hm == 1 || $hm == 2)
+			return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club = $hm order by nombre_club asc");			
 		return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club!=3 order by nombre_club asc");
+	}
+
+	public function getAlbumes($var, $value)
+	{
+		switch($var)
+		{
+			case 'club': return $this->Db->query("select * from albumes where id_club = '$value'");break;
+			case 'album': return $this->Db->query("select * from albumes where dependiente = '$value'");break;	
+		}
+		
 	}
 
 	public function getCarreras()
