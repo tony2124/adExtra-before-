@@ -483,9 +483,9 @@ class Admin_Controller extends ZP_Controller {
  		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 		if($estado == 'Vigente')
-			$array = array ("actual" => "1");
+			$array = array("actual" => "1");
  		else if($estado == 'noVigente')
- 			$array = array ("actual" => "0");
+ 			$array = array("actual" => "0");
  		$this->Admin_Model->setCampo("administradores",$array,SESSION('id_admin'));
  		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
  	}
