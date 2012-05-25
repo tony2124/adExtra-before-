@@ -75,9 +75,9 @@ class Admin_Model extends ZP_Model {
 		return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club!=3 order by nombre_club asc");
 	}
 
-	public function getAlbumes($ac, $club)
+	public function getAlbumes($var, $value)
 	{
-		switch($value)
+		switch($var)
 		{
 			case 'club': return $this->Db->query("select * from albumes where id_club = '$value'");break;
 			case 'album': return $this->Db->query("select * from albumes where dependiente = '$value'");break;	

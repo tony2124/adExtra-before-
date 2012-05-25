@@ -515,7 +515,7 @@ class Admin_Controller extends ZP_Controller {
 
  	public function galeria($tipo=NULL, $club = NULL, $album = NULL, $subalbum = NULL)
  	{
-
+ 		$vars['tipo'] = $tipo;
  		if(isset($tipo))	$vars['clubes'] = $this->Admin_Model->getClubes($tipo);
  		if(isset($club)) 	$vars['albumes'] = $this->Admin_Model->getAlbumes('club',$club);
  		if(isset($album))
