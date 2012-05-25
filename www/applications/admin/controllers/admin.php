@@ -352,23 +352,6 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content", $vars);
 	}
 
-	public function adminconfig($id = NULL)
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') . _sh .'admin/login');	
-		
-		if(!$id) $id = SESSION('id_admin');
-		
-		$datosAdmin = $this->Admin_Model->getAdminData($id);
-		$datosAllAdmin = $this->Admin_Model->getAllAdminData();
-
-		$vars['datosAdmin'] = $datosAdmin;
-		$vars['allAdmin'] = $datosAllAdmin;
-		$vars["view"] = $this->view("adminconfig",true);
-		//$vars["view"]['registroAdmin'] = $this->view("registroAdmin",true);
-		$this->render("contAdminConfig",$vars);
-	}
-
 	public function iniciarsesion()
 	{
 		$usuario = POST('usuario');
@@ -478,18 +461,6 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content", $vars);
  	}
 
- 	public function cambiarEstado ($estado = NULL)
- 	{
- 		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-		if($estado == 'Vigente')
-			$array = array("actual" => "1");
- 		else if($estado == 'noVigente')
- 			$array = array("actual" => "0");
- 		$this->Admin_Model->setCampo("administradores",$array,SESSION('id_admin'));
- 		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
- 	}
-
  	public function configLiberacion()
  	{
  		$vars['view'] = $this->view('configLiberacion', true);
@@ -522,4 +493,38 @@ class Admin_Controller extends ZP_Controller {
  		$this->render('content', $vars);
  	}
 
+ 	public function cambiarEstado ($estado = NULL)
+ 	{
+ 		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+		if($estado == 'Vigente')
+			$array = array("actual" => "1");
+ 		else if($estado == 'noVigente')
+ 			$array = array("actual" => "0");
+ 		$this->Admin_Model->setCampo("administradores",$array,SESSION('id_admin'));
+ 		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
+ 	}
+
+ 	public function editaAdmin ()
+ 	{
+ 		$vars['view'] = $this -> view('adminconfig',true);
+ 		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
+ 	}
+
+ 	public function adminconfig($id = NULL)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') . _sh .'admin/login');	
+		
+		if(!$id) $id = SESSION('id_admin');
+		
+		$datosAdmin = $this->Admin_Model->getAdminData($id);
+		$datosAllAdmin = $this->Admin_Model->getAllAdminData();
+
+		$vars['datosAdmin'] = $datosAdmin;
+		$vars['allAdmin'] = $datosAllAdmin;
+		$vars["view"] = $this->view("adminconfig",true);
+		//$vars["view"]['registroAdmin'] = $this->view("registroAdmin",true);
+		$this->render("contAdminConfig",$vars);
+	}
 }
