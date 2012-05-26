@@ -85,6 +85,11 @@ class Admin_Model extends ZP_Model {
 		
 	}
 
+	public function getFotos($album)
+	{
+		return $this->Db->query("select * from galeria where id_album='$album'");
+	}
+
 	public function getCarreras()
 	{
 		return $data = $this->Db->query("select * from carreras order by abreviatura_carrera asc");
