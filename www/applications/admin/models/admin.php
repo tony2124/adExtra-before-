@@ -174,14 +174,18 @@ class Admin_Model extends ZP_Model {
 
 	public function elimNoticia($id)
 	{
-		$this->Db->query("delete from noticias where id_noticias = '$id'");
+		return $this->Db->query("delete from noticias where id_noticias = '$id'");
 	}
 
 	public function elimPromotor($id)
 	{
-		$this->Db->query("update promotores set eliminado_promotor = true where usuario_promotor = '$id' ");
+		return $this->Db->query("update promotores set eliminado_promotor = true where usuario_promotor = '$id' ");
 	}
 
+	public function elimFoto($id_foto)
+	{
+		return $this->Db->query("delete from galeria where id_imagen = '$id_foto'");
+	}
 	public function updateAlumno($vars)
 	{
 		$query = "update alumnos set nombre_alumno = '$vars[nombre]' , apellido_paterno_alumno = '$vars[ap]', apellido_materno_alumno = '$vars[am]',

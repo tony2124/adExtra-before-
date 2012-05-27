@@ -98,8 +98,11 @@
 				    </a>
 				    <ul class="dropdown-menu">
 				      <li class><a href="<?php print get('webURL'). _sh .'admin/noticias/'  ?>">Noticias</a></li>
+
 				      <li><a href="<?php print get('webURL'). _sh .'admin/avisos/' ?>">Avisos</a></li>
+				      <li class="divider"></li>
 				      <li><a href="<?php print get('webURL'). _sh .'admin/galeria/' ?>">Galería</a></li>				      
+				      
 				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Banners</a></li>
 				      <li class="divider"></li>
 				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Administrar clubes</a></li>

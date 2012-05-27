@@ -20,26 +20,57 @@ if(isset($URL['tipo']))
 		case '1': $URL['tipo_nombre'] = 'DEPORTIVO'; break;
 		case '2': $URL['tipo_nombre'] = 'CULTURAL'; break;
 	}
-?>			
+?>	
+
+
+<script type="text/javascript" src="<?php print path("www/lib/fancybox/jquery.mousewheel-3.0.4.pack.js",true) ?>"></script>
+<script type="text/javascript" src="<?php print path("www/lib/fancybox/jquery.fancybox-1.3.4.pack.js",true) ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php print path("www/lib/fancybox/jquery.fancybox-1.3.4.css",true); ?>" media="screen" />
+<script type="text/javascript" src="<?php print path("www/lib/uploadify/jquery.uploadify.js",true) ?>"></script>
+<link type="text/css" rel="stylesheet" href="<?php print path("www/lib/uploadify/uploadify.css",true) ?>"  />
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$("a[rel=galeria]").fancybox({
+			'transitionIn'		: 'elastic',
+			'transitionOut'		: 'elastic',
+			'titlePosition' 	: 'over',
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+						}
+		});
+		<?php if(isset($URL['album'])) { ?>
+		$("#fileUpload").fileUpload({
+				'uploader': '<?php print path("www/lib/uploadify/uploader.swf",true) ?>',
+				'cancelImg': '<?php print path("www/lib/uploadify/cancel.png",true) ?>',
+				'folder': '<?php print _spath . "/IMAGENES/clubes/" . $URL["club"] . _sh .$URL["album"] . _sh ?>',
+				'buttonText': 'Selecciona fotos',
+				'script': '<?php print get("webURL") . _sh . "admin/subir" ?>',
+				'multi': true,
+				'simUploadLimit': 1
+		});
+		<?php } ?>
+	});
+</script>
+
 <script type="text/javascript">
 	function eliminarAlbum(id, tipo, club)
 	{
 		var r = confirm("¿Está seguro que desea eliminar este álbum?. Tome en cuenta que se eliminarán todas las fotos y no será posible recuperarlas después");
 		if(r == 1)
 		{				
-			location.href="";
+			location.href="#";
 		}
 	}
 
-	function eliminarFoto( tipo, club, album, id)
+	function eliminarFoto( id , imname)
 	{
-		var r = confirm("¿Está seguro que desea eliminar esta foto?. Tome en cuenta que no será posible recuperarla más tarde"+id);
-		if(r == 1){				
-			location.href="";
-		}
+		$('#id_imagen').val(id);
+		$('#image_name').val(imname);
 	}
 </script>
-	
+
 <style type="text/css">
 	.gallery{
 		position: relative;
@@ -107,43 +138,96 @@ if(isset($URL['tipo']))
 <?php 	}	
 	} 
 
-	if(isset($URL['album'])){ ?>
+	if(isset($URL['album'])) { ?>
 	<a href="<?php print get('webURL'). _sh . 'admin/galeria' ?>">GALERIA</a> /
 	<a href="<?php print get('webURL'). _sh . 'admin/galeria'. _sh . $URL['tipo'] ?>"><?php print $URL['tipo_nombre'] ?></a> /
 	<a href="<?php print get('webURL'). _sh . 'admin/galeria'. _sh . $URL['tipo'] . _sh . $URL['club'] ?>"><?php print $URL['club_nombre'] ?></a> /
 	<a href=""><?php print $URL['album_nombre'] ?></a> /
 	<p>&nbsp;</p>
-		
-		
-		  <table>
-			<tr>
-				<td>
-					<div id="gallery">
-						<ul id="galleyList" class="horizontalList">
-					<?php
-				foreach ($fotos as $foto) { ?>					
-						<li class="horizontalListItem">
-						      <div class="borderContainer">
-						           <a rel="galeria" class="galeria" title="Foto: <?php echo $foto['id_imagen']."\nÁlbum: ".$URL['album'] ?>" href="<?php echo _rs."/IMAGENES/clubes/".$URL['club']. _sh . $URL['album']. _sh .$foto['nombre_imagen'] ?>">
-						              	<div class="imageContainer" style="background-image: url('<?php echo _rs."/IMAGENES/clubes/".$URL['club']. _sh . $URL['album'] "/thumbs/".$foto['nombre_imagen'] ?>');">						                    							                   						                    																	
-						               	</div>
-						           </a>
-						           <a href="#">
-						            	<div onclick="eliminarFoto(<?php echo $tipo.",".$club.",'".$album."','".$row['id_imagen']."'" ?>)" style="width: 20px; height: 20px; float: left; margin-left: 182px; margin-top: -156px" title="Eliminar foto <?php echo $row['nombre_imagen']  ?>"> 
-											<img src='imagenes/eliminar.png' width="20" height="20" /> 
-										</div>
-									</a>
-						      </div>
-						 </li>						        							            
-					<?php
-					}
-					?>
-						</ul>
-					</div>
-				</td>
-				</tr>
-		   </table>
-		<?php 
-	}
-	?>
+	<a rel="tooltip" title="Eliminar álbum" href="" class="btn btn-danger"><i class="icon-trash icon-white"></i></a>&nbsp;
+	<a rel="tooltip" title="Editar nombre" href="" class="btn btn-primary"><i class="icon-edit icon-white"></i></a>&nbsp;
+	<p>&nbsp;</p>
+    <table>
+	  <tr>
+		<td>
+		  <div id="gallery">
+			<ul id="galleyList" class="horizontalList">
+			<?php if($fotos == NULL) print 'No hay fotos en este álbum'; else foreach ($fotos as $foto) { ?>					
+					<li class="horizontalListItem">
+					    <div class="borderContainer">
+					       <div class="btn-group">
+					       	<a href="#" class="btn dropdown-toggle" data-toggle="dropdown" style="z-index: 1; position: absolute">
+					       		<span class="caret"></span>
+					       	</a>
+				       		<ul class="dropdown-menu">
+				              <li>
+				              	<a href="#">
+				              		<span class="icon-edit"></span> Editar descripción
+				              	</a>
+				              </li>
+				              <li class="divider"></li>
+						      <li>
+				              	<a href="#">
+				              		<span class="icon-refresh"></span> Cambiar a otro álbum
+				              	</a>
+				              </li>
+				                <li class="divider"></li>
+				              <li>
+				              	<a data-toggle="modal" href="#confirmModal" onclick="eliminarFoto('<?php print $foto['id_imagen']."','".$foto['nombre_imagen'] ?>')">
+				              		<span class="icon-trash"></span> Eliminar foto
+				              	</a>
+				              </li>
+				            </ul>
+					       </div>
+					       <a rel="galeria" title="<?php print 'Descripción: '.$foto['pie'] ?>" href="<?php print _rs."/IMAGENES/clubes/".$URL['club']. _sh . $URL['album']. _sh .$foto['nombre_imagen'] ?>">
+						       <div class="imageContainer" style="background-image: url('<?php echo _rs."/IMAGENES/clubes/".$URL['club']. _sh . $URL['album'] . "/thumbs/".$foto['nombre_imagen'] ?>');"></div>
+						   </a>
+				      </div>
+				 	</li>						        							            
+			<?php
+			}
+			?>
+			</ul>
+		  </div>
+	    </td>
+	  </tr>
+   </table>
+   <p>&nbsp;</p>
+   <table align="center" width="330" style="background: #EEE;">
+		<tr>
+			<td>
+				<input name="fileUpload" id="fileUpload" type="file" />
+				<a href="javascript:$('#fileUpload').fileUploadStart()">
+					Subir
+				</a> | 
+				<a href="javascript:$('#fileUpload').fileUploadClearQueue()">
+					Limpiar
+				</a> |
+				<a href="<?php echo "index.php?bloque=sitio&opcion=fotografias&tipo=$tipo&club=$club&album=$album" ?>">
+					Actualizar
+				</a>
+			</td>
+		</tr>
+	</table>
+<?php }	?>
 
+<div class="modal hide fade" id="confirmModal">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Confirmación</h3>
+  </div>
+  <div class="modal-body">
+    <p>¿Está seguro que desea eliminar esta foto?</p>
+   
+    <form id="elimPromo" method="post" action="<?php print get('webURL')._sh.'admin/elimFoto' ?>">
+      <input name="id_imagen" id="id_imagen" type="hidden" value="">
+      <input name="image_name" id="image_name" type="hidden" value="">
+      <input name="path" id="path" type="hidden" value="<?php print $URL['club'] . _sh .$URL['album']  ?>">
+      <input name="url" id="url" type="hidden" value="<?php print get('webURL') . _sh .'admin/galeria' . _sh . $URL['tipo'] . _sh . $URL['club'] . _sh .$URL['album'] ?>">
+    </form> 
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
+    <a href="#" class="btn btn-danger" onclick="$('#elimPromo').submit()">Eliminar</a>
+  </div>
+</div>
