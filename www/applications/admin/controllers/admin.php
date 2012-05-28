@@ -343,31 +343,24 @@ class Admin_Controller extends ZP_Controller {
 
 	public function subir()
 	{
-	  if (!empty($_FILES)) {
+	 // if (!empty($_FILES)) {
 	  	$tempFile = $_FILES['Filedata']['tmp_name'];
-	  	$targetPath = get('webURL') . _sh . 'IMAGENES/clubes';
-
-	  	/** DESCOMENTAR PARA LA VERSIÓN EN LÍNEA **/
-	  	//$targetPath = str_replace("/loginAdministrador", "..", $targetPath);
-	  	//$targetPath = "../../".$targetPath;
-
+	  	$targetPath = _spath. _sh . 'IMAGENES/clubes/5/2012020308362668/';
 	  	$name = $_FILES['Filedata']['name'];
 	  	$ext = explode(".",$name);				 		
 	  	$id = date("YmdHis").rand(0,100).rand(0,100);
 	  	$name = $id.".".$ext[1];
 	  	
-	  	$targetFile = $targetPath . $name;
-	  		
-	  	// Uncomment the following line if you want to make the directory if it doesn't exist
-	  	// mkdir(str_replace('//','/',$targetPath), 0755, true);
-	  	
+	  	$targetFile = $targetPath . $name;  	
 	  	move_uploaded_file($tempFile,$targetFile);
 	  	
-	  	createThumbs($targetPath, $name, $targetPath."/thumbs/",200);
-	  	
+	  	$this->createThumbs($targetPath, $name, $targetPath."thumbs/",200);
+	  	/*
+	  	$this->Admin_Model->insertarFoto();
 	  	 $query = "insert into galeria values('$id','$name','$album','".date("Y-m-d")."','0')";
 	  			mysql_query($query) or die(mysql_error());
-	  }
+	  	*/
+	  //}
 
 	}
 
