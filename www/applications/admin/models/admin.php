@@ -110,6 +110,11 @@ class Admin_Model extends ZP_Model {
 		return $this->Db->query("select * from administradores where id_administrador = '$id'");		
 	}	
 
+	public function getAdminCampo($Campo, $Valor)
+	{
+		return $this->Db->query("select * from administradores where $Campo = $Valor");		
+	}
+
 	public function getAllAdminData()
 	{
 		return $this->Db->query("select * from administradores");
@@ -220,8 +225,8 @@ class Admin_Model extends ZP_Model {
 		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where folio = '$folio'");
 	}
 
-	public function setCampo($tabla, $campo, $argumento, $where, $condicion)
+	public function setCampo($tabla, $campos, $ID)
 	{
-		$this->Db->query("update $tabla set $campo=$argumento where $where=$condicion");
+		$this->Db->update($tabla, $campos, $ID);
 	}
 }

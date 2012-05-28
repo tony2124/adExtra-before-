@@ -16,6 +16,7 @@
 		<link href="<?php print path("vendors/css/frameworks/smoothness/jquery-ui-1.8.16.custom.css", "zan"); ?>" rel="stylesheet">
 		
 		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>-->
+		<script src="<?php print path("www/lib/scripts/ouwScript.js","www") ?>"></script>
 		<script src="<?php print path("vendors/js/jquery-1.7.1.min.js","zan") ?>"></script>
 		<script src="<?php print path("vendors/css/frameworks/bootstrapnew/js/bootstrap.min.js", "zan"); ?>"></script>
 		<script src="<?php print path("vendors/js/jquery.validate.js","zan") ?>"></script>
@@ -117,7 +118,7 @@
 		            </a>
 		            <ul class="dropdown-menu">
 		              <li><a href="<?php print get('webURL'). _sh .'admin/adminconfig/' ?>"><b class="icon-wrench"></b> Configuración del administrador</a></li>
-		              <li><a href="<?php print get('webURL'). _sh .'admin/adminconfig/' ?>"><b class="icon-pencil"></b> Registrar administrador</a></li>
+		              <li><a href="<?php print get('webURL'). _sh .'admin/regisAdmin/' ?>"><b class="icon-pencil"></b> Registrar administrador</a></li>
 		              <li class="divider"></li>
 		              <li><a href="<?php print get('webURL') .  _sh .'admin/logout' ?>"><b class="icon-off"></b> Salir de la sesión</a></li>
 		            </ul>

@@ -411,24 +411,6 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content", $vars);
 	}
 
-	public function adminconfig($id = NULL)
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') . _sh .'admin/login');	
-		
-		if(!$id) $id = SESSION('id_admin');
-		
-		$datosAdmin = $this->Admin_Model->getAdminData($id);
-		$datosAllAdmin = $this->Admin_Model->getAllAdminData();
-
-		$vars['datosAdmin'] = $datosAdmin;
-		$vars['allAdmin'] = $datosAllAdmin;
-		$vars["view"] = $this->view("adminconfig",true);
-		//$vars["view"]['registroAdmin'] = $this->view("registroAdmin",true);
-		$this->render("contAdminConfig",$vars);
-	}
-
-
 	public function iniciarsesion()
 	{
 		$usuario = POST('usuario');
@@ -538,18 +520,6 @@ class Admin_Controller extends ZP_Controller {
 		$this->render("content", $vars);
  	}
 
- 	public function cambiarEstado ($estado = NULL)
- 	{
- 		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-		echo $estado;
-		if($estado == 'Vigente')
- 			$this->Admin_Model->setCampo("administradores","actual",1,"id_administrador",SESSION('id_admin'));
- 		else if($estado == 'noVigente')
- 			$this->Admin_Model->setCampo("administradores","actual",0,"id_administrador",SESSION('id_admin'));
- 		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
- 	}
-
  	public function configLiberacion()
  	{
  		$vars['view'] = $this->view('configLiberacion', true);
@@ -569,8 +539,6 @@ class Admin_Controller extends ZP_Controller {
  		$vars['view'] = $this->view('avisos',true);
  		$this->render('content', $vars);
  	}
-
- 
 
  	public function galeria($tipo=NULL, $club = NULL, $album = NULL, $subalbum = NULL)
  	{
@@ -601,4 +569,70 @@ class Admin_Controller extends ZP_Controller {
  		$this->render('content', $vars);
  	}
 
+ 	public function cambiarEstado ($estado = NULL)
+ 	{
+ 		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+		if($estado == 'Vigente')
+			$array = array("actual" => "1");
+ 		else if($estado == 'noVigente')
+ 			$array = array("actual" => "0");
+ 		$this->Admin_Model->setCampo("administradores",$array,SESSION('id_admin'));
+ 		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
+ 	}
+
+ 	public function editaAdmin ()
+ 	{
+ 		/*$array = array();
+ 		$datosAdmin = $this->Admin_Model->getAdminData(SESSION('id_admin'));
+ 		if(POST('lastpass') == $datosAdmin['contrasena_administrador'])
+ 		{
+ 			$array += array(
+	 			"nombre_administrador" => POST('nombre'),
+	 			"apellido_paterno_administrador" => POST('adminAP'),
+	 			"apellido_materno_administrador" => POST('adminAM'),
+	 			"correo_electronico" => POST('email'),
+	 			"profesion_administrador" => POST('profe'),
+	 			"abreviatura_profesion" => POST('abrevi'),
+	 			"direccion_administrador" => POST('direc')
+	 			);
+	 		$this->Admin_Model->setCampo("administradores",$array,SESSION('id_admin'));
+ 		}
+ 		else
+ 		{
+
+ 		}*/
+ 		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
+ 	}
+
+ 	public function regisAdmin()
+ 	{
+ 		$vars['view'] = $this->view("registroAdmin",true);
+ 		$this->render("content",$vars);
+ 	}
+
+ 	private function getDatosAdmin ($id = NULL)
+ 	{
+ 		$datosAdmin = $this->Admin_Model->getAdminData($id);
+		$datosAllAdmin = $this->Admin_Model->getAllAdminData();
+
+		$vars['datosAdmin'] = $datosAdmin;
+		$vars['allAdmin'] = $datosAllAdmin;
+
+		return $vars;
+ 	}
+
+ 	public function adminconfig($id = NULL)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') . _sh .'admin/login');	
+		
+		if(!$id) $id = SESSION('id_admin');
+		
+		$vars = $this->getDatosAdmin($id);
+
+		$vars["view"] = $this->view("adminconfig",true);
+		//$vars["view"]['registroAdmin'] = $this->view("registroAdmin",true);
+		$this->render("content",$vars);
+	}
 }
