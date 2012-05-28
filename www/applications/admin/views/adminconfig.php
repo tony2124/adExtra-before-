@@ -10,11 +10,16 @@
 <?php }else{ ?>
 <script>
   $().ready(function() {
-    var regexLetter = /[a-zA-z]/;
-    var cadena = "gatoFASD";
-    if(cadena.match(/^[a-zA-Z]+$/))
-      alert("gaotgatos2243ofa");
-    
+      $("#editarAdmin").validate(
+      {
+        rules: {
+          input06: { required: true, email: true}
+        },
+        messages: {
+          input06: { required: "Este campo es obligatorio", minlength: "Ingrese un correo electrónico válido"}
+        }
+
+      });
     });
   });
 </script>
@@ -128,11 +133,11 @@
         </div><br>
         <label class="control-label" for="input04">Apellido paterno</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_paterno_administrador'] ?>">
+    <!-- -->  <input type="text" name="adminAP" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_paterno_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input04">Apellido materno</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="fecha_nac" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_materno_administrador'] ?>">
+    <!-- -->  <input type="text" name="adminAM" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_materno_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input06">Correo electrónico</label>
         <div class="controls">
@@ -140,15 +145,15 @@
         </div><hr>
         <label class="control-label" for="input07">Profeción</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="se" class="input-xlarge" id="input07"  value="<?php print $datosAdmin[0]['profesion_administrador'] ?>">
+    <!-- -->  <input type="text" name="profe" class="input-xlarge" id="input07"  value="<?php print $datosAdmin[0]['profesion_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input08">Abreviatura de la profeción</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['abreviatura_profesion'] ?>">
+    <!-- -->  <input type="text" name="abrevi" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['abreviatura_profesion'] ?>">
         </div><br>
         <label class="control-label" for="input08">Dirección</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="clave" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['direccion_administrador'] ?>">
+    <!-- -->  <input type="text" name="direc" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['direccion_administrador'] ?>">
         </div>
       </div>
     </form> 

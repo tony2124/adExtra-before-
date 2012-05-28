@@ -118,7 +118,7 @@
 		            </a>
 		            <ul class="dropdown-menu">
 		              <li><a href="<?php print get('webURL'). _sh .'admin/adminconfig/' ?>"><b class="icon-wrench"></b> Configuración del administrador</a></li>
-		              <li><a href="<?php print get('webURL'). _sh .'admin/adminconfig/' ?>"><b class="icon-pencil"></b> Registrar administrador</a></li>
+		              <li><a href="<?php print get('webURL'). _sh .'admin/regisAdmin/' ?>"><b class="icon-pencil"></b> Registrar administrador</a></li>
 		              <li class="divider"></li>
 		              <li><a href="<?php print get('webURL') .  _sh .'admin/logout' ?>"><b class="icon-off"></b> Salir de la sesión</a></li>
 		            </ul>
