@@ -33,7 +33,7 @@ $(document).ready(function() {
 <h2>Publica un aviso</h2><hr>
 <?php if($conf['mostraraviso'] == 0) { ?>
 <div class="alert">
-	<a href="#" class="close" data-dismiss="close">x</a>
+	<a href="#" class="close" data-dismiss="alert">x</a>
 	<p>La configuración actual indica que el aviso NO se está mostrando en el sitio web.</p>
 	</div>
 <?php } ?>

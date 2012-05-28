@@ -22,14 +22,14 @@
 		<script src="<?php print path("vendors/js/jquery.validate.js","zan") ?>"></script>
 		<script src="<?php print path("vendors/js/jquery-ui-1.7.2.custom.min.js","zan") ?>"></script>
 		
-		 <style>
-		      body {
-		        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-		      }
-		 </style>
+		<style>
+	      body {
+	        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+	      }
+		</style>
 
-		 <script>
-		$(function(){
+		<script>
+			$(function(){
 		 	  $("a[rel=popover]").popover();
 			  $("a[rel=tooltip]").tooltip();
 			  $( ".selectorFecha" ).datepicker({ 
@@ -39,12 +39,9 @@
 				showAnim: 'explode',
 				duration: 'normal',
 				changeMonth: true,
-                changeYear: true
+                changeYear: true });
 			});
-			  });
-
 		 </script>
-
 	</head>
 
 	<body>
@@ -102,8 +99,11 @@
 				    </a>
 				    <ul class="dropdown-menu">
 				      <li class><a href="<?php print get('webURL'). _sh .'admin/noticias/'  ?>">Noticias</a></li>
+
 				      <li><a href="<?php print get('webURL'). _sh .'admin/avisos/' ?>">Avisos</a></li>
+				      <li class="divider"></li>
 				      <li><a href="<?php print get('webURL'). _sh .'admin/galeria/' ?>">Galería</a></li>				      
+				      
 				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Banners</a></li>
 				      <li class="divider"></li>
 				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Administrar clubes</a></li>
