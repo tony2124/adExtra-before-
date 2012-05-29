@@ -46,7 +46,7 @@ if(isset($URL['tipo']))
 				'cancelImg': '<?php print path("www/lib/uploadify/cancel.png",true) ?>',
 				'folder': '<?php print _spath . "/IMAGENES/clubes/" . $URL["club"] . _sh .$URL["album"] . _sh ?>',
 				'buttonText': 'Selecciona fotos',
-				'script': '<?php print get("webURL") . _sh . "admin/subir" ?>',
+				'script': '<?php print get("webURL") . _sh . "admin/subir/" . $URL['tipo'] ._sh. $URL['club'] . _sh . $URL['album'] ?>',
 				'multi': true,
 				'simUploadLimit': 1
 		});
@@ -192,6 +192,11 @@ if(isset($URL['tipo']))
 	    </td>
 	  </tr>
    </table>
+   <p>&nbsp;</p>
+   <form method="post" action="<?php print get('webURL'). _sh . 'admin/subir/' . $URL['tipo'] ._sh. $URL['club'] . _sh . $URL['album'] ?>" enctype="multipart/form-data">
+   	<input type="file" name="Filedata">
+   	<input type="submit"> 
+   </form>
    <p>&nbsp;</p>
    <table align="center" width="330" style="background: #EEE;">
 		<tr>

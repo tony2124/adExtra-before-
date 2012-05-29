@@ -341,26 +341,27 @@ class Admin_Controller extends ZP_Controller {
 	 
 	}
 
-	public function subir()
+	public function subir($tipo, $club, $album)
 	{
-	 // if (!empty($_FILES)) {
+	 if (!empty($_FILES)) {
 	  	$tempFile = $_FILES['Filedata']['tmp_name'];
-	  	$targetPath = _spath. _sh . 'IMAGENES/clubes/5/2012020308362668/';
+	  	$targetPath = _spath. _sh . 'IMAGENES/clubes/' . $club. _sh . $album . _sh;
 	  	$name = $_FILES['Filedata']['name'];
 	  	$ext = explode(".",$name);				 		
 	  	$id = date("YmdHis").rand(0,100).rand(0,100);
 	  	$name = $id.".".$ext[1];
-	  	
+
 	  	$targetFile = $targetPath . $name;  	
 	  	move_uploaded_file($tempFile,$targetFile);
 	  	
 	  	$this->createThumbs($targetPath, $name, $targetPath."thumbs/",200);
-	  	/*
-	  	$this->Admin_Model->insertarFoto();
-	  	 $query = "insert into galeria values('$id','$name','$album','".date("Y-m-d")."','0')";
+	  	$this->Admin_Model->insertarFoto($id, $name, $album);
+	  	
+	  	redirect(get('webURL') . _sh . 'admin/galeria/'. $tipo . _sh . $club . _sh . $album);
+	  	/* $query = "insert into galeria values('$id','$name','$album','".date("Y-m-d")."','0')";
 	  			mysql_query($query) or die(mysql_error());
 	  	*/
-	  //}
+	 }
 
 	}
 

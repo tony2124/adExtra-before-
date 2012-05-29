@@ -220,6 +220,15 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 
+	public function insertarFoto($id, $name, $album)
+	{
+		$fecha = date("Y-m-d");
+		$admin = SESSION('id_admin');
+		$query = "insert into galeria (id_imagen, nombre_imagen, id_album, fecha_modificacion, id_administrador, pie) values('$id', '$name', '$album', '$fecha', $admin, '')";
+		$this->Db->query($query);
+		return $query;
+	}
+
 	public function getAlumnoInscrito($folio)
 	{
 		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where folio = '$folio'");

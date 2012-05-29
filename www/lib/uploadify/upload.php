@@ -40,7 +40,7 @@ if (!empty($_FILES)) {
 	
 	createThumbs($targetPath, $name, $targetPath."/thumbs/",200);
 	
-	 $query = "insert into galeria values('$id','$name','$album','".date("Y-m-d")."','0')";
+	$query = "insert into galeria values('$id','$name','$album','".date("Y-m-d")."','0')";
 			mysql_query($query) or die(mysql_error());
 }
 echo "1";
