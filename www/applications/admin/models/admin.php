@@ -156,7 +156,7 @@ class Admin_Model extends ZP_Model {
 	{
 		$query = "insert into noticias(id_noticias, nombre_noticia, texto_noticia, imagen_noticia, fecha_modificacion, hora, id_administrador)
 		 				values ('$vars[id_noticias]','$vars[nombre_noticia]','$vars[texto_noticia]','$vars[imagen_noticia]','$vars[fecha_modificacion]','$vars[hora]',$vars[id_administrador])";
-
+		$this->acentos();
 		$this->Db->query($query);
 		return $query;
 

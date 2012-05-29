@@ -224,7 +224,7 @@ class Admin_Controller extends ZP_Controller {
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$nombre = POST('name');
+		$nombre = $_POST['name'];
 		$texto = $_POST['texto']; //porque necesito el código en formato HTML NO FORMATEADO
 
 		$cadena = str_replace( "'", "\"", $texto);
@@ -338,7 +338,6 @@ class Admin_Controller extends ZP_Controller {
 	      imagecopyresized( $tmp_img, $img, 0, 0, 0, 0, $new_width, $new_height, $width, $height );
 	      imagejpeg( $tmp_img, "{$pathToThumbs}{$image}" );
 	    }
-	 
 	}
 
 	public function subir()

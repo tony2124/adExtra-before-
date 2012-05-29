@@ -46,7 +46,7 @@ if(isset($URL['tipo']))
 				'cancelImg': '<?php print path("www/lib/uploadify/cancel.png",true) ?>',
 				'folder': '<?php print _spath . "/IMAGENES/clubes/" . $URL["club"] . _sh .$URL["album"] . _sh ?>',
 				'buttonText': 'Selecciona fotos',
-				'script': '<?php print get("webURL") . _sh . "admin/subir" ?>',
+				'script': 'uploadify.php<?php //print //get("webURL") . _sh . "admin/subir" ?>',
 				'multi': true,
 				'simUploadLimit': 1
 		});
