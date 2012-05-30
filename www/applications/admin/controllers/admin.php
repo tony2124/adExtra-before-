@@ -323,46 +323,6 @@ class Admin_Controller extends ZP_Controller {
 		redirect($url);
 	}
 
-
-	public function createThumbs( $pathToImages, $image, $pathToThumbs, $thumbWidth ) 
-	{
-	    $info = pathinfo($pathToImages . $image);
-	    if ( strtolower($info['extension']) == 'jpg' ) 
-	    {
-	      $img = imagecreatefromjpeg( "{$pathToImages}{$image}" );
-	      $width = imagesx( $img );
-	      $height = imagesy( $img );
-	      $new_width = $thumbWidth;
-	      $new_height = floor( $height * ( $thumbWidth / $width ) );
-	      $tmp_img = imagecreatetruecolor( $new_width, $new_height );
-	      imagecopyresized( $tmp_img, $img, 0, 0, 0, 0, $new_width, $new_height, $width, $height );
-	      imagejpeg( $tmp_img, "{$pathToThumbs}{$image}" );
-	    }
-	}
-
-	public function subir()
-	{
-	 // if (!empty($_FILES)) {
-	  	$tempFile = $_FILES['Filedata']['tmp_name'];
-	  	$targetPath = _spath. _sh . 'IMAGENES/clubes/5/2012020308362668/';
-	  	$name = $_FILES['Filedata']['name'];
-	  	$ext = explode(".",$name);				 		
-	  	$id = date("YmdHis").rand(0,100).rand(0,100);
-	  	$name = $id.".".$ext[1];
-	  	
-	  	$targetFile = $targetPath . $name;  	
-	  	move_uploaded_file($tempFile,$targetFile);
-	  	
-	  	$this->createThumbs($targetPath, $name, $targetPath."thumbs/",200);
-	  	/*
-	  	$this->Admin_Model->insertarFoto();
-	  	 $query = "insert into galeria values('$id','$name','$album','".date("Y-m-d")."','0')";
-	  			mysql_query($query) or die(mysql_error());
-	  	*/
-	  //}
-
-	}
-
 	public function formRegistroPromotor()
 	{
 		$vars['clubes'] = $this->Admin_Model->getClubes();
