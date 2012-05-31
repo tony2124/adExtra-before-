@@ -26,11 +26,21 @@ if(isset($URL['tipo']))
 <script type="text/javascript" src="<?php print path("www/lib/fancybox/jquery.mousewheel-3.0.4.pack.js",true) ?>"></script>
 <script type="text/javascript" src="<?php print path("www/lib/fancybox/jquery.fancybox-1.3.4.pack.js",true) ?>"></script>
 <link rel="stylesheet" type="text/css" href="<?php print path("www/lib/fancybox/jquery.fancybox-1.3.4.css",true); ?>" media="screen" />
-<script type="text/javascript" src="<?php print path("www/lib/uploadify/jquery.uploadify.js",true) ?>"></script>
-<link type="text/css" rel="stylesheet" href="<?php print path("www/lib/uploadify/uploadify.css",true) ?>"  />
+<script type="text/javascript" src="<?php print path("www/lib/uploadify/jquery.uploadify-3.1.min.js",true) ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php print path("www/lib/uploadify/uploadify.css",true) ?>">
+
 
 <script type="text/javascript">
 	$(document).ready(function() {
+
+		<?php if(isset($URL['album'])) { ?>
+		  $('#file_upload').uploadify({
+		        'swf'      : '<?php print path("www/lib/uploadify/uploadify.swf",true) ?>',
+		        'uploader' : '<?php print path("www/lib/uploadify/uploadify.php",true) ?>',
+		        'method'   : 'post',
+    			'formData' : { 'album' : '<?php print $URL["album"] ?>', 'club' : '<?php print $URL["club"] ?>', 'tipo' : '<?php print $URL["tipo"] ?>' }
+		    });
+		<?php } ?>
 
 		$("a[rel=galeria]").fancybox({
 			'transitionIn'		: 'elastic',
@@ -40,17 +50,7 @@ if(isset($URL['tipo']))
 					return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
 						}
 		});
-		<?php if(isset($URL['album'])) { ?>
-		$("#fileUpload").fileUpload({
-				'uploader': '<?php print path("www/lib/uploadify/uploader.swf",true) ?>',
-				'cancelImg': '<?php print path("www/lib/uploadify/cancel.png",true) ?>',
-				'folder': '<?php print _spath . "/IMAGENES/clubes/" . $URL["club"] . _sh .$URL["album"] . _sh ?>',
-				'buttonText': 'Selecciona fotos',
-				'script': '<?php print get("webURL") . _sh . "admin/subir" ?>',
-				'multi': true,
-				'simUploadLimit': 1
-		});
-		<?php } ?>
+
 	});
 </script>
 
@@ -192,20 +192,16 @@ if(isset($URL['tipo']))
 	    </td>
 	  </tr>
    </table>
+  <!-- <p>&nbsp;</p>
+   <form method="post" action="<?php print get('webURL'). _sh . 'admin/subir/' . $URL['tipo'] ._sh. $URL['club'] . _sh . $URL['album'] ?>" enctype="multipart/form-data">
+   	<input type="file" name="Filedata">
+   	<input type="submit"> 
+   </form>-->
    <p>&nbsp;</p>
    <table align="center" width="330" style="background: #EEE;">
 		<tr>
 			<td>
-				<input name="fileUpload" id="fileUpload" type="file" />
-				<a href="javascript:$('#fileUpload').fileUploadStart()">
-					Subir
-				</a> | 
-				<a href="javascript:$('#fileUpload').fileUploadClearQueue()">
-					Limpiar
-				</a> |
-				<a href="<?php echo "index.php?bloque=sitio&opcion=fotografias&tipo=$tipo&club=$club&album=$album" ?>">
-					Actualizar
-				</a>
+				<input type="file" name="file_upload" id="file_upload" />
 			</td>
 		</tr>
 	</table>

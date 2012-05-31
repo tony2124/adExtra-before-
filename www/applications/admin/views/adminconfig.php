@@ -143,11 +143,11 @@
         <div class="controls">
     <!-- -->  <input type="text" name="email" class="input-xlarge" id="input06"  value="<?php print $datosAdmin[0]['correo_electronico'] ?>">
         </div><hr>
-        <label class="control-label" for="input07">Profeción</label>
+        <label class="control-label" for="input07">Profesión</label>
         <div class="controls">
     <!-- -->  <input type="text" name="profe" class="input-xlarge" id="input07"  value="<?php print $datosAdmin[0]['profesion_administrador'] ?>">
         </div><br>
-        <label class="control-label" for="input08">Abreviatura de la profeción</label>
+        <label class="control-label" for="input08">Abreviatura de la profesión</label>
         <div class="controls">
     <!-- -->  <input type="text" name="abrevi" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['abreviatura_profesion'] ?>">
         </div><br>

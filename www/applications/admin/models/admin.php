@@ -156,7 +156,7 @@ class Admin_Model extends ZP_Model {
 	{
 		$query = "insert into noticias(id_noticias, nombre_noticia, texto_noticia, imagen_noticia, fecha_modificacion, hora, id_administrador)
 		 				values ('$vars[id_noticias]','$vars[nombre_noticia]','$vars[texto_noticia]','$vars[imagen_noticia]','$vars[fecha_modificacion]','$vars[hora]',$vars[id_administrador])";
-
+		$this->acentos();
 		$this->Db->query($query);
 		return $query;
 
@@ -216,6 +216,15 @@ class Admin_Model extends ZP_Model {
 		$query = "insert into promotores (usuario_promotor, contrasena_promotor, nombre_promotor, apellido_paterno_promotor, apellido_materno_promotor, id_club, sexo_promotor, fecha_nacimiento_promotor, fecha_registro_promotor, correo_electronico_promotor, telefono_promotor, ocupacion_promotor, direccion_promotor)
 				values('$vars[user]', '$vars[pass]', '$vars[nombre]' ,'$vars[ap]','$vars[am]', $vars[club],  $vars[sexo],  '$vars[fecha_nac]', '$vars[fecha_reg]', '$vars[email]','$vars[tel]' ,'$vars[ocupacion]',  '$vars[direccion]')";
 		//$this->acentos();
+		$this->Db->query($query);
+		return $query;
+	}
+
+	public function insertarFoto($id, $name, $album)
+	{
+		$fecha = date("Y-m-d");
+		$admin = SESSION('id_admin');
+		$query = "insert into galeria (id_imagen, nombre_imagen, id_album, fecha_modificacion, id_administrador, pie) values('$id', '$name', '$album', '$fecha', $admin, '')";
 		$this->Db->query($query);
 		return $query;
 	}
