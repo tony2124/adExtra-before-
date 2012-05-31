@@ -584,17 +584,18 @@ class Admin_Controller extends ZP_Controller {
 			$array = array("actual" => "1");
  		else if($estado == 'noVigente')
  			$array = array("actual" => "0");
- 		$this->Admin_Model->setCampo("administradores",$array,SESSION('id_admin'));
+ 		$this->Admin_Model->setCampos("administradores",$array,SESSION('id_admin'));
  		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
  	}
 
  	public function editaAdmin ()
  	{
- 		/*$array = array();
- 		$datosAdmin = $this->Admin_Model->getAdminData(SESSION('id_admin'));
- 		if(POST('lastpass') == $datosAdmin['contrasena_administrador'])
+ 		$datosAdmin = $this->Admin_Model->getCampos();
+ 		//$datosAdmin = $this->Admin_Model->getAdminData(SESSION('id_admin'));
+ 		if(POST('lastpass') == $datosAdmin[0]['contrasena_administrador'])
  		{
- 			$array += array(
+ 			$array = array(
+ 				"usuario_administrador" =>POST('usuario'),
 	 			"nombre_administrador" => POST('nombre'),
 	 			"apellido_paterno_administrador" => POST('adminAP'),
 	 			"apellido_materno_administrador" => POST('adminAM'),
@@ -603,12 +604,14 @@ class Admin_Controller extends ZP_Controller {
 	 			"abreviatura_profesion" => POST('abrevi'),
 	 			"direccion_administrador" => POST('direc')
 	 			);
-	 		$this->Admin_Model->setCampo("administradores",$array,SESSION('id_admin'));
+ 			if(POST('newpass1'))
+ 			{
+ 				$array += array(
+ 					"contrasena_administrador" => POST('newpass1')
+ 					);
+ 			}
+	 		$this->Admin_Model->setCampos("administradores",$array,SESSION('id_admin'));
  		}
- 		else
- 		{
-
- 		}*/
  		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
  	}
 

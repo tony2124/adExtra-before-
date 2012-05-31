@@ -225,8 +225,16 @@ class Admin_Model extends ZP_Model {
 		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where folio = '$folio'");
 	}
 
-	public function setCampo($tabla, $campos, $ID)
+	public function setCampos($tabla, $campos, $ID)
 	{
 		$this->Db->update($tabla, $campos, $ID);
+	}
+
+	public function getCampos($tabla,$campos,$where)
+	{
+		$this->Db->select($campos);
+		$this->Db->from($tabla);
+		$this->Db->where($where);
+		return $this->Db->get();
 	}
 }
