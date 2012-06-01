@@ -16,7 +16,7 @@
           input06: { required: true, email: true}
         },
         messages: {
-          input06: { required: "Este campo es obligatorio", minlength: "Ingrese un correo electrónico válido"}
+          input06: { required: "Este campo es obligatorio", email: "Ingrese un correo electrónico válido"}
         }
 
       });
@@ -153,7 +153,7 @@
         </div><br>
         <label class="control-label" for="input08">Dirección</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="direc" class="input-xlarge" id="input08"  value="<?php print $datosAdmin[0]['direccion_administrador'] ?>">
+    <!-- -->  <input type="text" name="direc" class="input-xlarge" id="input09"  value="<?php print $datosAdmin[0]['direccion_administrador'] ?>">
         </div>
       </div>
     </form> 

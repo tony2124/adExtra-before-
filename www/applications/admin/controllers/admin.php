@@ -542,12 +542,12 @@ class Admin_Controller extends ZP_Controller {
 
  	public function editaAdmin ()
  	{
- 		$datosAdmin = $this->Admin_Model->getCampos();
+ 		$datosAdmin = $this->Admin_Model->getCampos("administradores","contrasena_administrador","id_administrador = ".SESSION('id_admin'));
  		//$datosAdmin = $this->Admin_Model->getAdminData(SESSION('id_admin'));
  		if(POST('lastpass') == $datosAdmin[0]['contrasena_administrador'])
  		{
  			$array = array(
- 				"usuario_administrador" =>POST('usuario'),
+ 				"usuario_administrador" => POST('usuario'),
 	 			"nombre_administrador" => POST('nombre'),
 	 			"apellido_paterno_administrador" => POST('adminAP'),
 	 			"apellido_materno_administrador" => POST('adminAM'),
