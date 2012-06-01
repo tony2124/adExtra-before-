@@ -7,6 +7,7 @@ if(isset($clubes))
 	}
 
 if(isset($albumes))
+	if($albumes!=NULL)
 	foreach ($albumes as $album) {
 		if($URL['album'] == $album['id_album']){
 			$URL['album_nombre'] = $album['nombre_album']; break;
@@ -28,7 +29,6 @@ if(isset($URL['tipo']))
 <link rel="stylesheet" type="text/css" href="<?php print path("www/lib/fancybox/jquery.fancybox-1.3.4.css",true); ?>" media="screen" />
 <script type="text/javascript" src="<?php print path("www/lib/uploadify/jquery.uploadify-3.1.min.js",true) ?>"></script>
 <link rel="stylesheet" type="text/css" href="<?php print path("www/lib/uploadify/uploadify.css",true) ?>">
-
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -110,7 +110,7 @@ if(isset($URL['tipo']))
 	<option <?php ($URL['tipo']=='0') ? print 'selected="selected"' : NULL ?> value="0">GENERAL</option>
 </select> 
 <br><br>
-<?php }	if(isset($clubes)  && !isset($URL['album'])) { ?>
+<?php }	if(isset($clubes)  && !isset($URL['album']) && $clubes[0]['id_club']!=0) { ?>
 	<label>CLUB</label>
 	<select id="club" name="club" onchange="location.href='<?php print get('webURL'). _sh .'admin/galeria/'.$URL['tipo'].'/'?>'+document.getElementById('club').value" >
 		<option value="">:::Selecciona un club:::</option>
@@ -119,10 +119,19 @@ if(isset($URL['tipo']))
 	<?php } ?>
 	</select>
 	<p>&nbsp;</p>
+	
  <?php } 
 
    if(isset($albumes) && !isset($URL['album'])) 
-   {
+   { ?>
+	
+	<a href="#crearAlbum" data-toggle="modal" class="btn btn-primary" rel="tooltip" title="Crear un álbum">
+		<i class="icon-edit icon-white"></i>
+	</a>
+	<p>&nbsp;</p>
+
+<?php
+	if($albumes!=NULL)
 		foreach ($albumes as $album) 
 		{ ?>
 			<a href="<?php print get('webURL'). _sh . 'admin/galeria'. _sh . $URL['tipo']. _sh . $URL['club'] . _sh . $album['id_album'] ?>">
@@ -134,8 +143,9 @@ if(isset($URL['tipo']))
 			</a>
 			<a title="Eliminar álbum <?php print $album['nombre_album'] ?>" onclick="eliminarAlbum(<?php echo $album['id_album'].",".$tipo.",'".$club['id_club']."'" ?>)" href="#">
 				<img style="width: 20px; height: 20px; float: left; margin-left: -30px;" src="<?php print path('www/lib/images/eliminar.gif',true) ?>" /> 
-			</a>		
-<?php 	}	
+			</a>	
+<?php	} 
+	
 	} 
 
 	if(isset($URL['album'])) { ?>
@@ -193,19 +203,14 @@ if(isset($URL['tipo']))
 	  </tr>
    </table>
   <!-- <p>&nbsp;</p>
-   <form method="post" action="<?php print get('webURL'). _sh . 'admin/subir/' . $URL['tipo'] ._sh. $URL['club'] . _sh . $URL['album'] ?>" enctype="multipart/form-data">
+   <form method="post" action="<?php //print get('webURL'). _sh . 'admin/subir/' . $URL['tipo'] ._sh. $URL['club'] . _sh . $URL['album'] ?>" enctype="multipart/form-data">
    	<input type="file" name="Filedata">
    	<input type="submit"> 
    </form>-->
    <p>&nbsp;</p>
-   <table align="center" width="330" style="background: #EEE;">
-		<tr>
-			<td>
-				<input type="file" name="file_upload" id="file_upload" />
-			</td>
-		</tr>
-	</table>
-<?php }	?>
+
+   <input type="file" name="file_upload" id="file_upload" />
+	<?php }	?>
 
 <div class="modal hide fade" id="confirmModal">
   <div class="modal-header">
@@ -225,5 +230,23 @@ if(isset($URL['tipo']))
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
     <a href="#" class="btn btn-danger" onclick="$('#elimPromo').submit()">Eliminar</a>
+  </div>
+</div>
+
+<div class="modal hide fade" id="crearAlbum">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Confirmación</h3>
+  </div>
+  <div class="modal-body">
+    <p>Escribe el nombre del álbum</p>
+   
+    <form id="album" method="post" action="<?php print get('webURL')._sh.'admin/crearAlbum/'.$URL['tipo']._sh.$URL['club'] ?>">
+      <input name="nombre_album" type="text">
+    </form> 
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
+    <a href="#" class="btn btn-success" onclick="$('#album').submit()">Crear álbum</a>
   </div>
 </div>
