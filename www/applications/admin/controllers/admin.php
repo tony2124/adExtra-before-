@@ -519,10 +519,10 @@ class Admin_Controller extends ZP_Controller {
  		if(isset($tipo)){
  			if($tipo==0)
  			{
- 				$data[0]['nombre_club'] = '0';
+ 				$data[0]['nombre_club'] = 'GENERAL';
  				$data[0]['id_club'] = '0';
 
- 				 $vars['clubes'] = $data;
+ 				$vars['clubes'] = $data;
  			}
  			else
  			{
