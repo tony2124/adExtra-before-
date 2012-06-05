@@ -10,9 +10,7 @@ class Admin_Model extends ZP_Model {
 	
 	public function __construct() {
 		$this->Db = $this->db();
-		
 		$this->helpers();
-	
 		$this->table = "contacts";
 	}
 
@@ -39,6 +37,12 @@ class Admin_Model extends ZP_Model {
 		$query = "update noticias set texto_noticia = '$texto' where id_noticiaS = 1";
 	    $this->Db->query($query);
 	    return $query;
+	}
+
+	public function crearAlbum($id, $album, $club)
+	{
+		$fec = date("Y-m-d");
+		$this->Db->query("insert into albumes values('$id','$club','$album','$fec','')");
 	}
 
 	public function getPromotores()

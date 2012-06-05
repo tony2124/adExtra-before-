@@ -25,8 +25,10 @@ function createThumbs( $pathToImages, $image, $pathToThumbs, $thumbWidth )
 $tipo = $_POST['tipo'];
 $club = $_POST['club'];
 $album = $_POST['album'];
-$targetFolder = '/Dropbox/extraescolares/IMAGENES/clubes/'.$club.'/'.$album.'/'; // Relative to the root
-mysql_connect("localhost","root","");
+//$targetFolder = '/Dropbox/extraescolares/IMAGENES/clubes/'.$club.'/'.$album.'/'; // Relative to the root 
+//mysql_connect("localhost","root","");
+$targetFolder = '/serviciosextraescolares/IMAGENES/clubes/'.$club.'/'.$album.'/'; 
+mysql_connect("extraescolares.db.7850492.hostedresource.com","extraescolares","Extra2011");
 mysql_select_db("extraescolares");
 
 if (!empty($_FILES)) {

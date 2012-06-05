@@ -323,6 +323,18 @@ class Admin_Controller extends ZP_Controller {
 		redirect($url);
 	}
 
+	function crearAlbum($tipo, $club)
+	{
+		$nombre_album = strtoupper( POST('nombre_album') );
+		$id=uniqid();
+		mkdir(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
+		chmod(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
+		mkdir(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id . '/thumbs', 0777);
+		chmod(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
+		$this->Admin_Model->crearAlbum($id, $nombre_album, $club);
+		redirect(get('webURL')._sh.'admin/galeria/'.$tipo._sh.$club);
+	}
+
 	public function formRegistroPromotor()
 	{
 		$vars['clubes'] = $this->Admin_Model->getClubes();
@@ -505,13 +517,25 @@ class Admin_Controller extends ZP_Controller {
  		$vars['URL']['club'] = $club;
  		$vars['URL']['album'] = $album;
  		if(isset($tipo)){
- 			$data = $this->Admin_Model->getClubes($tipo);
- 			if($data) $vars['clubes'] = $data;
+ 			if($tipo==0)
+ 			{
+ 				$data[0]['nombre_club'] = 'GENERAL';
+ 				$data[0]['id_club'] = '0';
+
+ 				$vars['clubes'] = $data;
+ 			}
+ 			else
+ 			{
+ 				$data = $this->Admin_Model->getClubes($tipo);
+ 				if($data) $vars['clubes'] = $data;
+ 			}
  		} 
 
  		if(isset($club)) {
+
  			$data = $this->Admin_Model->getAlbumes('club',$club);
- 			if($data)	$vars['albumes'] = $data;
+ 			$vars['albumes'] = $data;
+ 			
  		}
  		if(isset($album)){
  			$vars['subalbumes'] = $this->Admin_Model->getAlbumes('album', $album);
