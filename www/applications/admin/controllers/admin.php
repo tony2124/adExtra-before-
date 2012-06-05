@@ -530,12 +530,20 @@ class Admin_Controller extends ZP_Controller {
 
  	public function cambiarEstado ($estado = NULL)
  	{
+ 		$estados = $this->Admin_Model->getCampos("administradores","actual","");
  		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 		if($estado == 'Vigente')
 			$array = array("actual" => "1");
- 		else if($estado == 'noVigente')
+ 		else if($estado == 'noVigente' && $this->Admin_Model->comprobarEstados() >= 2)
  			$array = array("actual" => "0");
+ 		else
+ 		{
+ 			$vars["cambio"] = false;
+ 			$vars = $this->getDatosAdmin(SESSION('id_admin'));
+ 			$vars["view"] = $this->view("adminconfig",true);
+ 			$this->render("content",$vars);
+ 		}
  		$this->Admin_Model->setCampos("administradores",$array,SESSION('id_admin'));
  		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
  	}
@@ -543,7 +551,6 @@ class Admin_Controller extends ZP_Controller {
  	public function editaAdmin ()
  	{
  		$datosAdmin = $this->Admin_Model->getCampos("administradores","contrasena_administrador","id_administrador = ".SESSION('id_admin'));
- 		//$datosAdmin = $this->Admin_Model->getAdminData(SESSION('id_admin'));
  		if(POST('lastpass') == $datosAdmin[0]['contrasena_administrador'])
  		{
  			$array = array(
@@ -573,7 +580,7 @@ class Admin_Controller extends ZP_Controller {
  		$this->render("content",$vars);
  	}
 
- 	private function getDatosAdmin ($id = NULL)
+ 	private function getDatosAdmin ($id)
  	{
  		$datosAdmin = $this->Admin_Model->getAdminData($id);
 		$datosAllAdmin = $this->Admin_Model->getAllAdminData();

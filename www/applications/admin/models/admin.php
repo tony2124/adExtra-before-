@@ -239,11 +239,16 @@ class Admin_Model extends ZP_Model {
 		$this->Db->update($tabla, $campos, $ID);
 	}
 
-	public function getCampos($tabla,$campos,$where)
+	public function getCampos($tabla,$campos,$where = NULL)
 	{
 		$this->Db->select($campos);
 		$this->Db->from($tabla);
 		$this->Db->where($where);
 		return $this->Db->get();
+	}
+
+	public function comprobarEstados()
+	{
+		return $this->Db->countBySQL("actual > 0","administradores");
 	}
 }

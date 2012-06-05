@@ -7,22 +7,11 @@
   <p>Este error se debe a que el ID del administrador no existe</p>
   
 </div>
-<?php }else{ ?>
-<script>
-  $().ready(function() {
-      $("#editarAdmin").validate(
-      {
-        rules: {
-          input06: { required: true, email: true}
-        },
-        messages: {
-          input06: { required: "Este campo es obligatorio", email: "Ingrese un correo electrónico válido"}
-        }
+<?php }else{ 
+  if(isset($cambio))
+    echo "gatogato";
+  ?>
 
-      });
-    });
-  });
-</script>
 <a rel="tooltip" title="Modificar datos del administrador" data-toggle="modal" href="#modalEditarAdmin" class="pull-right"><i class="icon-cog"></i></a>
 <table class="table table-striped table-bordered table-condensed">
   <!-- <thead>
