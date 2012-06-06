@@ -44,7 +44,7 @@ class Admin_Controller extends ZP_Controller {
 		$vars['view'] = $this->view("login",true);
 		$vars['error'] = '0';
 		$this->render("noRightContent", $vars);
-	}
+	} 
 
 	public function editalumno()
 	{

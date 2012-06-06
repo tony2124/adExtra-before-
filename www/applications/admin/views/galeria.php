@@ -104,7 +104,7 @@ if(isset($URL['tipo']))
 <?php if(!isset($URL['album'])) { ?>
 <label>TIPO</label>
 
-<select onchange="if($(this).val()==0) location.href='<?php print get('webURL')._sh.'admin/galeria/0/0' ?>'; else location.href='<?php print get('webURL')._sh.'admin/galeria/' ?>'+$(this).val()"">
+<select onchange="if($(this).val()==0) location.href='<?php print get('webURL')._sh.'admin/galeria/0/0' ?>'; else location.href='<?php print get('webURL')._sh.'admin/galeria/' ?>'+$(this).val()">
 	<option value="">:::Selecciona una opción:::</option>
 	<option <?php ($URL['tipo']=='1') ? print 'selected="selected"' : NULL ?> value="1">DEPORTIVO</option>
 	<option <?php ($URL['tipo']=='2') ? print 'selected="selected"' : NULL ?> value="2">CULTURAL</option>
