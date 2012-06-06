@@ -563,10 +563,11 @@ class Admin_Controller extends ZP_Controller {
  			$array = array("actual" => "0");
  		else
  		{
- 			$vars["cambio"] = false;
  			$vars = $this->getDatosAdmin(SESSION('id_admin'));
+ 			$vars['errorEstado'] = true;
  			$vars["view"] = $this->view("adminconfig",true);
  			$this->render("content",$vars);
+ 			return;
  		}
  		$this->Admin_Model->setCampos("administradores",$array,SESSION('id_admin'));
  		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
@@ -623,7 +624,6 @@ class Admin_Controller extends ZP_Controller {
 		if(!$id) $id = SESSION('id_admin');
 		
 		$vars = $this->getDatosAdmin($id);
-
 		$vars["view"] = $this->view("adminconfig",true);
 		//$vars["view"]['registroAdmin'] = $this->view("registroAdmin",true);
 		$this->render("content",$vars);
