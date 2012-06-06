@@ -25,8 +25,10 @@ function createThumbs( $pathToImages, $image, $pathToThumbs, $thumbWidth )
 $tipo = $_POST['tipo'];
 $club = $_POST['club'];
 $album = $_POST['album'];
+
 $targetFolder = '/Dropbox/extraescolares/IMAGENES/clubes/'.$club.'/'.$album.'/'; // Relative to the root 
 mysql_connect("localhost","root","");
+
 mysql_select_db("extraescolares");
 
 if (!empty($_FILES)) {
@@ -34,7 +36,7 @@ if (!empty($_FILES)) {
 
 	$name = $_FILES['Filedata']['name'];
 	$ext = explode(".",$name);				 		
-	$id = date("YmdHis").rand(0,100).rand(0,100);
+	$id = uniqid(); //date("YmdHis").rand(0,100).rand(0,100);
 	$name = $id.".".$ext[1];
 
 	$targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
@@ -46,6 +48,7 @@ if (!empty($_FILES)) {
 	  
 	if (in_array($fileParts['extension'],$fileTypes)) {
 	    move_uploaded_file($tempFile,$targetFile);
+	    createThumbs($targetPath, $name, $targetPath,800);
 	    createThumbs($targetPath, $name, $targetPath."/thumbs/",200);
 	    $query = "insert into galeria values('$id','$name','$album','".date("Y-m-d")."','1','')";
 	    mysql_query($query) or die(mysql_error());
