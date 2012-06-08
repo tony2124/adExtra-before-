@@ -2,25 +2,18 @@
 $(document).ready(
     function()
     {
-      $('#adminUser').focusout(function()
-        {
-          var valor = document.getElementById('adminUser').value;
-          alert(esPalabra.test(valor));
-          $('.a').append('<a rel="popover" data-toggle="modal" data-content="Esta mal" id="adofAdminUser" data-original-title="Advertencia"><i class="icon-exclamation-sign"></i></a>');
-        }
-      );
+      
     }
   );
 </script>
 
-<form class="form-horizontal" method="post" action="#" id="registroAdmin">
+<form class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/regisAdmin';?>" id="registroAdmin">
   <fieldset>
     <legend>Formulario de registro de nuevo administrador</legend>
     <div class="control-group">
-      <label class="control-label a" for="adminUser">Usuario</label>
+      <label class="control-label" for="adminUser">Usuario</label>
       <div class="controls">
         <input type="text" name="usuario" class="input-xlarge" id="adminUser" required>
-        <a rel="popover" title="Advertencia" data-toggle="modal" data-content="Esta mal" id="adofAdminUser"><i class="icon-exclamation-sign"></i></a>
       </div><br>
       <label class="control-label" for="passUno">Contraseña</label>
       <div class="controls">
@@ -58,11 +51,9 @@ $(document).ready(
       <div class="controls">
         <input type="text" name="abprof" class="input-xlarge" id="input09" required>
       </div><br>
-      
       <div class="controls">
         <input type="submit" class="input-xlarge btn-primary" id="ejeRegAdmin" value="Registrar Administrador">
       </div><br>
     </div>
-
   </fieldset>
 </form>

@@ -11,8 +11,8 @@
 { if (isset($errorEstado) && $errorEstado == true) { ?>
 <div class="alert alert-block alert-error fade in">
 <button class="close" data-dismiss="alert">×</button>
-  <h3>No puedes ausentarte</h3>
-  <p>Por lo menos debe de estar un administrador activo, asigna vigente a otro administrador y podrás ausentarte</p>
+  <h3>No se puede ausentar</h3>
+  <p>Por lo menos debe de estar un administrador activo, asigna vigente a otro administrador y podrá ausentarse</p>
   
 </div>
 <?php } ?>
@@ -76,7 +76,7 @@
 <hr>
 <?php } ?>
 
-<h2>Historial de registro de administradores</h2><hr>
+<h2>Registro de administradores</h2><hr>
 <table>
   <thead align="left">
     <th>Fecha de registro</th>
@@ -92,8 +92,8 @@
       <td width="470"><?php print strtoupper($ad['abreviatura_profesion'].'. '.$ad['nombre_administrador'].' '.$ad['apellido_paterno_administrador'].' '.$ad['apellido_materno_administrador']) ?></td>
       <td class="pull-right">
         <div class="btn-group" data-toggle="buttons-radio">
-          <button class="btn btn-success" data-toggle="btn-ok_<?php print $cI;?>"><i class="icon-ok"></i></button>
-          <button class="btn btn-danger" data-toggle="btn-ok_<?php print $cI;?>"><i class="icon-remove"></i></button>
+          <a <?php if($ad['actual'] == 1) print "class='btn btn-success active'";else print "href='".get('webURL')._sh.'admin/cambiarEstado/Vigente/'.$ad['usuario_administrador']."' class='btn'";?>><i class="icon-ok"></i></a>
+          <a <?php if($ad['actual'] == 0) print "class='btn btn-danger active'";else print "href='".get('webURL')._sh.'admin/cambiarEstado/noVigente/'.$ad['usuario_administrador']."' class='btn'";?>><i class="icon-remove"></i></a>
         </div>
         <!--<a class="btn" data-toggle="collapse" href="#showAdmin_1"><i class="icon-chevron-down"></i></a>-->
       </td>
@@ -174,7 +174,7 @@
         </div><br>
         <label class="control-label" for="input04">Apellido paterno</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="adminAP" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_paterno_administrador'] ?>">
+    <!-- -->  <input type="text" required name="adminAP" class="input-xlarge" id="input04"  value="<?php print $datosAdmin[0]['apellido_paterno_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input04">Apellido materno</label>
         <div class="controls">
@@ -182,7 +182,7 @@
         </div><br>
         <label class="control-label" for="input06">Correo electrónico</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="email" class="input-xlarge" id="input06"  value="<?php print $datosAdmin[0]['correo_electronico'] ?>">
+    <!-- -->  <input type="email" name="email" class="input-xlarge" id="input06"  value="<?php print $datosAdmin[0]['correo_electronico'] ?>" required>
         </div><hr>
         <label class="control-label" for="input07">Profesión</label>
         <div class="controls">
@@ -197,10 +197,10 @@
     <!-- -->  <input type="text" name="direc" class="input-xlarge" id="input09"  value="<?php print $datosAdmin[0]['direccion_administrador'] ?>">
         </div>
       </div>
-    </form> 
   </div>
   <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
-    <button class="btn btn-primary" id="guardarCambios" onclick="$('#editarAdmin').submit()">Guardar cambios</button>
+      <a class="btn" data-dismiss="modal">Cerrar</a>
+      <input type="submit" value="Guardar cambios" class="btn btn-primary" id="guardarCambios">
+    </form>
   </div>
 </div>

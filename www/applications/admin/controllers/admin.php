@@ -552,9 +552,8 @@ class Admin_Controller extends ZP_Controller {
  		$this->render('content', $vars);
  	}
 
- 	public function cambiarEstado ($estado = NULL)
+ 	public function cambiarEstado ($estado = NULL,$userAdmin = NULL)
  	{
- 		$estados = $this->Admin_Model->getCampos("administradores","actual","");
  		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 		if($estado == 'Vigente')
@@ -569,7 +568,8 @@ class Admin_Controller extends ZP_Controller {
  			$this->render("content",$vars);
  			return;
  		}
- 		$this->Admin_Model->setCampos("administradores",$array,SESSION('id_admin'));
+ 		$idAdministrador = $this->Admin_Model->getCampos("administradores","id_administrador","usuario_administrador='$userAdmin'");
+ 		$this->Admin_Model->setCampos("administradores",$array,isset($userAdmin)?$idAdministrador[0]['id_administrador']:SESSION('id_admin'));
  		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
  	}
 
@@ -601,8 +601,15 @@ class Admin_Controller extends ZP_Controller {
 
  	public function regisAdmin()
  	{
- 		$vars['view'] = $this->view("registroAdmin",true);
- 		$this->render("content",$vars);
+ 		$array = array(
+ 			"id_administrador" => POST('passone'),
+ 			"usuario_administrador" => POST('usuario'),
+ 			""
+ 			);
+
+ 		print $array['id_administrador'];
+ 		//$vars['view'] = $this->view("registroAdmin",true);
+ 		//$this->render("content",$vars);
  	}
 
  	private function getDatosAdmin ($id)
