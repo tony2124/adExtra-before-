@@ -106,7 +106,7 @@ class Admin_Model extends ZP_Model {
 
 	public function getData($usuario)
 	{
-		return $this->Db->query("select * from administradores where usuario_administrador = '$usuario'");
+		return $this->Db->query("select * from administradores where usuario_administrador = '$usuario' and actual = true");
 	}
 
 	public function getAdminData($id)
