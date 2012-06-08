@@ -38,7 +38,11 @@ if(isset($URL['tipo']))
 		        'swf'      : '<?php print path("www/lib/uploadify/uploadify.swf",true) ?>',
 		        'uploader' : '<?php print path("www/lib/uploadify/uploadify.php",true) ?>',
 		        'method'   : 'post',
-    			'formData' : { 'album' : '<?php print $URL["album"] ?>', 'club' : '<?php print $URL["club"] ?>', 'tipo' : '<?php print $URL["tipo"] ?>' }
+		        'cancelImg': '<?php print path("www/lib/uploadify/uploadify-cancel.png",true) ?>',
+    			'formData' : { 'album' : '<?php print $URL["album"] ?>', 'club' : '<?php print $URL["club"] ?>', 'tipo' : '<?php print $URL["tipo"] ?>' },
+    			'onQueueComplete' : function(queueData) {
+            		location.href="<?php print get('webURL') . _sh . 'admin/galeria' . _sh .$URL['tipo'] . _sh . $URL['club'] . _sh . $URL['album'] ?>";
+        		}
 		    });
 		<?php } ?>
 
@@ -104,7 +108,7 @@ if(isset($URL['tipo']))
 <?php if(!isset($URL['album'])) { ?>
 <label>TIPO</label>
 
-<select onchange="if($(this).val()==0) location.href='<?php print get('webURL')._sh.'admin/galeria/0/0' ?>'; else location.href='<?php print get('webURL')._sh.'admin/galeria/' ?>'+$(this).val()"">
+<select onchange="if($(this).val()==0) location.href='<?php print get('webURL')._sh.'admin/galeria/0/0' ?>'; else location.href='<?php print get('webURL')._sh.'admin/galeria/' ?>'+$(this).val()">
 	<option value="">:::Selecciona una opción:::</option>
 	<option <?php ($URL['tipo']=='1') ? print 'selected="selected"' : NULL ?> value="1">DEPORTIVO</option>
 	<option <?php ($URL['tipo']=='2') ? print 'selected="selected"' : NULL ?> value="2">CULTURAL</option>
