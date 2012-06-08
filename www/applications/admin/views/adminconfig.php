@@ -70,7 +70,6 @@
         <?php } ?>
       </td>
     </tr>
-
   </tbody>
 </table>
 
@@ -78,28 +77,71 @@
 <?php } ?>
 
 <h2>Historial de registro de administradores</h2><hr>
-<table class="table table-striped ">
-  <thead>
+<table>
+  <thead align="left">
     <th>Fecha de registro</th>
     <th>Usuario</th>
-    <th>Nombre</th>
-    <th>Acción</th>
+    <th>Administrador</th>
+    <th>Vigente</th>
   </thead>
   <tbody>
-    <?php foreach ($allAdmin as $ad) {
-    ?>
+    <?php $cI = 0; foreach ($allAdmin as $ad) { ?>
     <tr>
       <td width="120"><?php print $ad['fecha_registro'] ?></td>
       <td width="200"><?php print $ad['usuario_administrador'] ?></td>
-      <td><?php print strtoupper($ad['nombre_administrador'].' '.$ad['apellido_paterno_administrador'].' '.$ad['apellido_materno_administrador']) ?></td>
-      <td width="50"><a class="btn btn-primary" href="<?php print get('webURL') . _sh . 'admin/adminconfig/'.$ad['id_administrador'] ?>">Ver</a></td>      
+      <td width="470"><?php print strtoupper($ad['abreviatura_profesion'].'. '.$ad['nombre_administrador'].' '.$ad['apellido_paterno_administrador'].' '.$ad['apellido_materno_administrador']) ?></td>
+      <td class="pull-right">
+        <div class="btn-group" data-toggle="buttons-radio">
+          <button class="btn btn-success" data-toggle="btn-ok_<?php print $cI;?>"><i class="icon-ok"></i></button>
+          <button class="btn btn-danger" data-toggle="btn-ok_<?php print $cI;?>"><i class="icon-remove"></i></button>
+        </div>
+        <!--<a class="btn" data-toggle="collapse" href="#showAdmin_1"><i class="icon-chevron-down"></i></a>-->
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" data-toggle="collapse" href="#showAdmin_<?php print $cI;?>">
+        <a class="icon-chevron-down pull-right" rel="tooltip" title="Mostrar datos"></a>
+      </td>
     </tr>
     <tr>
       <td colspan="4">
-        <hr>
+        <div id="showAdmin_<?php print $cI;?>" class="collapse out">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <th width="200">Nombre</th>
+                <td><?php print $ad['nombre_administrador'] ?></td>
+              </tr>
+              <tr>
+                <th>Apellido paterno</th>
+                <td><?php print $ad['apellido_paterno_administrador'] ?></td>
+              </tr>
+              <tr>
+                <th>Apellido materno</th>
+                <td><?php print $ad['apellido_materno_administrador'] ?></td>
+              </tr>
+              <tr>
+                <th>Profesión</th>
+                <td><?php print $ad['profesion_administrador'] ?></td>
+              </tr>
+              <tr>
+                <th>Abreviatura de la profesión</th>
+                <td><?php print $ad['abreviatura_profesion'] ?></td>
+              </tr>
+              <tr>
+                <th>Correo electrónico</th>
+                <td><?php print $ad['correo_electronico'] ?></td>
+              </tr>
+              <tr>
+                <th>Dirección</th>
+                <td><?php print $ad['direccion_administrador'] ?></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </td>
     </tr>
-    <?php } ?>
+    <?php $cI++; } ?>
   </tbody>
 </table>
 
