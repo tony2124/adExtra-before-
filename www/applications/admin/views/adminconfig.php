@@ -7,7 +7,15 @@
   <p>Este error se debe a que el ID del administrador no existe</p>
   
 </div>
-<?php }else{ ?>
+<?php } else 
+{ if (isset($errorEstado) && $errorEstado == true) { ?>
+<div class="alert alert-block alert-error fade in">
+<button class="close" data-dismiss="alert">×</button>
+  <h3>No puedes ausentarte</h3>
+  <p>Por lo menos debe de estar un administrador activo, asigna vigente a otro administrador y podrás ausentarte</p>
+  
+</div>
+<?php } ?>
 
 <a rel="tooltip" title="Modificar datos del administrador" data-toggle="modal" href="#modalEditarAdmin" class="pull-right"><i class="icon-cog"></i></a>
 <table class="table table-striped table-bordered table-condensed">
@@ -84,7 +92,12 @@
       <td width="120"><?php print $ad['fecha_registro'] ?></td>
       <td width="200"><?php print $ad['usuario_administrador'] ?></td>
       <td><?php print strtoupper($ad['nombre_administrador'].' '.$ad['apellido_paterno_administrador'].' '.$ad['apellido_materno_administrador']) ?></td>
-      <td width="50"><a class="btn btn-primary" href="<?php print get('webURL') . _sh . 'admin/adminconfig/'.$ad['id_administrador'] ?>">Ver</a></td>
+      <td width="50"><a class="btn btn-primary" href="<?php print get('webURL') . _sh . 'admin/adminconfig/'.$ad['id_administrador'] ?>">Ver</a></td>      
+    </tr>
+    <tr>
+      <td colspan="4">
+        <hr>
+      </td>
     </tr>
     <?php } ?>
   </tbody>
