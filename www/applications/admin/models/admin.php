@@ -50,6 +50,11 @@ class Admin_Model extends ZP_Model {
 		return $this->Db->query("select * from promotores where eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
 	}
 
+	public function getEditPromotor($id)
+	{
+		return $this->Db->query("select * from promotores where eliminado_promotor = false and usuario_promotor = '$id'");
+	}
+
 	public function getConfiguracion()
 	{
 		return $data = $this->Db->query("select * from configuracion");
@@ -223,6 +228,17 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query($query);
 		return $query;
 	}
+
+	public function updatePromotor($vars)
+	{
+		
+		$query = "update promotores set contrasena_promotor = '$vars[pass]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
+		//$this->acentos();
+		$this->Db->query($query);
+		return $query;
+	}
+
+	
 
 	public function insertarFoto($id, $name, $album)
 	{
