@@ -374,7 +374,7 @@ class Admin_Controller extends ZP_Controller {
 
 	public function editProm()
 	{
-		//$vars['user'] = POST('user');
+		$vars['usuario'] = POST('user');
 		$vars['pass'] = POST('pass');
 		$vars['nombre'] = POST('nombre');
 		$vars['ap'] = POST('ap');
@@ -389,7 +389,7 @@ class Admin_Controller extends ZP_Controller {
 		$vars['direccion'] = POST('direccion');
 		$vars['ocupacion'] = POST('ocupacion');
 		//____($vars);
-		print $this->Admin_Model->regPromotor($vars);
+		print $this->Admin_Model->updatePromotor($vars);
 		redirect(get('webURL'). _sh . 'admin/promotores');
 	}
 

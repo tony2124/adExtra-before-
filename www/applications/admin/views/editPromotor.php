@@ -33,7 +33,7 @@ $().ready(function() {
 <style type="text/css">
   label.error { color: red; display: inline; margin-left: 10px;}
 </style>
- <form id="registropromotor" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editProm' ?>">
+ <form id="registropromotor" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editProm/'.$promotor['usuario_promotor'] ?>">
     <fieldset>
       <legend>Edición de promotor</legend>
       <div class="well">
