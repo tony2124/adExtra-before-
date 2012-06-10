@@ -601,15 +601,78 @@ class Admin_Controller extends ZP_Controller {
 
  	public function regisAdmin()
  	{
- 		$array = array(
- 			"id_administrador" => POST('passone'),
- 			"usuario_administrador" => POST('usuario'),
- 			""
- 			);
-
- 		print $array['id_administrador'];
- 		//$vars['view'] = $this->view("registroAdmin",true);
- 		//$this->render("content",$vars);
+ 		$this->sessionOn();
+ 		$vars['date'] = date("Y-m-d");
+ 		if(POST('btnSubmit'))
+ 		{
+ 			//Explainer
+ 			/*	Array( 0 , 1 , 2 , n)
+ 			(value,	=> x , x , x , x
+			compare,=> x , x , x , x
+			min,	=> x , x , x , x
+			max,	=> x , x , x , x
+			expreg,	=> x , x , x , x
+			tabla,	=> x , x , x , x
+			columna)=> x , x , x , x
+ 			*/
+ 			$getPost = array(
+ 				0 => array(POST('usuario'),NULL,6,25,"/^[A-Za-z]{4}[A-Za-z0-9]*$/","administradores","usuario_administrador")
+ 				);
+ 			$campos = array(
+ 				0 => array("usuario_administrador","Usuario"),
+ 				1 => array("contrasena_administrador","Contraseña"),
+ 				2 => array("nombre_administrador","Nombre"),
+ 				3 => array("apellido_paterno_administrador","Apellido paterno"),
+ 				4 => array("apellido_materno_administrador","Apellido materno"),
+ 				5 => array("correo_electronico","E-mail"),
+ 				6 => array("direccion_administrador","Dirección"),
+ 				7 => array("profesion_administrador","Profesión"),
+ 				8 => array("abreviatura_profesion","Abreviatura")
+ 				);
+ 			$array = array();
+ 			if(!$vars['regAdminError'] = ($this->Admin_Model->isValid($getPost[0])))
+ 			{
+ 				$array += array($campos[0][0] => $getPost[0][0] );
+ 				/*if(!$vars['regAdminError'] = ($this->Admin_Model->isValid(POST('passone'),POST('passtwo'))))
+ 				{
+ 					$array += array("contrasena_administrador" => POST('passone'));
+ 					if(!$vars['regAdminError'] = ($this->Admin_Model->isValid(POST('nombre'))))
+ 					{
+ 						$array += array("nombre_administrador" => POST('nombre'));
+ 					}
+ 					else
+ 					{
+ 						$vars['regAdminError'] = "Nombre: ".$vars['regAdminError'];
+ 					}
+ 				}
+ 				else
+ 				{
+ 					$vars['regAdminError'] = "Contraseña: ".$vars['regAdminError'];
+ 				}*/
+ 			}
+ 			else
+ 			{
+ 				$vars['regAdminError'] = $campos[0][1].": ".$vars['regAdminError'];
+ 			}
+	 		$array += array(
+	 			/*"contrasena_administrador" => POST('passone'),
+	 			"nombre_administrador" => POST('nombre'),
+	 			"apellido_paterno_administrador" => POST('apepat'),
+	 			"apellido_materno_administrador" => POST('apemat'),
+	 			"correo_electronico" => POST('email'),
+	 			"direccion_administrador" => POST('direccion'),
+	 			"profesion_administrador" => POST('prof'),*/
+	 			"fecha_registro" => $vars['date'],
+	 			"abreviatura_profesion" => POST('abprof'),
+	 			"actual" => 1,
+	 			"eliminado" => 0,
+	 			"tipo_administrador" => 1
+	 			);
+	 		if(!$vars['regAdminError'])
+	 			$vars['success'] = $this->Admin_Model->setRow("administradores",$array);
+	 	}
+ 		$vars['view'] = $this->view("registroAdmin",true);
+ 		$this->render("content",$vars);
  	}
 
  	private function getDatosAdmin ($id)
@@ -621,6 +684,12 @@ class Admin_Controller extends ZP_Controller {
 		$vars['allAdmin'] = $datosAllAdmin;
 
 		return $vars;
+ 	}
+
+ 	private function sessionOn()
+ 	{
+ 		if (!SESSION('user_admin'))
+			return redirect(get('webURL') . _sh .'admin/login');
  	}
 
  	public function adminconfig($id = NULL)

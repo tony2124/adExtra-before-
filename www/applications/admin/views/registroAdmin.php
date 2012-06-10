@@ -7,6 +7,16 @@ $(document).ready(
   );
 </script>
 
+<?php
+  if(isset($date))
+    print "Hora del servidor ".$date;
+  if(isset($success))
+    print "success";
+
+  if(isset($regAdminError))
+    print $regAdminError;
+?>
+
 <form class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/regisAdmin';?>" id="registroAdmin">
   <fieldset>
     <legend>Formulario de registro de nuevo administrador</legend>
@@ -27,32 +37,32 @@ $(document).ready(
       <div class="controls">
         <input type="text" name="nombre" class="input-xlarge" id="adminNombre" required>
       </div><br>
-      <label class="control-label" for="input04">Apellido paterno</label>
+      <label class="control-label" for="adminap">Apellido paterno</label>
       <div class="controls">
-        <input type="text" name="ap" class="input-xlarge" id="input04" required>
+        <input type="text" name="apepat" class="input-xlarge" id="adminap" required>
       </div><br>
-      <label class="control-label" for="input05">Apellido materno</label>
+      <label class="control-label" for="adminam">Apellido materno</label>
       <div class="controls">
-        <input type="text" name="am" class="input-xlarge" id="input05" required>
+        <input type="text" name="apemat" class="input-xlarge" id="adminam" required>
       </div><br>
       <label class="control-label" for="adminEmail">Correo electrónico</label>
       <div class="controls">
         <input type="email" name="email" class="input-xlarge" id="adminEmail" required>
       </div><br>
-      <label class="control-label" for="input07">Dirección</label>
+      <label class="control-label" for="admindir">Dirección</label>
       <div class="controls">
-        <input type="text" name="direccion" class="input-xlarge" id="input07" required>
+        <input type="text" name="direccion" class="input-xlarge" id="admindir" required>
       </div><br>
-      <label class="control-label" for="input08">Profesión</label>
+      <label class="control-label" for="adminpro">Profesión</label>
       <div class="controls">
-        <input type="text" name="prof" class="input-xlarge" id="input08" required>
+        <input type="text" name="prof" class="input-xlarge" id="adminpro" required>
       </div><br>
-      <label class="control-label" for="input09">Abreviatura de la profesión</label>
+      <label class="control-label" for="adminabr">Abreviatura de la profesión</label>
       <div class="controls">
-        <input type="text" name="abprof" class="input-xlarge" id="input09" required>
+        <input type="text" name="abprof" class="input-xlarge" id="adminabr" required>
       </div><br>
       <div class="controls">
-        <input type="submit" class="input-xlarge btn-primary" id="ejeRegAdmin" value="Registrar Administrador">
+        <input type="submit" name="btnSubmit" class="input-xlarge btn-primary" id="ejeRegAdmin" value="Registrar Administrador">
       </div><br>
     </div>
   </fieldset>

@@ -243,6 +243,11 @@ class Admin_Model extends ZP_Model {
 		$this->Db->update($tabla, $campos, $ID);
 	}
 
+	public function setRow($tabla,$datos)
+	{
+		return $this->Db->insert($tabla,$datos);
+	}
+
 	public function getCampos($tabla,$campos,$where = NULL)
 	{
 		$this->Db->select($campos);
@@ -254,5 +259,36 @@ class Admin_Model extends ZP_Model {
 	public function comprobarEstados()
 	{
 		return $this->Db->countBySQL("actual > 0","administradores");
+	}
+
+	public function isValid ($argumentos) 
+	{
+		if($argumentos[1])
+			if($argumentos[0] != $argumentos[1])
+			{
+				return "No coinciden los valores";
+			}
+		if($argumentos[2])
+			if(strlen($argumentos[0]) < $argumentos[2])
+			{
+				return "Demasiado corto, ingrese un valor de tamaño mayor o igual que ".$argumentos[2];
+			}
+		if($argumentos[3])
+			if(strlen($argumentos[0]) > $argumentos[3])
+			{
+				return "Demasiado largo, ingrese un valor de tamaño menor o igual que ".$argumentos[2];
+			}
+		if($argumentos[4])
+			if(!preg_match($argumentos[4], $argumentos[0]))
+			{
+				return "Valor del campo no valido, introdusca un valor aceptable";
+			}
+		if($argumentos[5] && $argumentos[6])
+		{	
+			if($this->getCampos($argumentos[5],$argumentos[6],$argumentos[6]."='".$argumentos[0]."'"))
+			{
+				return "Ya existe uno igual, elija otro por favor";
+			}
+		}
 	}
 }
