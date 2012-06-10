@@ -8,14 +8,18 @@ $(document).ready(
 </script>
 
 <?php
-  if(isset($date))
-    print "Hora del servidor ".$date;
-  if(isset($success))
-    print "success";
+if(isset($success))
+  print "success";
+if(isset($regAdminError))
+{
+  $error = explode(":",$regAdminError); ?>
+<div class="alert alert-block alert-error fade in">
+<button class="close" data-dismiss="alert">×</button>
+  <h3><?php print $error[0];?></h3>
+  <p><?php print $error[1];?></p>
+</div>
 
-  if(isset($regAdminError))
-    print $regAdminError;
-?>
+<?php } ?>
 
 <form class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/regisAdmin';?>" id="registroAdmin">
   <fieldset>
@@ -67,3 +71,7 @@ $(document).ready(
     </div>
   </fieldset>
 </form>
+<?php
+if(isset($date))
+    print "Fecha del servidor ".$date;
+?>

@@ -616,7 +616,15 @@ class Admin_Controller extends ZP_Controller {
 			columna)=> x , x , x , x
  			*/
  			$getPost = array(
- 				0 => array(POST('usuario'),NULL,6,25,"/^[A-Za-z]{4}[A-Za-z0-9]*$/","administradores","usuario_administrador")
+ 				0 => array(POST('usuario'),NULL,6,25,"/^[A-Za-z]{4}[A-Za-z0-9]*$/","administradores","usuario_administrador"),	//4 letras iniciales seguidas de numeros o letras
+ 				1 => array(POST('passone'),POST('passtwo'),6,25,"/^[[:graph:]]*$/",NULL,NULL), //Cualquier caracter exepto espacio
+ 				2 => array(POST('nombre'),NULL,NULL,25,"/^[A-Za-z]*$/",NULL,NULL),
+ 				3 => array(POST('apepat'),NULL,NULL,25,"/^[A-Za-z]*$/",NULL,NULL),
+ 				4 => array(POST('apemat'),NULL,NULL,25,"/^[A-Za-z]*$/",NULL,NULL),
+ 				5 => array(POST('email'),NULL,NULL,45,"/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/","administradores","correo_electronico"),
+ 				6 => array(POST('dirección'),NULL,NULL,100,"/^[[:ascii:]]*$/",NULL,NULL),
+ 				7 => array(POST('prof'),NULL,NULL,45,"/^[[:ascii:]]*$/",NULL,NULL),
+ 				8 => array(POST('abprof'),NULL,NULL,40,"/^[[:ascii:]]*$/",NULL,NULL)
  				);
  			$campos = array(
  				0 => array("usuario_administrador","Usuario"),
@@ -630,40 +638,22 @@ class Admin_Controller extends ZP_Controller {
  				8 => array("abreviatura_profesion","Abreviatura")
  				);
  			$array = array();
- 			if(!$vars['regAdminError'] = ($this->Admin_Model->isValid($getPost[0])))
+ 			$i = 0;
+ 			while ($i < count($getPost))
  			{
- 				$array += array($campos[0][0] => $getPost[0][0] );
- 				/*if(!$vars['regAdminError'] = ($this->Admin_Model->isValid(POST('passone'),POST('passtwo'))))
- 				{
- 					$array += array("contrasena_administrador" => POST('passone'));
- 					if(!$vars['regAdminError'] = ($this->Admin_Model->isValid(POST('nombre'))))
- 					{
- 						$array += array("nombre_administrador" => POST('nombre'));
- 					}
- 					else
- 					{
- 						$vars['regAdminError'] = "Nombre: ".$vars['regAdminError'];
- 					}
- 				}
- 				else
- 				{
- 					$vars['regAdminError'] = "Contraseña: ".$vars['regAdminError'];
- 				}*/
- 			}
- 			else
- 			{
- 				$vars['regAdminError'] = $campos[0][1].": ".$vars['regAdminError'];
+ 				if(!$vars['regAdminError'] = ($this->Admin_Model->isValid($getPost[$i])))
+	 			{
+	 				$array += array($campos[$i][0] => $getPost[$i][0] );
+	 			}
+	 			else
+	 			{
+	 				$vars['regAdminError'] = $campos[$i][1].": ".$vars['regAdminError'];
+	 				break;
+	 			}
+	 			$i++;
  			}
 	 		$array += array(
-	 			/*"contrasena_administrador" => POST('passone'),
-	 			"nombre_administrador" => POST('nombre'),
-	 			"apellido_paterno_administrador" => POST('apepat'),
-	 			"apellido_materno_administrador" => POST('apemat'),
-	 			"correo_electronico" => POST('email'),
-	 			"direccion_administrador" => POST('direccion'),
-	 			"profesion_administrador" => POST('prof'),*/
 	 			"fecha_registro" => $vars['date'],
-	 			"abreviatura_profesion" => POST('abprof'),
 	 			"actual" => 1,
 	 			"eliminado" => 0,
 	 			"tipo_administrador" => 1
