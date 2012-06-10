@@ -57,7 +57,7 @@ function promotor(usuario, name)
         <td><?php print $promotor['ocupacion_promotor']?></td>
         <td><?php print $promotor['direccion_promotor'].' Teléfono: '.$promotor['telefono_promotor'] ?></td>
         <td>
-          <a rel="tooltip" title="Editar" href="<?php print get('webURL'). _sh . 'admin/editPromotor' ?>">
+          <a rel="tooltip" title="Editar" href="<?php print get('webURL'). _sh . 'admin/formEdicionPromotor/'.$promotor['usuario_promotor'] ?>">
             <i class="icon-edit"></i>
           </a>
           <a rel="tooltip" title="Eliminar" class="pull-right" onclick="promotor('<?php print $promotor['usuario_promotor'] ?>','<?php print strtoupper($promotor['apellido_paterno_promotor'].' '.$promotor['apellido_materno_promotor'].' '.$promotor['nombre_promotor'])  ?>')" data-toggle="modal" href="#confirmModal">

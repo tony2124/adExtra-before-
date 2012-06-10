@@ -50,6 +50,11 @@ class Admin_Model extends ZP_Model {
 		return $this->Db->query("select * from promotores where eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
 	}
 
+	public function getEditPromotor($id)
+	{
+		return $this->Db->query("select * from promotores where eliminado_promotor = false and usuario_promotor = '$id'");
+	}
+
 	public function getConfiguracion()
 	{
 		return $data = $this->Db->query("select * from configuracion");

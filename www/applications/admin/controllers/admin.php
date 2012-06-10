@@ -342,9 +342,39 @@ class Admin_Controller extends ZP_Controller {
 		$this->render('content', $vars);
 	}
 
+	public function formEdicionPromotor($id)
+	{
+		$data = $this->Admin_Model->getEditPromotor($id);
+		$vars['promotor'] = $data[0];
+		$vars['clubes'] = $this->Admin_Model->getClubes();
+		$vars['view'] = $this->view('editPromotor', true);
+		$this->render('content', $vars);
+	}
+
 	public function regProm()
 	{
 		$vars['user'] = POST('user');
+		$vars['pass'] = POST('pass');
+		$vars['nombre'] = POST('nombre');
+		$vars['ap'] = POST('ap');
+		$vars['am'] = POST('am');
+		$vars['fecha_nac'] = POST('fecha_nac');
+		$vars['fecha_reg'] = date("Y-m-d");
+		$vars['sexo'] = POST('sexo');
+		$vars['club'] = POST('club');
+		$vars['sexo'] = POST('sexo');
+		$vars['email'] = POST('email');
+		$vars['tel'] = POST('tel');
+		$vars['direccion'] = POST('direccion');
+		$vars['ocupacion'] = POST('ocupacion');
+		//____($vars);
+		print $this->Admin_Model->regPromotor($vars);
+		redirect(get('webURL'). _sh . 'admin/promotores');
+	}
+
+	public function editProm()
+	{
+		//$vars['user'] = POST('user');
 		$vars['pass'] = POST('pass');
 		$vars['nombre'] = POST('nombre');
 		$vars['ap'] = POST('ap');
@@ -608,8 +638,8 @@ class Admin_Controller extends ZP_Controller {
  			);
 
  		print $array['id_administrador'];
- 		//$vars['view'] = $this->view("registroAdmin",true);
- 		//$this->render("content",$vars);
+ 		$vars['view'] = $this->view("registroAdmin",true);
+ 		$this->render("content",$vars);
  	}
 
  	private function getDatosAdmin ($id)

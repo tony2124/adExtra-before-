@@ -13,14 +13,14 @@
 		<link href="<?php print path("vendors/css/frameworks/bootstrapnew/css/bootstrap.min.css", "zan"); ?>" rel="stylesheet">
 		<?php //print $this->getCSS(); ?>
 		<link href="<?php print path("vendors/css/frameworks/bootstrapnew/css/bootstrap-responsive.min.css", "zan"); ?>" rel="stylesheet">
-		<link href="<?php print path("vendors/css/frameworks/smoothness/jquery-ui-1.8.16.custom.css", "zan"); ?>" rel="stylesheet">
+		<link href="<?php print path("vendors/css/frameworks/smoothness/jquery-ui-1.8.21.custom.css", "zan"); ?>" rel="stylesheet">
 		
-		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script src="<?php print path("www/lib/scripts/ouwScript.js","www") ?>"></script>
-		<script src="<?php print path("vendors/js/jquery-1.7.1.min.js","zan") ?>"></script>
+		<script src="<?php print path("vendors/js/jquery-1.7.2.min.js","zan") ?>"></script>
 		<script src="<?php print path("vendors/css/frameworks/bootstrapnew/js/bootstrap.min.js", "zan"); ?>"></script>
 		<script src="<?php print path("vendors/js/jquery.validate.js","zan") ?>"></script>
-		<script src="<?php print path("vendors/js/jquery-ui-1.7.2.custom.min.js","zan") ?>"></script>
+		<script src="<?php print path("vendors/js/jquery-ui-1.8.21.custom.min.js","zan") ?>"></script>
 		
 		<style>
 	      body {
