@@ -7,11 +7,13 @@ $(document).ready(
   );
 </script>
 
-<?php
-if(isset($success))
-  print "success";
-if(isset($regAdminError))
-{
+<?php if(isset($success)) { ?>
+<div class="well">
+<button class="close" data-dismiss="alert">×</button>
+  <h3>Registro finalizado</h3>
+  <p>Los datos fueron validados y aceptados, el registro se realizó satisfactoriamente.</p>
+</div>
+<?php } if(isset($regAdminError)) {
   $error = explode(":",$regAdminError); ?>
 <div class="alert alert-block alert-error fade in">
 <button class="close" data-dismiss="alert">×</button>
@@ -21,7 +23,7 @@ if(isset($regAdminError))
 
 <?php } ?>
 
-<form class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/regisAdmin';?>" id="registroAdmin">
+<form class="form-horizontal" accept-charset="UTF-8" method="post" action="<?php print get('webURL')._sh.'admin/regisAdmin';?>" id="registroAdmin">
   <fieldset>
     <legend>Formulario de registro de nuevo administrador</legend>
     <div class="control-group">

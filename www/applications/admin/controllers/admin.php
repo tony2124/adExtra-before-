@@ -616,15 +616,15 @@ class Admin_Controller extends ZP_Controller {
 			columna)=> x , x , x , x
  			*/
  			$getPost = array(
- 				0 => array(POST('usuario'),NULL,6,25,"/^[A-Za-z]{4}[A-Za-z0-9]*$/","administradores","usuario_administrador"),	//4 letras iniciales seguidas de numeros o letras
- 				1 => array(POST('passone'),POST('passtwo'),6,25,"/^[[:graph:]]*$/",NULL,NULL), //Cualquier caracter exepto espacio
- 				2 => array(POST('nombre'),NULL,NULL,25,"/^[A-Za-z]*$/",NULL,NULL),
- 				3 => array(POST('apepat'),NULL,NULL,25,"/^[A-Za-z]*$/",NULL,NULL),
- 				4 => array(POST('apemat'),NULL,NULL,25,"/^[A-Za-z]*$/",NULL,NULL),
- 				5 => array(POST('email'),NULL,NULL,45,"/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/","administradores","correo_electronico"),
- 				6 => array(POST('dirección'),NULL,NULL,100,"/^[[:ascii:]]*$/",NULL,NULL),
- 				7 => array(POST('prof'),NULL,NULL,45,"/^[[:ascii:]]*$/",NULL,NULL),
- 				8 => array(POST('abprof'),NULL,NULL,40,"/^[[:ascii:]]*$/",NULL,NULL)
+ 				0 => array(utf8_encode(POST('usuario')),NULL,6,25,"/^[A-Za-z][A-Za-z0-9]*$/","administradores","usuario_administrador"),	//4 letras iniciales seguidas de numeros o letras
+ 				1 => array(utf8_encode(POST('passone')),utf8_encode(POST('passtwo')),6,25,NULL,NULL,NULL), //Cualquier caracter exepto espacio
+ 				2 => array(utf8_encode(POST('nombre')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
+ 				3 => array(utf8_encode(POST('apepat')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
+ 				4 => array(utf8_encode(POST('apemat')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
+ 				5 => array(utf8_encode(POST('email')),NULL,NULL,45,"/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/","administradores","correo_electronico"),
+ 				6 => array(utf8_encode(POST('direccion')),NULL,NULL,100,"/^[[:ascii:]]*$/i",NULL,NULL),
+ 				7 => array(utf8_encode(POST('prof')),NULL,NULL,45,"/^[[:ascii:]]*$/i",NULL,NULL),
+ 				8 => array(utf8_encode(POST('abprof')),NULL,NULL,40,"/^[[:ascii:]]*$/i",NULL,NULL)
  				);
  			$campos = array(
  				0 => array("usuario_administrador","Usuario"),
@@ -643,7 +643,7 @@ class Admin_Controller extends ZP_Controller {
  			{
  				if(!$vars['regAdminError'] = ($this->Admin_Model->isValid($getPost[$i])))
 	 			{
-	 				$array += array($campos[$i][0] => $getPost[$i][0] );
+	 				$array += array($campos[$i][0] => utf8_decode($getPost[$i][0]) );
 	 			}
 	 			else
 	 			{
