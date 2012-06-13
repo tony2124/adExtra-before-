@@ -580,9 +580,9 @@ class Admin_Controller extends ZP_Controller {
  		{
  			$datos = array(
  				0 => array(utf8_encode(POST('newpass1')),utf8_encode(POST('newpass2')),6,25,NULL,NULL,NULL),
- 				1 => array(utf8_encode(POST('nombre')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
- 				2 => array(utf8_encode(POST('adminAP')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
- 				3 => array(utf8_encode(POST('adminAM')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
+ 				1 => array(utf8_encode(POST('nombre')),NULL,NULL,25,"/^([A-Z][a-záéíóúñ]+([[:space:]][A-Z][a-záéíóúñ]+)*|[A-ZÁÉÍÓÚÑ]+([[:space:]][A-ZÁÉÍÓÚÑ]+)*)$/",NULL,NULL),
+ 				2 => array(utf8_encode(POST('adminAP')),NULL,NULL,25,"/^([A-Z][a-záéíóúñ]+([[:space:]][A-Z][a-záéíóúñ]+)*|[A-ZÁÉÍÓÚÑ]+([[:space:]][A-ZÁÉÍÓÚÑ]+)*)$/",NULL,NULL),
+ 				3 => array(utf8_encode(POST('adminAM')),NULL,NULL,25,"/^([A-Z][a-záéíóúñ]+([[:space:]][A-Z][a-záéíóúñ]+)*|[A-ZÁÉÍÓÚÑ]+([[:space:]][A-ZÁÉÍÓÚÑ]+)*)$/",NULL,NULL),
  				4 => array(utf8_encode(POST('email')),NULL,NULL,45,"/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/","administradores","correo_electronico"),
  				5 => array(utf8_encode(POST('direc')),NULL,NULL,100,"/^[[:ascii:]]*$/i",NULL,NULL),
  				6 => array(utf8_encode(POST('profe')),NULL,NULL,45,"/^[[:ascii:]]*$/i",NULL,NULL),
@@ -630,8 +630,7 @@ class Admin_Controller extends ZP_Controller {
  			if(!$vars['adminUpdate'])
 	 			$this->Admin_Model->setCampos("administradores",$array,SESSION('id_admin'));
  		}
- 		if(!$vars['adminUpdate'])
- 			$vars = $this->getDatosAdmin(SESSION('id_admin'));
+ 		$vars = $this->getDatosAdmin(SESSION('id_admin'),$vars);
 		$vars["view"] = $this->view("adminconfig",true);
 		$this->render("content",$vars);
  	}
@@ -655,9 +654,9 @@ class Admin_Controller extends ZP_Controller {
  			$getPost = array(
  				0 => array(utf8_encode(POST('usuario')),NULL,6,25,"/^[A-Za-z][A-Za-z0-9]*$/","administradores","usuario_administrador"),	//4 letras iniciales seguidas de numeros o letras
  				1 => array(utf8_encode(POST('passone')),utf8_encode(POST('passtwo')),6,25,NULL,NULL,NULL), //Cualquier caracter exepto espacio
- 				2 => array(utf8_encode(POST('nombre')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
- 				3 => array(utf8_encode(POST('apepat')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
- 				4 => array(utf8_encode(POST('apemat')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
+ 				2 => array(utf8_encode(POST('nombre')),NULL,NULL,25,"/^([A-Z][a-záéíóúñ]+([[:space:]][A-Z][a-záéíóúñ]+)*|[A-ZÁÉÍÓÚÑ]+([[:space:]][A-ZÁÉÍÓÚÑ]+)*)$/",NULL,NULL),
+ 				3 => array(utf8_encode(POST('apepat')),NULL,NULL,25,"/^([A-Z][a-záéíóúñ]+([[:space:]][A-Z][a-záéíóúñ]+)*|[A-ZÁÉÍÓÚÑ]+([[:space:]][A-ZÁÉÍÓÚÑ]+)*)$/",NULL,NULL),
+ 				4 => array(utf8_encode(POST('apemat')),NULL,NULL,25,"/^([A-Z][a-záéíóúñ]+([[:space:]][A-Z][a-záéíóúñ]+)*|[A-ZÁÉÍÓÚÑ]+([[:space:]][A-ZÁÉÍÓÚÑ]+)*)$/",NULL,NULL),
  				5 => array(utf8_encode(POST('email')),NULL,NULL,45,"/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/","administradores","correo_electronico"),
  				6 => array(utf8_encode(POST('direccion')),NULL,NULL,100,"/^[[:ascii:]]*$/i",NULL,NULL),
  				7 => array(utf8_encode(POST('prof')),NULL,NULL,45,"/^[[:ascii:]]*$/i",NULL,NULL),
@@ -702,7 +701,7 @@ class Admin_Controller extends ZP_Controller {
  		$this->render("content",$vars);
  	}
 
- 	private function getDatosAdmin ($id)
+ 	private function getDatosAdmin ($id,$vars = NULL)
  	{
  		$datosAdmin = $this->Admin_Model->getAdminData($id);
 		$datosAllAdmin = $this->Admin_Model->getAllAdminData();
