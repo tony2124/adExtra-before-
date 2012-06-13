@@ -15,6 +15,12 @@
   <p>Por lo menos debe de estar un administrador activo, asigna vigente a otro administrador y podrá ausentarse</p>
   
 </div>
+<?php } if(isset($adminUpdate)) { $textos = explode(":",$adminUpdate);?>
+<div class="alert alert-block alert-error fade in">
+<button class="close" data-dismiss="alert">×</button>
+  <h3><?php print $textos[0];?></h3>
+  <p><?php print $textos[1];?></p>
+</div>
 <?php } ?>
 
 <a rel="tooltip" title="Modificar datos del administrador" data-toggle="modal" href="#modalEditarAdmin" class="pull-right"><i class="icon-cog"></i></a>
@@ -156,7 +162,7 @@
       <div class="control-group">
         <label class="control-label" for="input01">Usuario</label>
         <div class="controls">
-    <!-- -->  <input type="text" name="usuario" class="input-xlarge" id="input01" value="<?php print $datosAdmin[0]['usuario_administrador'] ?>">
+    <!-- -->  <input type="text" name="usuario" disabled class="input-xlarge" id="input01" value="<?php print $datosAdmin[0]['usuario_administrador'] ?>">
         </div><br>
         <label class="control-label" for="input02">Contraseña <a rel="popover" data-content="Actual: Ingresa la vieja contraseña <br> Nueva: Ingresa una nueva contraseña <br> Re-nueva: Vuelve a ingresar la nueva contraseña" data-original-title="AYUDA"><i class="icon-exclamation-sign"></i></a></label>
         <div class="controls">
@@ -200,7 +206,7 @@
   </div>
   <div class="modal-footer">
       <a class="btn" data-dismiss="modal">Cerrar</a>
-      <input type="submit" value="Guardar cambios" class="btn btn-primary" id="guardarCambios">
+      <input type="submit" value="Guardar cambios" name="guardarCambios" class="btn btn-primary" id="guardarCambios">
     </form>
   </div>
 </div>

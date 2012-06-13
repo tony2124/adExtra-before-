@@ -554,8 +554,7 @@ class Admin_Controller extends ZP_Controller {
 
  	public function cambiarEstado ($estado = NULL,$userAdmin = NULL)
  	{
- 		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
+ 		$this->sessionOn();
 		if($estado == 'Vigente')
 			$array = array("actual" => "1");
  		else if($estado == 'noVigente' && $this->Admin_Model->comprobarEstados() >= 2)
@@ -575,28 +574,66 @@ class Admin_Controller extends ZP_Controller {
 
  	public function editaAdmin ()
  	{
+ 		//$this->sessionOn();
  		$datosAdmin = $this->Admin_Model->getCampos("administradores","contrasena_administrador","id_administrador = ".SESSION('id_admin'));
- 		if(POST('lastpass') == $datosAdmin[0]['contrasena_administrador'])
+ 		if(POST('guardarCambios'))
  		{
- 			$array = array(
- 				"usuario_administrador" => POST('usuario'),
-	 			"nombre_administrador" => POST('nombre'),
-	 			"apellido_paterno_administrador" => POST('adminAP'),
-	 			"apellido_materno_administrador" => POST('adminAM'),
-	 			"correo_electronico" => POST('email'),
-	 			"profesion_administrador" => POST('profe'),
-	 			"abreviatura_profesion" => POST('abrevi'),
-	 			"direccion_administrador" => POST('direc')
-	 			);
- 			if(POST('newpass1'))
+ 			$datos = array(
+ 				0 => array(utf8_encode(POST('newpass1')),utf8_encode(POST('newpass2')),6,25,NULL,NULL,NULL),
+ 				1 => array(utf8_encode(POST('nombre')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
+ 				2 => array(utf8_encode(POST('adminAP')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
+ 				3 => array(utf8_encode(POST('adminAM')),NULL,NULL,25,"/^[a-záéíóúñ]+([[:space:]][a-záéíóúñ]+)*$/i",NULL,NULL),
+ 				4 => array(utf8_encode(POST('email')),NULL,NULL,45,"/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/","administradores","correo_electronico"),
+ 				5 => array(utf8_encode(POST('direc')),NULL,NULL,100,"/^[[:ascii:]]*$/i",NULL,NULL),
+ 				6 => array(utf8_encode(POST('profe')),NULL,NULL,45,"/^[[:ascii:]]*$/i",NULL,NULL),
+ 				7 => array(utf8_encode(POST('abrevi')),NULL,NULL,40,"/^[[:ascii:]]*$/i",NULL,NULL)
+ 				);
+
+ 			$campos = array(
+ 				0 => array("contrasena_administrador","Contraseña"),
+ 				1 => array("nombre_administrador","Nombre"),
+ 				2 => array("apellido_paterno_administrador","Apellido paterno"),
+ 				3 => array("apellido_materno_administrador","Apellido materno"),
+ 				4 => array("correo_electronico","E-mail"),
+ 				5 => array("direccion_administrador","Dirección"),
+ 				6 => array("profesion_administrador","Profesión"),
+ 				7 => array("abreviatura_profesion","Abreviatura")
+ 				);
+ 			$array = array();
+ 			$i = 1;
+ 			while ($i < count($datos))
  			{
- 				$array += array(
- 					"contrasena_administrador" => POST('newpass1')
- 					);
+ 				if(!$vars['adminUpdate'] = ($this->Admin_Model->isValid($datos[$i])))
+	 			{
+	 				$array += array($campos[$i][0] => utf8_decode($datos[$i][0]) );
+	 			}
+	 			else
+	 			{
+	 				$vars['adminUpdate'] = $campos[$i][1].": Al modificar - ".$vars['adminUpdate'];
+	 				break;
+	 			}
+	 			$i++;
  			}
-	 		$this->Admin_Model->setCampos("administradores",$array,SESSION('id_admin'));
+ 			if(!$vars['adminUpdate'] && POST('lastpass') && (POST('lastpass') == $datosAdmin[0]['contrasena_administrador']))
+ 			{
+ 				//if(POST('lastpass') != $datosAdmin[0]['contrasena_administrador'])
+ 					//$vars['adminUpdate'] = "Contraseña actual: La contraseña introducida no es correcta, favor de verificar.";
+ 				if(!$vars['adminUpdate'] = $this->Admin_Model->isValid($datos[0]))
+ 				{
+ 					$array += array($campos[0][0] => utf8_decode($datos[0][0]));
+ 				}
+ 				else
+ 				{
+ 					$vars['adminUpdate'] = $campos[0][1].": Al modificar - ".$vars['adminUpdate'];
+ 				}
+ 			}
+ 			if(!$vars['adminUpdate'])
+	 			$this->Admin_Model->setCampos("administradores",$array,SESSION('id_admin'));
  		}
- 		return redirect(get('webURL') .  _sh .'admin/adminconfig/');
+ 		if(!$vars['adminUpdate'])
+ 			$vars = $this->getDatosAdmin(SESSION('id_admin'));
+		$vars["view"] = $this->view("adminconfig",true);
+		$this->render("content",$vars);
  	}
 
  	public function regisAdmin()
