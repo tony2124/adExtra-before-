@@ -19,6 +19,11 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("SET NAMES 'utf8'");
 	}
 
+	public function updateLiberacion($vars)
+	{
+		$this->Db->query("update configuracion set fecha_inicio_inscripcion = '$vars[ins_ini]', fecha_fin_inscripcion = '$vars[ins_fin]', fecha_inicio_liberacion = '$vars[lib_ini]', fecha_fin_liberacion = '$vars[lib_fin]', periodo = '$vars[periodo]', numero_clubes_periodo = '$vars[nper]'");
+	}
+
 	public function updateRes($acred, $folio, $obs, $fl)
 	{
 		//$this->acentos();

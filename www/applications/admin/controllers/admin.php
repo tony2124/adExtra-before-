@@ -219,6 +219,18 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/noticias');
 	}
 
+	public function updateLiberacion()
+	{
+		$vars['ins_ini'] = POST('ins_ini');
+		$vars['ins_fin'] = POST('ins_fin');
+		$vars['lib_ini'] = POST('lib_ini');
+		$vars['lib_fin'] = POST('lib_fin');
+		$vars['periodo'] = POST('periodo');
+		$vars['nper'] = POST('nper');
+		$this->Admin_Model->updateLiberacion($vars);
+		redirect(get('webURL')._sh.'admin/configLiberacion');
+	}
+
 	public function modnoticia($id_not)
 	{
 		if (!SESSION('user_admin'))
