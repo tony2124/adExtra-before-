@@ -40,6 +40,12 @@
 				duration: 'normal',
 				changeMonth: true,
                 changeYear: true });
+			   $( ".selectorFechaInicio" ).datepicker({ 
+				dateFormat: 'yy-mm-dd',  
+				showAnim: 'explode',
+				duration: 'normal',
+				changeMonth: true,
+                changeYear: true });
 			});
 		 </script>
 	</head>

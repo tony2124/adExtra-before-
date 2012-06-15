@@ -4,11 +4,11 @@
     <div class="control-group">
       <label class="control-label" for="ins_ini">Fecha de inicio</label>
       <div class="controls">
-        <input type="text" class="selectorFecha" name="ins_ini" class="input-xlarge" id="ins_ini" value="<?php print $config['fecha_inicio_inscripcion'] ?>">
+        <input type="text" class="selectorFechaInicio" name="ins_ini" class="input-xlarge" id="ins_ini" value="<?php print $config['fecha_inicio_inscripcion'] ?>">
       </div><br>
       <label class="control-label" for="ins_fin">Fecha de fin</label>
       <div class="controls">
-        <input type="text" class="selectorFecha" name="ins_fin" class="input-xlarge" id="ins_fin" value="<?php print $config['fecha_fin_inscripcion'] ?>">
+        <input type="text" class="selectorFechaInicio" name="ins_fin" class="input-xlarge" id="ins_fin" value="<?php print $config['fecha_fin_inscripcion'] ?>">
       </div><br>
       <label class="control-label" for="nclubes">No. de clubes por periodo</label>
       <div class="controls">
@@ -23,11 +23,11 @@
      <div class="control-group">
       <label class="control-label" for="lib_ini">Fecha de inicio</label>
       <div class="controls">
-        <input type="text" class="selectorFecha" name="lib_ini" class="input-xlarge" id="lib_ini" value="<?php print $config['fecha_inicio_liberacion'] ?>">
+        <input type="text" class="selectorFechaInicio" name="lib_ini" class="input-xlarge" id="lib_ini" value="<?php print $config['fecha_inicio_liberacion'] ?>">
       </div><br>
       <label class="control-label" for="lib_fin">Fecha de fin</label>
       <div class="controls">
-        <input type="text" class="selectorFecha" name="lib_fin" class="input-xlarge" id="lib_fin" value="<?php print $config['fecha_fin_liberacion'] ?>">
+        <input type="text" class="selectorFechaInicio" name="lib_fin" class="input-xlarge" id="lib_fin" value="<?php print $config['fecha_fin_liberacion'] ?>">
       </div><br>
       <label class="control-label" for="periodo">Periodo de liberación</label>
       <div class="controls">
