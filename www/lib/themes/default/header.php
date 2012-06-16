@@ -51,10 +51,11 @@
 	</head>
 
 	<body>
-		<?php if(SESSION('user_admin')) { ?>
+		
 		<div class="navbar navbar-fixed-top">
 	      <div class="navbar-inner">
 	        <div class="container">
+	        	<?php if(SESSION('user_admin')) { ?>
 	          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
@@ -130,9 +131,10 @@
 		            </ul>
 		          </div>
 	          </div><!--/.nav-collapse -->
+	            <?php } ?>
 	        </div>
 	      </div>
 	    </div>
-		<?php } ?>
+	
 		<div class="container">
 			<div class="row">

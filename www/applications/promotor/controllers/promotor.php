@@ -32,6 +32,11 @@ class Promotor_Controller extends ZP_Controller {
 		$this->render('content', $vars);
 	}
 
+	public function promotor()
+	{
+		$vars['view'] = $this->view('content', true);
+	}
+
 	public function iniciarsesion()
 	{
 		if(SESSION('usuario_promotor')) redirect(get('webURL')._sh.'promotor');

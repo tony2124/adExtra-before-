@@ -50,6 +50,7 @@ $().ready(function() {
           <label class="control-label" for="user">Usuario</label>
           <div class="controls">
               <span class="input-xlarge uneditable-input"><?php print $promotor['usuario_promotor'] ?></span>
+              <input type="hidden" name="user" value="<?php print $promotor['usuario_promotor'] ?>">
           </div><br>
           <label class="control-label" for="pass">Contraseña</label>
           <div class="controls">
