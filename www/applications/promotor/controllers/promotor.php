@@ -2,6 +2,8 @@
 /**
  * Access from index.php:
  */
+include(_corePath . _sh .'/libraries/funciones/funciones.php');
+
 if(!defined("_access")) {
 	die("Error: You don't have permission to access here...");
 }
@@ -20,7 +22,8 @@ class Promotor_Controller extends ZP_Controller {
 	
 	public function index() {	
 		if(!SESSION('usuario_promotor')) redirect(get('webURL')._sh.'promotor/login');
-		$vars['view'] = $this->view('show', true);
+		$vars['alumnos'] = $this->Promotor_Model->getAlumnos(SESSION('id_club'),periodo_actual());
+		$vars['view'] = $this->view('liberarAlumnos', true);
 		$this->render('content', $vars);
 	}
 
@@ -49,8 +52,8 @@ class Promotor_Controller extends ZP_Controller {
 		{
 			SESSION('usuario_promotor', $data[0]['usuario_promotor']);
 			SESSION('nombre_promotor', $data[0]['nombre_promotor']);
-			SESSION('ap_promotor', $data[0]['ap_promotor']);
-			SESSION('am_promotor', $data[0]['am_promotor']);
+			SESSION('ap_promotor', $data[0]['apellido_paterno_promotor']);
+			SESSION('am_promotor', $data[0]['apellido_materno_promotor']);
 			SESSION('id_club', $data[0]['id_club']);
 			SESSION('email', $data[0]['correo_electronico_promotor']);
 			redirect(get('webURL')._sh.'promotor');
@@ -62,6 +65,12 @@ class Promotor_Controller extends ZP_Controller {
 			$this->render('content', $vars);
 		}
 		
+	}
+
+	public function salirSesion()
+	{
+		unsetSessions();
+		redirect(get('webURL')._sh.'promotor');
 	}
 
 }

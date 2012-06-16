@@ -1,5 +1,6 @@
 <hr>
 <div class="span3">
+	<br><br><br>
 	<?php if($error=='1') { ?>
 	<div class="alert alert-error">
 		 <a class="close" data-dismiss="alert" href="#">×</a>

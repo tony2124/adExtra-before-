@@ -17,5 +17,10 @@ class Promotor_Model extends ZP_Model {
 	{
 		return $this->Db->query("select * from promotores where usuario_promotor = '$user' and eliminado_promotor=false");
 	}
+
+	public function getAlumnos($id_club, $periodo)
+	{
+		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where id_club = '$id_club' and periodo = '$periodo' order by apellido_paterno_alumno asc, apellido_materno_alumno asc, nombre_alumno asc");
+	}
 	
 }
