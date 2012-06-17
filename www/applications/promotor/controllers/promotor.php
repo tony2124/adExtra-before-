@@ -22,7 +22,8 @@ class Promotor_Controller extends ZP_Controller {
 	
 	public function index() {	
 		if(!SESSION('usuario_promotor')) redirect(get('webURL')._sh.'promotor/login');
-		$vars['alumnos'] = $this->Promotor_Model->getAlumnos(SESSION('id_club'),periodo_actual());
+		$conf = $this->Promotor_Model->getConfiguracion();
+		$vars['alumnos'] = $this->Promotor_Model->getAlumnos(SESSION('id_club'),$conf[0]['periodo']);
 		$vars['view'] = $this->view('liberarAlumnos', true);
 		$this->render('content', $vars);
 	}
@@ -33,11 +34,6 @@ class Promotor_Controller extends ZP_Controller {
 		$vars['error'] = '0';
 		$vars['view'] = $this->view('loginForm', true);
 		$this->render('content', $vars);
-	}
-
-	public function promotor()
-	{
-		$vars['view'] = $this->view('content', true);
 	}
 
 	public function iniciarsesion()
@@ -71,6 +67,26 @@ class Promotor_Controller extends ZP_Controller {
 	{
 		unsetSessions();
 		redirect(get('webURL')._sh.'promotor');
+	}
+
+	public function acreditando()
+	{
+		if(!SESSION('usuario_promotor')) redirect(get('webURL')._sh.'promotor/login');
+		$conf = $this->Promotor_Model->getConfiguracion();
+		$vars['id_creador'] = SESSION('usuario_promotor');
+
+		$i = 0;
+		while($i < POST('na')){
+			$vars['folio'] = POST('folio'.$i);
+			$vars['res'] = POST('res'.$i);
+			
+			$vars['nombre_operacion'] = 'Actualizacion a '.$vars['res'].' al folio '.$vars['folio'];
+			$this->Promotor_Model->setResultado($vars);
+			$this->Promotor_Model->operacion($vars);
+			$i++;
+		}
+		redirect(get('webURL')._sh.'promotor');
+
 	}
 
 }

@@ -22,5 +22,20 @@ class Promotor_Model extends ZP_Model {
 	{
 		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras natural join clubes where id_club = '$id_club' and periodo = '$periodo' order by apellido_paterno_alumno asc, apellido_materno_alumno asc, nombre_alumno asc");
 	}
+
+	public function getConfiguracion()
+	{
+		return $this->Db->query("select * from configuracion");
+	}
+
+	public function setResultado($vars)
+	{
+		return $this->Db->query("update inscripciones set acreditado = '$vars[res]' where folio = '$vars[folio]'");
+	}
+
+	public function operacion($vars)
+	{
+		return $this->Db->query("insert into operaciones_administrativas(id_creador, nombre_operacion, fecha_creacion, hora_creacion) values('$vars[id_creador]','$vars[nombre_operacion]','".date('Y-m-d')."','".date('H:i:s')."')");
+	}
 	
 }

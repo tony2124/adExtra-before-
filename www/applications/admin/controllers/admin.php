@@ -62,6 +62,7 @@ class Admin_Controller extends ZP_Controller {
 		$vars['clave'] = POST('clave');
 		
 		$this->Admin_Model->updateAlumno($vars);
+
 		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
