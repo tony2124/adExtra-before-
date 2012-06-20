@@ -35,8 +35,9 @@ function promotor(usuario, name)
   <thead>
     <tr>
       <th>Usuario</th>
-      <th>Contraseña</th>
+      <th>Contr.</th>
       <th>Nombre</th>
+      <th>Club</th>
       <th>Sex</th>
       <th>Correo electrónico</th>
       <th>Edad</th>
@@ -49,8 +50,9 @@ function promotor(usuario, name)
     <?php foreach ($promotores as $promotor) { ?>
       <tr>
         <td><?php print $promotor['usuario_promotor']?></td>
-        <td><?php print $promotor['contrasena_promotor']?></td>
+        <td  align="center"><a href="#" rel="tooltip" title="<?php print $promotor['contrasena_promotor']?>">Ver</a> </td>
         <td><?php print $promotor['apellido_paterno_promotor'].' '.$promotor['apellido_materno_promotor'].' '.$promotor['nombre_promotor'] ?></td>
+        <td><?php print $promotor['nombre_club'] ?></td>
         <td><?php print ($promotor['sexo_promotor'] == 1) ? 'H' : 'M' ?></td>
         <td><?php print $promotor['correo_electronico_promotor'] ?></td>
         <td><?php print edad($promotor['fecha_nacimiento_promotor']) ?></td>

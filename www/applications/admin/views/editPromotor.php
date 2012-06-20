@@ -82,10 +82,12 @@ $().ready(function() {
           <label class="control-label">Club</label>
           <div class="controls">
       <!-- -->  <select name="club" id="club">
-                  <?php foreach ($clubes as $club){
+                  <?php foreach ($clubes as $club){ ?>
 
-                    print '<option value="'.$club['id_club'].'">'.$club['nombre_club'].'</option>';
-                  } ?>
+                    <option <?php if($club['id_club'] == $promotor['id_club']) print 'selected="selected"' ?> value="<?php print $club['id_club'] ?>"> 
+                        <?php print $club['nombre_club'] ?>
+                    </option>
+                <?php  } ?>
                 </select>
           </div><br>
           <label class="control-label" for="email">Correo electrónico</label>

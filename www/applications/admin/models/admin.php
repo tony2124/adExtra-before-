@@ -52,7 +52,7 @@ class Admin_Model extends ZP_Model {
 
 	public function getPromotores()
 	{
-		return $this->Db->query("select * from promotores where eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
+		return $this->Db->query("select * from promotores natural join clubes where eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
 	}
 
 	public function getEditPromotor($id)

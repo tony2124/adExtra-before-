@@ -1,3 +1,4 @@
+<?php if($conf[0]['fecha_inicio_liberacion'] <= fechaactual() && $conf[0]['fecha_fin_liberacion']>=fechaactual()) { ?>
 Relación de alumnos del club de <b><?php print strtoupper($alumnos[0]['nombre_club']) ?></b><br>
 PERIODO: <b><?php print $alumnos[0]['periodo'] ?></b>
 <br><hr>
@@ -32,3 +33,9 @@ PERIODO: <b><?php print $alumnos[0]['periodo'] ?></b>
 
 <input type="submit" value="Guardar reporte">
 </form>
+<?php } else { ?>
+<div class="alert">
+		<!--<a class="close" data-dismiss="alert" href="#">×</a>-->
+		ESPERE A QUE EL PERIODO DE LIBERACIÓN SEA ABIERTO POR EL ADMINISTRADOR.
+</div>
+<?php } ?>

@@ -56,10 +56,14 @@ class MYPDF extends TCPDF {
     // Page footer
     public function Footer() {
         // Position at 15 mm from bottom
-        $this->SetY(-15);
+        $this->SetY(-30);
         // Set font
+        $this->SetFont('helvetica', 'N', 12);
+        
+        $html = '<p>Jefe de Departamento de Actividades Culturales, Deportivas y Recreativas: </p>';
+        $this->writeHTML($html,true,false,true,false,'');
+
         $this->SetFont('helvetica', 'I', 8);
-        // Page number
         $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
 }
@@ -209,7 +213,7 @@ class Pdf_Controller extends ZP_Controller {
 				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 				$pdf->SetMargins(20, 60, 20);
 				$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-				$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+				$pdf->SetFooterMargin(-50);
 				$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 				$pdf->SetFont('dejavusans', '', 10);

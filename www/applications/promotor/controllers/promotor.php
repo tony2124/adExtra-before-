@@ -23,6 +23,7 @@ class Promotor_Controller extends ZP_Controller {
 	public function index() {	
 		if(!SESSION('usuario_promotor')) redirect(get('webURL')._sh.'promotor/login');
 		$conf = $this->Promotor_Model->getConfiguracion();
+		$vars['conf'] = $conf;
 		$vars['alumnos'] = $this->Promotor_Model->getAlumnos(SESSION('id_club'),$conf[0]['periodo']);
 		$vars['view'] = $this->view('liberarAlumnos', true);
 		$this->render('content', $vars);
@@ -74,7 +75,9 @@ class Promotor_Controller extends ZP_Controller {
 		if(!SESSION('usuario_promotor')) redirect(get('webURL')._sh.'promotor/login');
 		$conf = $this->Promotor_Model->getConfiguracion();
 		$vars['id_creador'] = SESSION('usuario_promotor');
-
+		$conf = $this->Promotor_Model->getConfiguracion();
+		$vars['periodo'] = $conf[0]['periodo'];
+		$vars['id_club'] = SESSION('id_club');
 		$i = 0;
 		while($i < POST('na')){
 			$vars['folio'] = POST('folio'.$i);
