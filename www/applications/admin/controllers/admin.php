@@ -470,6 +470,7 @@ class Admin_Controller extends ZP_Controller {
 		$vars["periodo"] = $periodo;
 		$vars["clubes"] = $clubes;
 		$vars["alumnos"] = $alumnos;
+		$vars["periodos"] = periodos("2082");
 		$this->render("content", $vars);
 	}
 
