@@ -26,17 +26,17 @@ class MYPDF extends TCPDF {
         </td>
           
         <td height="60" width="450" align="center" valign="middle">
-          <strong> Formato para Boleta de Acreditación de Actividades Culturales, Deportivas y Recreativas.</strong>
+          <strong> Nombre del documento: Formato para  Cédula de Inscripción a Actividades Culturales, Deportivas y Recreativas</strong>
         </td>
           
         <td width="250" valign="middle">
-          <strong> Código:SNEST/D-VI-PO-003-05</strong>
+          <strong> Código: SNEST/D-VI-PO-003-01</strong>
         </td> 
         </tr>
 
         <tr>    
         <td rowspan="2" valign="middle" align="center">
-          <strong><br> Referencia a la Norma ISO 9001:2008  7.2.1</strong>
+          <strong><br> Referencia a la Norma ISO 9001:2008   7.2.1</strong>
         </td>
 
         <td height="25" valign="middle">
@@ -64,12 +64,12 @@ class MYPDF extends TCPDF {
         $this->writeHTML($html,true,false,true,false,'');
 
         $this->SetFont('helvetica', 'I', 8);
-        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        $this->Cell(0, 10, "SNEST/D-VI/D-PO-003-01                                                                                                                                                           				Rev. 3", 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
 }
 
 
-class MYPDFv extends TCPDF {
+class Liberacion extends TCPDF {
 
     //Page header
     public function Header() {
@@ -117,9 +117,9 @@ class MYPDFv extends TCPDF {
         // Position at 15 mm from bottom
         $this->SetY(-15);
         // Set font
-        $this->SetFont('helvetica', 'I', 8);
+        $this->SetFont('helvetica', 'N', 12);
         // Page number
-        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        $this->Cell(0, 10, "SNEST/D-VI-PO-003-05                                                Rev. 3" , 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
 }
 
@@ -295,7 +295,7 @@ class Pdf_Controller extends ZP_Controller {
  				$row = $this->Admin_Model->getAlumnoInscrito($folio);
  			
  				$admin = $this->Admin_Model->getAdminData($row[0]['id_administrador']);
-				$pdf = new MYPDFv(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+				$pdf = new Liberacion(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 				$pdf->SetCreator(PDF_CREATOR);
 				$pdf->SetAuthor('Alfonso Calderon');
 				$pdf->SetTitle('Liberacion de horas extraescolares');
