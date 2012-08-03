@@ -1,5 +1,16 @@
 <p>ALUMNOS INSCRITOS EN LOS CLUBES EN EL PERIODO: <?php print $periodo ?></p>
+<select onchange="location.href='<?php print get("webURL").'/admin/estadistica/' ?>'+$(this).val()">
+	<?php foreach ($periodos as $per ) {
+		print "<option ";
+		if($per == $periodo) print "selected='selected'";
+		?>
 
+		 id="<?php print $per ?>">
+		
+		<?php print $per;
+		print "</option>";
+	}?>
+</select>
 <table width="600" class = "table table-striped table-bordered table-condensed">
 	<thead>
      	<tr>
@@ -26,6 +37,7 @@
 				$contador = 0;
 				$hombres = 0;
 				$mujeres = 0;
+				if($alumnos != null)
 				foreach ($alumnos as $al) {
 					if($al['id_club'] == $clubes[$i]['id_club'])
 					{
@@ -68,5 +80,6 @@
 	</tr>
 </tbody>
 </table>
-
+<button class="btn">Ver por carreras</button>
+<button class="btn">Ver por clubes</button>
 <button class="btn btn-success">Mostrar gráfico</button>
