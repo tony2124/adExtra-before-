@@ -1,3 +1,51 @@
+
+<script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
+<style type="text/css">
+.yui3-skin-sam .yui3-datatable-caption {
+    font-size: 13px;
+    font-style: normal;
+    text-align: left;
+}
+
+.yui3-datatable-col-nchars {
+    text-align: center;
+}
+
+.yui3-skin-sam .yui3-datatable td.myhilite td {
+    background-color: #C0ffc0;
+}
+
+#mtable tbody tr {      /*  Turn on cursor to show TR's are selectable on Master DataTable only  */
+    cursor: pointer;
+}
+</style>
+
+<script>
+// Create a new YUI instance and populate it with the required modules.
+YUI().use('datatable', function (Y) {
+    // DataTable is available and ready for use. Add implementation
+    // code here.
+    // Columns must match data object property names
+var data = [
+    { id: "ga-3475", name: "gadget",   price: "$6.99", cost: "$5.99" },
+    { id: "sp-9980", name: "sprocket", price: "$3.75", cost: "$3.25" },
+    { id: "wi-0650", name: "widget",   price: "$4.25", cost: "$3.75" }
+];
+
+var table = new Y.DataTable({
+    columns: ["id", "name", "price"],
+    data: data,
+    // and/or a summary (table attribute)
+    summary: "Example DataTable showing basic instantiation configuration",
+    sortable: true
+});
+
+table.render("#tabla");
+});
+
+
+</script>
+
 <p>ALUMNOS INSCRITOS EN LOS CLUBES EN EL PERIODO: <?php print $periodo ?></p>
 <select onchange="location.href='<?php print get("webURL").'/admin/estadistica/' ?>'+$(this).val()">
 	<?php foreach ($periodos as $per ) {
@@ -11,6 +59,8 @@
 		print "</option>";
 	}?>
 </select>
+
+<div id="tabla"></div>
 <table width="600" class = "table table-striped table-bordered table-condensed">
 	<thead>
      	<tr>

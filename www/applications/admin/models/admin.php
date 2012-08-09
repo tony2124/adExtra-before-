@@ -200,6 +200,10 @@ class Admin_Model extends ZP_Model {
 	{
 		return $this->Db->query("update promotores set eliminado_promotor = true where usuario_promotor = '$id' ");
 	}
+	public function elimActividad($folio)
+	{
+		return $this->Db->query("delete from inscripciones where folio = '$folio'");
+	}
 
 	public function elimFoto($id_foto)
 	{
@@ -210,6 +214,14 @@ class Admin_Model extends ZP_Model {
 		$query = "update alumnos set nombre_alumno = '$vars[nombre]' , apellido_paterno_alumno = '$vars[ap]', apellido_materno_alumno = '$vars[am]',
 			sexo = $vars[sexo], fecha_nacimiento = '$vars[fecha_nac]', correo_electronico = '$vars[email]', 
 				situacion_escolar = $vars[se], clave = '$vars[clave]' where numero_control = '$vars[numero_control]'";
+
+		$this->Db->query($query);
+		return $query;
+	}
+
+	public function updateActividad($folio, $act)
+	{
+		$query = "update inscripciones set id_club='$act' where folio = '$folio'";
 
 		$this->Db->query($query);
 		return $query;

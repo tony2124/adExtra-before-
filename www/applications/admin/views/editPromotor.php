@@ -74,9 +74,9 @@ $().ready(function() {
           </div><br>
           <label class="control-label">Sexo</label>
           <div class="controls">
-      <!-- -->  <select name="sexo" id="sexo" >
-                  <option value="1">HOMBRE</option>
-                  <option value="2">MUJER</option>
+      <!-- -->  <select name="sexo" id="sexo">
+                  <option <?php if(strcmp($promotor['sexo_promotor'],'1') == 0) print 'selected="selected"' ?> value="1">HOMBRE</option>
+                  <option <?php if(strcmp($promotor['sexo_promotor'],'2') == 0) print 'selected="selected"' ?> value="2">MUJER</option>
                 </select>
           </div><br>
           <label class="control-label">Club</label>
