@@ -1,25 +1,9 @@
 
-<script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
-<style type="text/css">
-.yui3-skin-sam .yui3-datatable-caption {
-    font-size: 13px;
-    font-style: normal;
-    text-align: left;
-}
+<script src="<?php print path("www/lib/datatable-sort/assets/skins/night/yui-min.js","www") ?>"></script>
+<!--<script src="<?php print path("www/lib/datatable-sort/datatable-sort-min.js","www") ?>"></script>-->
 
-.yui3-datatable-col-nchars {
-    text-align: center;
-}
-
-.yui3-skin-sam .yui3-datatable td.myhilite td {
-    background-color: #C0ffc0;
-}
-
-#mtable tbody tr {      /*  Turn on cursor to show TR's are selectable on Master DataTable only  */
-    cursor: pointer;
-}
-</style>
-
+<link rel="stylesheet" type="text/css" href="<?php print path("www/lib/datatable-sort/assets/skins/night/datatable-base.css","www") ?>">
+<link rel="stylesheet" type="text/css" href="<?php print path("www/lib/datatable-sort/assets/skins/night/datatable-sort.css","www") ?>">
 <script>
 // Create a new YUI instance and populate it with the required modules.
 YUI().use('datatable', function (Y) {
