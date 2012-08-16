@@ -86,6 +86,7 @@ function semestre($fecha)
 	
 function mes($mes)
 {
+		if($mes == 0) return "00";
 		$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");		
 		return $meses[$mes-1];
 		

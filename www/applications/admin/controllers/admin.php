@@ -80,6 +80,7 @@ class Admin_Controller extends ZP_Controller {
 		print $this->Admin_Model->inscribirActividad($vars);
 		redirect(get('webURL').'/admin/alumno/'.POST('numero_control'));
 	}
+	
 	public function editResultado()
 	{
 		if (!SESSION('user_admin'))
@@ -91,6 +92,18 @@ class Admin_Controller extends ZP_Controller {
 		$obs = str_replace( "'", "\"", $_POST['obs']);
 		$fecha_lib = date("Y-m-d");
 		print $this->Admin_Model->updateRes($resultado, $folio, $obs, $fecha_lib);
+		redirect(get('webURL').'/admin/alumno/'.$numero_control);
+	}
+
+	public function editActividad()
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$folio = POST('folio');
+		$numero_control = POST('nc');
+		$club=POST('actividad');
+		print $this->Admin_Model->updateActividad($folio, $club);
 		redirect(get('webURL').'/admin/alumno/'.$numero_control);
 	}
 
@@ -318,6 +331,15 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL'). _sh . 'admin/promotores');
 	}
 
+	
+	public function elimActividad()
+	{
+		$folio = POST('folio');
+		$nc=POST("nc");
+		$this->Admin_Model->elimActividad($folio);
+		redirect(get('webURL'). _sh . 'admin/alumno/'.$nc);
+	}
+
 	public function elimFoto()
 	{
 		$id=POST('id_imagen');
@@ -470,6 +492,7 @@ class Admin_Controller extends ZP_Controller {
 		$vars["periodo"] = $periodo;
 		$vars["clubes"] = $clubes;
 		$vars["alumnos"] = $alumnos;
+		$vars["periodos"] = periodos("2082");
 		$this->render("content", $vars);
 	}
 
@@ -510,7 +533,6 @@ class Admin_Controller extends ZP_Controller {
 		$clubes = $this->Admin_Model->getClubes('all');
 		$vars["nombreAlumno"] = $datos[0]['apellido_paterno_alumno'].' '.$datos[0]['apellido_materno_alumno'].' '.$datos[0]['nombre_alumno'];
 		$vars["periodos"] = periodos($datos[0]['fecha_inscripcion']);
-		
 		$vars['clubes'] = $clubes;
 		$vars["alumno"] = $datos[0];
 		$vars["inscripciones"] = $inscripciones;

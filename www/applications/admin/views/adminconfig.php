@@ -70,9 +70,9 @@
       <td>Estado</td>
       <td><span class="label <?php print  ($datosAdmin[0]['actual']==1) ? 'label-success' : 'label-important'  ?> ?>"><?php print  ($datosAdmin[0]['actual']==1) ? 'VIGENTE' : 'NO VIGENTE'  ?></span>
         <?php if($datosAdmin[0]['actual']==1) { ?> 
-          <a href="<?php print get('webURL')._sh.'admin/cambiarEstado/noVigente'?>" class="btn btn-danger" rel="popover" data-content="Cambia el estado de este administrador a NO VIGENTE" data-original-title="CAMBIAR A NO VIGENTE">NO VIGENTE</a>
+          <a href="<?php print get('webURL')._sh.'admin/cambiarEstado/noVigente'?>" class="btn btn-danger pull-right" rel="popover" data-content="Cambia el estado de este administrador a NO VIGENTE" data-original-title="CAMBIAR A NO VIGENTE"><i class="icon-ban-circle icon-white"></i></a>
         <?php }else{ ?>
-          <a href="<?php print get('webURL')._sh.'admin/cambiarEstado/Vigente'?>" class="btn btn-success" rel="popover" data-content="Cambia el estado de este administrador a VIGENTE" data-original-title="CAMBIAR A VIGENTE">VIGENTE</a>
+          <a href="<?php print get('webURL')._sh.'admin/cambiarEstado/Vigente'?>" class="btn btn-success  pull-right" rel="popover" data-content="Cambia el estado de este administrador a VIGENTE" data-original-title="CAMBIAR A VIGENTE"><i class="icon-ok icon-white"></i></a>
         <?php } ?>
       </td>
     </tr>

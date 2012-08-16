@@ -10,10 +10,10 @@ require_once(_spath.'/APIs/tcpdf/config/lang/eng.php');
 require_once(_spath.'/APIs/tcpdf/tcpdf.php');
 include(_corePath . _sh .'/libraries/funciones/funciones.php');
 
-class MYPDF extends TCPDF {
-
+class Cedula extends TCPDF {
+	
     //Page header
-    public function Header() {
+    public function Header($var = NULL) {
         // Set font
         $this->SetFont('helvetica', 'N', 10);
         $this->SetY(15);
@@ -26,17 +26,17 @@ class MYPDF extends TCPDF {
         </td>
           
         <td height="60" width="450" align="center" valign="middle">
-          <strong> Formato para Boleta de Acreditación de Actividades Culturales, Deportivas y Recreativas.</strong>
+          <strong> Nombre del documento: Formato para  Cédula de Inscripción a Actividades Culturales, Deportivas y Recreativas</strong>
         </td>
           
         <td width="250" valign="middle">
-          <strong> Código:SNEST/D-VI-PO-003-05</strong>
+          <strong> Código: SNEST/D-VI-PO-003-01</strong>
         </td> 
         </tr>
 
         <tr>    
         <td rowspan="2" valign="middle" align="center">
-          <strong><br> Referencia a la Norma ISO 9001:2008  7.2.1</strong>
+          <strong><br> Referencia a la Norma ISO 9001:2008   7.2.1</strong>
         </td>
 
         <td height="25" valign="middle">
@@ -49,7 +49,52 @@ class MYPDF extends TCPDF {
           <strong> Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages().'</strong>
         </td>
         </tr>
-      </table>';
+      </table> <p align="center">
+					<b>
+						DEPARTAMENTO DE ACTIVIDADES CULTURALES, DEPORTIVAS Y RECREATIVAS
+					</b> 
+				</p>
+				<p align="center">
+					<b>
+						INSCRIPCIÓN - PERIODO: _______________________
+					</b>
+				</p>
+				<br>
+				<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="0" 
+						cellspacing="0" cellpadding="0">
+				  <tr>
+				    <td width="100">
+				   		<b>ACTIVIDAD:</b>
+					</td>
+					<td width="250">
+				   		_______________________
+					</td>
+					<td  width="100">
+				   		<b>GRUPO:</b> 
+					</td>
+					<td width="150">
+					ÚNICO
+					</td>
+					<td width="80">
+				   		<b>HORA:</b>
+					</td>
+					<td width="150">
+					_____________________
+					</td>
+				  </tr>
+				</table><p>&nbsp;</p>
+				<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" 
+						cellspacing="0" cellpadding="0">
+				  <tr align = "center">
+				    <td width = "25">No.</td>
+				    <td width = "300">ALUMNOS</td>
+				    <td width = "90">No. CONTROL</td>
+				    <td width = "150">CARRERA</td>
+				    <td width = "45">SEM</td>
+				    <td width = "45">EDAD</td>
+				    <td width = "45">SEXO</td>
+				    <td width = "150">OBSERVACIONES</td>
+				  </tr></table>';
        $this->writeHTML($html, true, false, true, false, '');
     }
 
@@ -60,16 +105,16 @@ class MYPDF extends TCPDF {
         // Set font
         $this->SetFont('helvetica', 'N', 12);
         
-        $html = '<p>Jefe de Departamento de Actividades Culturales, Deportivas y Recreativas: </p>';
+        $html = '<p>Jefe de Departamento de Actividades Culturales, Deportivas y Recreativas: <b>'.strtoupper(SESSION('profesion_admin').' '.SESSION('name_admin').' '.SESSION('last1_admin').' '.SESSION('last2_admin')).'</b></p><p>&nbsp;</p>';
         $this->writeHTML($html,true,false,true,false,'');
 
-        $this->SetFont('helvetica', 'I', 8);
-        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        $this->SetFont('helvetica', 'I', 10);
+        $this->Cell(0, 10, "SNEST/D-VI/D-PO-003-01                                                                                                                                                     				Rev. 3", 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
 }
 
 
-class MYPDFv extends TCPDF {
+class Liberacion extends TCPDF {
 
     //Page header
     public function Header() {
@@ -108,7 +153,9 @@ class MYPDFv extends TCPDF {
           <strong> Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages().'</strong>
         </td>
         </tr>
-      </table>';
+      </table>
+      
+      ';
        $this->writeHTML($html, true, false, true, false, '');
     }
 
@@ -117,9 +164,9 @@ class MYPDFv extends TCPDF {
         // Position at 15 mm from bottom
         $this->SetY(-15);
         // Set font
-        $this->SetFont('helvetica', 'I', 8);
+        $this->SetFont('helvetica', 'N', 12);
         // Page number
-        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().' de '.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        $this->Cell(0, 10, "SNEST/D-VI-PO-003-05                                                Rev. 3" , 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
 }
 
@@ -204,87 +251,47 @@ class Pdf_Controller extends ZP_Controller {
 				$prommotor = $this->Admin_Model->getPromotor($club);
 				$admin = $this->Admin_Model->getAdminData(SESSION('id_admin'));
 
-				$pdf = new MYPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+				$pdf = new Cedula('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 				$pdf->SetCreator(PDF_CREATOR);
 				$pdf->SetAuthor('Alfonso Calderon');
 				$pdf->SetTitle('Lista de alumnos');
 				$pdf->SetSubject('Lista');
 				$pdf->SetKeywords('lista, extraescolares, clubes, club');
 				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-				$pdf->SetMargins(20, 100, 20);
-				$pdf->SetHeaderMargin(40);
-				$pdf->SetFooterMargin(20);
-				$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+				$pdf->SetMargins(20, 93, 20);
+				$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+				$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+				$pdf->SetAutoPageBreak(TRUE, 50);
+
 				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 				$pdf->SetFont('dejavusans', '', 10);
 				$pdf->AddPage();
-				$html = '<p align="center">
-					<b>
-						DEPARTAMENTO DE ACTIVIDADES CULTURALES, DEPORTIVAS Y RECREATIVAS
-					</b> 
-				</p>
-				<p align="center">
-					<b>
-						INSCRIPCIÓN - PERIODO: '.$periodo.'
-					</b>
-				</p>
-				<br>
-				<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="0" 
-						cellspacing="0" cellpadding="0">
-				  <tr>
-				    <td width="100">
-				   		<b>ACTIVIDAD:</b>
-					</td>
-					<td width="250">
-				   		'.$data[0]['nombre_club'].'
-					</td>
-					<td  width="100">
-				   		<b>GRUPO:</b> 
-					</td>
-					<td width="150">
-					ÚNICO
-					</td>
-					<td width="80">
-				   		<b>HORA:</b>
-					</td>
-					<td width="150">
-					</td>
-				  </tr>
-				</table>
-				<br>&nbsp;<br>
+				$html = '
 				<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" 
 						cellspacing="0" cellpadding="0">
-				  <tr align = "center">
-				    <td width = "25">No.</td>
-				    <td width = "300">ALUMNOS</td>
-				    <td width = "90">No. CONTROL</td>
-				    <td width = "150">CARRERA</td>
-				    <td width = "45">SEM</td>
-				    <td width = "45">EDAD</td>
-				    <td width = "45">SEXO</td>
-				    <td width = "150">OBSERVACIONES</td>
-				  </tr>';
+				 ';
 				  $contador = 1;
 				  foreach($data as $row)
 				  {
 				  	$html .= '<tr>
-						<td>&nbsp;'.($contador++).'</td>
-						<td>&nbsp;'.$row['apellido_paterno_alumno'].' '.$row['apellido_materno_alumno'].' '.$row['nombre_alumno'].'</td>
-						<td>&nbsp;'.$row['numero_control'].'</td>
-						<td>&nbsp;'.$row['abreviatura_carrera'].'</td>
-						<td>&nbsp;'.semestre($row['fecha_inscripcion']).'</td>
-						<td>&nbsp;'.calcularEdad($row['fecha_nacimiento'], $row['fecha_inscripcion_club']).'</td>
-						<td>&nbsp;';
+						<td width = "25">&nbsp;'.($contador++).'</td>
+						<td width = "300">&nbsp;'.$row['apellido_paterno_alumno'].' '.$row['apellido_materno_alumno'].' '.$row['nombre_alumno'].'</td>
+						<td width = "90">&nbsp;'.$row['numero_control'].'</td>
+						<td width = "150">&nbsp;'.$row['abreviatura_carrera'].'</td>
+						<td width = "45">&nbsp;'.semestre($row['fecha_inscripcion']).'</td>
+						<td width = "45">&nbsp;'.calcularEdad($row['fecha_nacimiento'], $row['fecha_inscripcion_club']).'</td>
+						<td width = "45">&nbsp;';
 						
 						if($row['sexo'] == 1) $html .= "H"; else $html.= "M";
 						
 						$html .= '</td>
-						<td class="margin-left:10px"> '.$row['observaciones'].'</td>
+						<td  width = "150" class="margin-left:10px"> '.$row['observaciones'].'</td>
 					</tr>';
 					
 				  }
 
-				$html.='</table><p>Jefe de Departamento de Actividades Culturales, Deportivas y Recreativas: <b>'.strtoupper($admin[0]['abreviatura_profesion'].' '.$admin[0]['nombre_administrador'].' '.$admin[0]['apellido_paterno_administrador'].' '.$admin[0]['apellido_materno_administrador']).'</b></p>';
+				$html.='</table>';
 				$pdf->writeHTML($html, true, false, true, false, '');
 				$pdf->lastPage();
 				$pdf->Output("cedulaInscripcion.pdf", 'I');
@@ -295,7 +302,7 @@ class Pdf_Controller extends ZP_Controller {
  				$row = $this->Admin_Model->getAlumnoInscrito($folio);
  			
  				$admin = $this->Admin_Model->getAdminData($row[0]['id_administrador']);
-				$pdf = new MYPDFv(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+				$pdf = new Liberacion(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 				$pdf->SetCreator(PDF_CREATOR);
 				$pdf->SetAuthor('Alfonso Calderon');
 				$pdf->SetTitle('Liberacion de horas extraescolares');

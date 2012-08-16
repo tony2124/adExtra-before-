@@ -18,6 +18,12 @@ if(!$alumno){
        else $("#selectRes > option[value='0']").attr("selected","selected");
   }
 
+function modActividad(periodo, folio)
+  {
+       $('#periodoAct').html(periodo); 
+       $('#folioAct').val(folio);
+  }
+
   function updateDataInsForm(semestre, periodo)
   {
      $('#periodoIns').val(periodo);
@@ -29,7 +35,7 @@ if(!$alumno){
 $().ready(function() {
 
   // validate signup form on keyup and submit
-  $("#editres").validate({
+ /* $("#editres").validate({
     rules: {
       obs: "required"
     },
@@ -37,7 +43,7 @@ $().ready(function() {
       obs: "Debe incluir un comentario para que realice el cambio."
     }
   });
-
+/*
   $("#insActForm").validate({
     rules: {
       obsIns: "required"
@@ -46,7 +52,7 @@ $().ready(function() {
       obsIns: "Debe incluir un comentario para que realice el cambio."
     }
   });
-
+*/
    $("#editalumno").validate({
     rules: {
       nombre: "required",
@@ -73,6 +79,13 @@ $().ready(function() {
  
 });
 
+</script>
+
+<script>
+function folio(folio)
+{
+   $('#folioElim').val(folio);
+}
 </script>
 
 <style type="text/css">
@@ -196,7 +209,11 @@ $().ready(function() {
               <tr>
                 <td><?php print $ins['fecha_inscripcion_club'] ?></td>
                 <td><?php print $ins['fecha_liberacion_club'] ?></td>
-                <td><?php print $ins['nombre_club'] ?></td>
+                <td>
+                  <a data-toggle="modal" onclick="modActividad(<?php print "'".$periodo."','".$ins['folio']."'" ?>)" href="#cambiarActividad">
+                    <?php print $ins['nombre_club'] ?>
+                  </a>
+                  </td>
                 <td>
                   <a data-toggle="modal" onclick="modAcreditacion(<?php print "'".$periodo."','".$ins['nombre_club']."','".$ins['acreditado']."','".$ins['folio']."'" ?>)" href="#cambiarAcreditado">
                     <?php print ($ins['acreditado']==1) ? 'ACREDITADO' : 'NO ACREDITADO' ?>
@@ -207,6 +224,7 @@ $().ready(function() {
                   <a href="#" rel="popover" data-content="<?php print $ins['observaciones'] ?>" data-original-title="Observación">ver</a><?php } ?></td>
                 <td>
                   <a href="<?php print get('webURL')._sh.'admin/pdf/formatos/liberacion/'.$ins['folio'] ?>" target="_blank" title="Descargar formato de liberación de horas" rel="tooltip" class="btn">Formato</a>
+                  <a title="Eliminar" data-toggle="modal" href="#confirmModal" rel="tooltip" href="#" class="btn btn-danger pull-right" onclick="folio('<?php print $ins['folio'] ?>')"><span class="icon-trash icon-white"></span></a>
                 </td>
               </tr>
                 <?php
@@ -216,18 +234,57 @@ $().ready(function() {
             if(!$band) 
               print '<tr><td colspan="6">No se encuentra inscrito en ningún club ó actividad</td></tr>';
             ?>
+            <tr>
+              <td colspan="6">
+                <a rel="tooltip" title="Inscribir a una actividad" onclick="updateDataInsForm(<?php print $i.",'".$periodo."'" ?>)" class="pull-right btn btn-success" data-toggle="modal" href="#insActDialog" >
+                  <i class="icon-pencil icon-white"></i>
+                </a>
+              </td>
+            </tr>
         </tbody>
       </table>
-      <a rel="tooltip" title="Inscribir a una actividad" onclick="updateDataInsForm(<?php print $i.",'".$periodo."'" ?>)" class="pull-right btn btn-success" data-toggle="modal" href="#insActDialog" >
-        <i class="icon-pencil icon-white"></i>
-      </a>
+      
     </div>
   
     <?php } ?>
   </div>
 </div>
-<!--<?php // } ?> -->
 
+<!-- DIALOGO PARA CAMBIAR ACTIVIDAD -->
+<div class="modal hide fade" id="cambiarActividad">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Edición de acreditación </h3>
+  </div>
+  <div class="modal-body">
+    <p>En el siguiente formulario se cambiará la actividad.</p>
+   
+    <form id="editAct" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editActividad' ?>">
+    <div class="control-group">
+        <label class="control-label">Actividad</label> 
+      <div class="controls">
+            <select name="actividad">
+              <?php foreach ($clubes as $club) { ?>
+                <option value="<?php print $club['id_club'] ?>"><?php print $club['nombre_club'] ?></option>
+              <?php } ?>
+            </select> 
+      </div><br>
+      <label class="control-label">Periodo</label> 
+      <div class="controls">
+          <span id="periodoAct" type="text" class="uneditable-input"></span>
+      </div><br>
+      <input type="hidden" value="" id="folioAct" name="folio">
+      <input type="hidden" value="<?php print $alumno['numero_control'] ?>" name="nc">
+    </div>
+</form> 
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cerrar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+    <a href="#" class="btn btn-primary" onclick="$('#editAct').submit()">Guardar cambios</a>
+  </div>
+</div>
+
+<!-- DIALOGO PARA CAMBIAR ACREDITACION -->
 <div class="modal hide fade" id="cambiarAcreditado">
   <div class="modal-header">
     <button class="close" data-dismiss="modal">×</button>
@@ -263,10 +320,12 @@ $().ready(function() {
 </form> 
   </div>
   <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
+    <a href="#" class="btn" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cerrar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
     <a href="#" class="btn btn-primary" onclick="$('#editres').submit()">Guardar cambios</a>
   </div>
 </div>
+
+<!-- DIALOGO PARA INSCRIBIR A UNA ACTIVIDAD -->
 
 <div class="modal hide fade" id="insActDialog">
   <div class="modal-header">
@@ -304,15 +363,19 @@ $().ready(function() {
 </form> 
   </div>
   <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
+   <a href="#" class="btn" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cerrar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
     <a href="#" class="btn btn-primary" onclick="$('#insActForm').submit()">Guardar cambios</a>
   </div>
 </div>
 
+<!-- DIALOGO PARA EDITAR ALUMNOS -->
 <div class="modal hide fade" id="miModal">
   <div class="modal-header">
     <button class="close" data-dismiss="modal">×</button>
-    <h3>Edición de datos del alumno&nbsp;&nbsp;&nbsp;&nbsp;<a rel="tooltip" title="Actualizar" href="<?php print get('webURL'). _sh . 'admin/alumno/'.$alumno['numero_control'] ?>"><i class="icon-refresh"></i></a></h3>
+    <h3>Edición de datos del alumno&nbsp;&nbsp;&nbsp;&nbsp;<a rel="tooltip" title="Actualizar" href="<?php print get('webURL'). _sh . 'admin/alumno/'.$alumno['numero_control'] ?>">
+        <i class="icon-refresh"></i>
+      </a>
+    </h3>
   </div>
   <div class="modal-body">
     <p>En el siguiente formulario se muestran los datos del alumno, por favor edite el campo correspondiente y haga clic en guardar cambios.</p>
@@ -359,8 +422,28 @@ $().ready(function() {
 </form> 
   </div>
   <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
+   <a href="#" class="btn" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cerrar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
     <button class="btn btn-primary" onclick="$('#editalumno').submit()">Guardar cambios</button>
   </div>
 </div>
 
+<!-- DIALOGO PARA CONFIRMACIÓN DE ELIMINACION -->
+<div class="modal hide fade" id="confirmModal">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Confirmación</h3>
+  </div>
+  <div class="modal-body">
+    <p>¿Está seguro que desea eliminar esta actividad?</p>
+   
+    <form id="elimActividad" method="post" action="<?php print get('webURL')._sh.'admin/elimActividad' ?>">
+      <input name="folio" id="folioElim" type="hidden" value="">
+      <input name="nc" type="hidden" value="<?php print $alumno['numero_control'] ?>">
+
+    </form> 
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
+    <a href="#" class="btn btn-danger" onclick="$('#elimActividad').submit()">Eliminar</a>
+  </div>
+</div>

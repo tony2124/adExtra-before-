@@ -30,7 +30,8 @@ class Promotor_Model extends ZP_Model {
 
 	public function setResultado($vars)
 	{
-		return $this->Db->query("update inscripciones set acreditado = '$vars[res]' where folio = '$vars[folio]' and id_club = '$vars[id_club]' and periodo='$vars[periodo]'");
+		$fecha = date("Y-m-d");
+		return $this->Db->query("update inscripciones set acreditado = '$vars[res]', fecha_liberacion_club = '$fecha' where folio = '$vars[folio]' and id_club = '$vars[id_club]' and periodo='$vars[periodo]'");
 	}
 
 	public function operacion($vars)

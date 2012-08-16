@@ -9,7 +9,7 @@ if(!defined("_access")) {
 }
 
 class Promotor_Controller extends ZP_Controller {
-	
+	 
 	public function __construct() {
 		$this->app("promotor");
 		

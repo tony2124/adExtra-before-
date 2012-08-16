@@ -21,5 +21,6 @@ class Default_Model extends ZP_Model {
 
 		return $data;
 	}
+
 	
 }
