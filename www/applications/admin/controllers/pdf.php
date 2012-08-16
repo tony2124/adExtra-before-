@@ -56,7 +56,7 @@ class MYPDF extends TCPDF {
     // Page footer
     public function Footer() {
         // Position at 15 mm from bottom
-        $this->SetY(-30);
+        $this->SetY(-40);
         // Set font
         $this->SetFont('helvetica', 'N', 12);
         
@@ -211,9 +211,9 @@ class Pdf_Controller extends ZP_Controller {
 				$pdf->SetSubject('Lista');
 				$pdf->SetKeywords('lista, extraescolares, clubes, club');
 				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-				$pdf->SetMargins(20, 60, 20);
-				$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-				$pdf->SetFooterMargin(-50);
+				$pdf->SetMargins(20, 100, 20);
+				$pdf->SetHeaderMargin(40);
+				$pdf->SetFooterMargin(20);
 				$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 				$pdf->SetFont('dejavusans', '', 10);
