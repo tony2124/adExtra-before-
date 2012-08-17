@@ -61,7 +61,18 @@ Número de registros encontrados: <?php print count($alumnos) ?>
   </ul>
 </div><br>
 <hr>
-<table class="table table-striped table-condensed">
+<script src="<?php print path("www/lib/jquery.tablesorter.min.js","www") ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php print path("www/lib/green/style.css","www") ?>">
+<script>
+$(document).ready(function() 
+    { 
+        $("#lista").tablesorter(); 
+    } 
+); 
+    
+</script>
+
+<table id="lista" class="tablesorter">
   <thead>
     <tr>
       <th>N0.</th>
