@@ -1,5 +1,4 @@
 
-
 <p>ALUMNOS INSCRITOS EN LOS CLUBES EN EL PERIODO: <?php print $periodo ?></p>
 <select onchange="location.href='<?php print get("webURL").'/admin/estadistica/' ?>'+$(this).val()">
 	<?php foreach ($periodos as $per ) {
@@ -15,7 +14,7 @@
 </select>
 
 <div id="tabla"></div>
-<table id="estadistica" width="600" class="table table-striped table-bordered table-condensed">
+<table id="estadistica" width="600" class = "table table-striped table-bordered table-condensed">
 	<thead>
      	<tr align="center">
      		<th rowspan="2">ID</th>
@@ -102,30 +101,7 @@
 
 		$porcentaje = ($tm+$th > 0) ? round( ($tmL+$thL) / ($tm+$th) * 10000 ) / 100 : 0;
 	?>
-	
-</tbody>
-</table>
-<table width="600" class="table table-striped table-bordered table-condensed">
-	<thead>
-     	<tr align="center">
-     		<th rowspan="2">ID</th>
-		    <th rowspan="2">Tipo</th>
-		    <th rowspan="2">Nombre del club</th>
-		    <th colspan="3">Alumnos inscritos</th>
-		    <th colspan="3">Alumnos Liberados</th>
-		    <th rowspan="2">Acreditado, %</th>
-    	</tr>
-    	<tr>
-    		<th>M</th>
-    		<th>H</th>
-    		<th>TOTAL</th>
-    		<th>M</th>
-    		<th>H</th>
-    		<th>TOTAL</th>
-    	</tr>
-  	</thead>
-  	<tbody>
-<tr bgcolor="#EEF">
+	<tr bgcolor="#EEF">
 		<td colspan="3"></td>
 		<td style="font-size: 15px;"><b><?php print $tm ?></b></td>
 		<td style="font-size: 15px;"><b><?php print $th ?></b></td>
