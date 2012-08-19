@@ -68,6 +68,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function inscipcionActividad()
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$vars['numero_control'] = POST('numero_control');
 		$vars['id_administrador'] = SESSION('id_admin');
 		$vars['club'] = POST('actividad');
@@ -97,6 +100,7 @@ class Admin_Controller extends ZP_Controller {
 
 	public function editActividad()
 	{
+
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
@@ -151,6 +155,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function guardarAviso()
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$cuerpo =str_replace( "'", "\"",  $_POST['texto'] );
 		$mostrar = POST('mostrarAviso');
 		if($mostrar) $mostrar = 1; else $mostrar = 0;
@@ -235,6 +242,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function updateLiberacion()
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$vars['ins_ini'] = POST('ins_ini');
 		$vars['ins_fin'] = POST('ins_fin');
 		$vars['lib_ini'] = POST('lib_ini');
@@ -326,6 +336,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function elimPromotor()
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$usuario_promotor = POST('usuario_promotor');
 		$this->Admin_Model->elimPromotor($usuario_promotor);
 		redirect(get('webURL'). _sh . 'admin/promotores');
@@ -334,6 +347,9 @@ class Admin_Controller extends ZP_Controller {
 	
 	public function elimActividad()
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$folio = POST('folio');
 		$nc=POST("nc");
 		$this->Admin_Model->elimActividad($folio);
@@ -342,6 +358,10 @@ class Admin_Controller extends ZP_Controller {
 
 	public function elimFoto()
 	{
+
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$id=POST('id_imagen');
 		$image_name = POST('image_name');
 		$url = $_POST['url'];
@@ -360,6 +380,9 @@ class Admin_Controller extends ZP_Controller {
 
 	function crearAlbum($tipo, $club)
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$nombre_album = strtoupper( POST('nombre_album') );
 		$id=uniqid();
 		mkdir(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
@@ -372,6 +395,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function formRegistroPromotor()
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$vars['clubes'] = $this->Admin_Model->getClubes();
 		$vars['view'] = $this->view('registroPromotor', true);
 		$this->render('content', $vars);
@@ -379,6 +405,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function formEdicionPromotor($id)
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$data = $this->Admin_Model->getEditPromotor($id);
 		$vars['promotor'] = $data[0];
 		$vars['clubes'] = $this->Admin_Model->getClubes();
@@ -388,6 +417,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function regProm()
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$vars['user'] = POST('user');
 		$vars['pass'] = POST('pass');
 		$vars['nombre'] = POST('nombre');
@@ -409,6 +441,9 @@ class Admin_Controller extends ZP_Controller {
 
 	public function editProm()
 	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
 		$vars['usuario'] = POST('user');
 		$vars['pass'] = POST('pass');
 		$vars['nombre'] = POST('nombre');
@@ -560,6 +595,9 @@ class Admin_Controller extends ZP_Controller {
 
  	public function configLiberacion()
  	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
  		$vars['view'] = $this->view('configLiberacion', true);
  		$config = $this->Admin_Model->getConfiguracion();
  		$vars['periodos'] = periodos('1082');
@@ -570,6 +608,9 @@ class Admin_Controller extends ZP_Controller {
 
  	public function avisos()
  	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
  		$mensaje = $this->Admin_Model->getAviso();
  		$conf = $this->Admin_Model->getConfiguracion();
  		$vars['conf'] = $conf[0];
@@ -580,6 +621,9 @@ class Admin_Controller extends ZP_Controller {
 
  	public function galeria($tipo=NULL, $club = NULL, $album = NULL, $subalbum = NULL)
  	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
  		$vars['URL']['tipo'] = $tipo;
  		$vars['URL']['club'] = $club;
  		$vars['URL']['album'] = $album;
@@ -615,12 +659,18 @@ class Admin_Controller extends ZP_Controller {
 
  	public function banners()
  	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
  		$vars['view'] = $this->view('banners',true);
  		$this->render('content', $vars);
  	}
 
  	public function cambiarEstado ($estado = NULL,$userAdmin = NULL)
  	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
  		$this->sessionOn();
 		if($estado == 'Vigente')
 			$array = array("actual" => "1");
@@ -641,6 +691,9 @@ class Admin_Controller extends ZP_Controller {
 
  	public function editaAdmin ()
  	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
  		//$this->sessionOn();
  		$datosAdmin = $this->Admin_Model->getCampos("administradores","contrasena_administrador","id_administrador = ".SESSION('id_admin'));
  		if(POST('guardarCambios'))
@@ -704,6 +757,9 @@ class Admin_Controller extends ZP_Controller {
 
  	public function regisAdmin()
  	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
  		$this->sessionOn();
  		$vars['date'] = date("Y-m-d");
  		if(POST('btnSubmit'))
@@ -770,6 +826,9 @@ class Admin_Controller extends ZP_Controller {
 
  	private function getDatosAdmin ($id,$vars = NULL)
  	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+		
  		$datosAdmin = $this->Admin_Model->getAdminData($id);
 		$datosAllAdmin = $this->Admin_Model->getAllAdminData();
 

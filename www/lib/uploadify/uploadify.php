@@ -27,7 +27,7 @@ $club = $_POST['club'];
 $album = $_POST['album'];
 
 $targetFolder = '/Dropbox/extraescolares/IMAGENES/clubes/'.$club.'/'.$album.'/'; // Relative to the root 
-mysql_connect("localhost","root","");
+mysql_connect("localhost","root","admin");
 
 mysql_select_db("extraescolares");
 

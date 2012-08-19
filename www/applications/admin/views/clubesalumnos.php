@@ -72,7 +72,7 @@ $(document).ready(function()
     
 </script>
 
-<table id="lista" class="tablesorter">
+<table id="lista" class="table table-striped table-condensed">
   <thead>
     <tr>
       <th>N0.</th>

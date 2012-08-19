@@ -207,14 +207,17 @@ if(isset($URL['tipo']))
 	    </td>
 	  </tr>
    </table>
-  <!-- <p>&nbsp;</p>
+
+   <p>&nbsp;</p>
+   <input type="file" name="file_upload" id="file_upload" />
+
+     <hr>
+     Use este input en caso de que no funcione el botón anterior.
    <form method="post" action="<?php //print get('webURL'). _sh . 'admin/subir/' . $URL['tipo'] ._sh. $URL['club'] . _sh . $URL['album'] ?>" enctype="multipart/form-data">
    	<input type="file" name="Filedata">
    	<input type="submit"> 
-   </form>-->
+   </form>
    <p>&nbsp;</p>
-
-   <input type="file" name="file_upload" id="file_upload" />
 	<?php }	?>
 
 <div class="modal hide fade" id="confirmModal">
