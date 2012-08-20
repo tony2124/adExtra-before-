@@ -14,6 +14,7 @@ class Admin_Controller extends ZP_Controller {
 		$this->Admin_Model = $this->model("Admin_Model");
 	}
 	
+
 	public function index() {	
 		
 		if( SESSION('user_admin') )

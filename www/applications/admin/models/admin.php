@@ -188,7 +188,7 @@ class Admin_Model extends ZP_Model {
 	
 	public function getPromotor($club)
 	{
-		return $this->Db->query("select * from promotores where id_club = '$club'");
+		return $this->Db->query("select * from promotores where id_club = '$club' and eliminado_promotor = 0");
 	}
 
 	public function elimNoticia($id)

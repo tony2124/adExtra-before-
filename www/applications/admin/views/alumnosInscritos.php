@@ -14,7 +14,7 @@
 </select>
 
 <div id="tabla"></div>
-<table id="estadistica" width="600" class = "table table-striped table-bordered table-condensed">
+<table id="estadistica" width="600" class="table table-striped table-bordered table-condensed">
 	<thead>
      	<tr align="center">
      		<th rowspan="2">ID</th>
