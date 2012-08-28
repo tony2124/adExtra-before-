@@ -478,7 +478,7 @@ class Admin_Controller extends ZP_Controller {
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$configuracion = $this->Admin_Model->getConfiguracion();
+		//$configuracion = $this->Admin_Model->getConfiguracion();
 		//si no existe periodo calcular periodo actual
 
 		if(!isset($periodo)) 
@@ -488,12 +488,14 @@ class Admin_Controller extends ZP_Controller {
 
 		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
+		$carreras = $this->Admin_Model->getCarreras();
 		//____($alumnos);
-		$vars["view"]	 = $this->view("alumnosInscritos", TRUE);
+		$vars["view"]	 = $this->view("estadistica", TRUE);
 		$vars["periodo"] = $periodo;
 		$vars["clubes"] = $clubes;
 		$vars["alumnos"] = $alumnos;
 		$vars["periodos"] = periodos("2082");
+		$vars["carreras"] = $carreras;
 		$this->render("content", $vars);
 	}
 

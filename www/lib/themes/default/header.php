@@ -49,12 +49,11 @@
 			});
 		 </script>
 	</head>
-
 	<body>
 		
 		<div class="navbar navbar-fixed-top">
 	      <div class="navbar-inner">
-	        <div class="container">
+	        <div class="container"  style="width:1000px">
 	        	<?php if(SESSION('user_admin')) { ?>
 	          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 	            <span class="icon-bar"></span>
@@ -117,7 +116,9 @@
 				    </ul>
 				  </li>
 				</ul>
-				<!-- INICIO DE SESION -->
+				
+	          </div><!--/.nav-collapse -->
+	        <!-- INICIO DE SESION -->
 				 <div class="btn-group pull-right">
 		            <a class="btn dropdown-toggle btn-danger" data-toggle="dropdown" href="#">
 		              <i class="icon-user"></i> <?php print strtoupper(SESSION('profesion_admin').' '.SESSION('name_admin').' '.SESSION('last1_admin')) ?>
@@ -130,10 +131,11 @@
 		              <li><a href="<?php print get('webURL') .  _sh .'admin/logout' ?>"><b class="icon-off"></b> Salir de la sesión</a></li>
 		            </ul>
 		          </div>
-	          </div><!--/.nav-collapse -->
 	            <?php } ?>
 	        </div>
+	        
 	      </div>
+
 	    </div>
 	
 		<div class="container">
