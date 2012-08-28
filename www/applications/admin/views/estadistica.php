@@ -46,7 +46,7 @@
 		
 		while($i < sizeof($clubes))
 		{
-			if($clubes[$i]['tipo_club'] == 1 || $clubes[$i]['tipo_club'] == 2)
+			if(strcmp($clubes[$i]['tipo_club'], "3") != 0)
 			{
 
 				$contador = 0;
@@ -156,18 +156,22 @@
 				foreach ($alumnos as $al) {
 					if($al['id_carrera'] == $carreras[$i]['id_carrera'])
 					{
-						if(strcmp($al['sexo'],'2')==0)
+						if(strcmp($al['tipo_club'], "3") != 0)
 						{
-							$mujeres++;
-							if($al['acreditado'] == 1)
-								$mLib++;
+							if(strcmp($al['sexo'],'2')==0)
+							{
+								$mujeres++;
+								if($al['acreditado'] == 1)
+									$mLib++;
+							}
+							else
+							{
+								if($al['acreditado'] == 1)
+									$hLib++;
+								$hombres++;
+							}
 						}
-						else
-						{
-							if($al['acreditado'] == 1)
-								$hLib++;
-							$hombres++;
-						}
+						
 						
 					}
 				}
