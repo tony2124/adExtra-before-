@@ -13,8 +13,9 @@
 	}?>
 </select>
 <hr>
-<h2>Alumnos por clubes</h2>
+<h2 class="alert alert-success">Alumnos por clubes</h2>
 <hr>
+<p><h3>IMPORTANTE</h3><i>Los datos que aquí se presentan hacen referencia únicamente a los alumnos que se inscribieron a los diferentes clubes deportivos y culturales, no representa los datos de los alumnos que liberaron en otras actividades.</i></p>
 <table id="estadistica" width="600" class="table table-striped table-bordered table-condensed">
 	<thead>
      	<tr align="center">
@@ -84,7 +85,7 @@
 					<td><?php echo $clubes[$i]['id_club'] ?></td>
 					<td><?php echo $clubes[$i]['tipo_club'] ?></td>		
 					<td>
-						<?php echo $clubes[$i]['nombre_club'] ?>		
+						<a href="<?php print get("webURL")._sh.'admin/listaclub/'.$clubes[$i]['id_club'].'/'.$periodo ?>"><?php echo $clubes[$i]['nombre_club'] ?></a>
 					</td>
 					<td><?php print $mujeres ?></td>
 					<td><?php print $hombres ?></td>
@@ -113,14 +114,16 @@
 	</tr>
 </tbody>
 </table>
+<a href="" class="pull-right">Ver gráfica</a> 
 <hr>
-<h2>Alumnos por carreras</h2>
+<h2 class="alert alert-success">Alumnos por carreras</h2>
 <hr>
+
 <table id="estadistica" width="600" class="table table-striped table-bordered table-condensed">
 	<thead>
      	<tr align="center">
      		<th rowspan="2">ID</th>
-		    <th rowspan="2">Nombre del club</th>
+		    <th rowspan="2">Nombre de la carrera</th>
 		    <th colspan="3">Alumnos inscritos</th>
 		    <th colspan="3">Alumnos Liberados</th>
 		    <th rowspan="2">Acreditado, %</th>
@@ -186,7 +189,7 @@
 					<td><?php echo $carreras[$i]['id_carrera'] ?></td>
 							
 					<td>
-						<?php echo $carreras[$i]['nombre_carrera'] ?>		
+						<a href="#"><?php echo $carreras[$i]['nombre_carrera'] ?></a>		
 					</td>
 					<td><?php print $mujeres ?></td>
 					<td><?php print $hombres ?></td>
@@ -215,6 +218,4 @@
 	</tr>
   	</tbody>
  </table>
-<button class="btn">Ver por carreras</button>
-<button class="btn">Ver por clubes</button>
-<button class="btn btn-success">Mostrar gráfico</button>
+<a href="#" class="pull-right">Ver gráfica</a> 
