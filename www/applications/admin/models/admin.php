@@ -156,6 +156,13 @@ class Admin_Model extends ZP_Model {
 					apellido_materno_alumno asc, nombre_alumno asc");
 	}
 
+	public function getAlumnosCarreras($carrera, $periodo = NULL)
+	{
+		return $this->Db->query("select * from inscripciones natural join alumnos natural join carreras 
+				natural join clubes where id_carrera = '$carrera' and periodo = '$periodo' and tipo_club != 3 order by apellido_paterno_alumno asc, 
+					apellido_materno_alumno asc, nombre_alumno asc");
+	}
+
 	public function getNoticias()
 	{
 		return $this->Db->query("select * from noticias where id_noticias != '1' order by fecha_modificacion desc, hora desc");

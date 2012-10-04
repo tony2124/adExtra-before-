@@ -32,7 +32,7 @@
 			$(function(){
 		 	  $("a[rel=popover]").popover();
 			  $("a[rel=tooltip]").tooltip();
-			  $( ".selectorFecha" ).datepicker({ 
+			  $( ".selectorFecha" ).datepicker({  
     			defaultDate: "-15y", 
                 yearRange: "1900:-15",
 				dateFormat: 'yy-mm-dd',  

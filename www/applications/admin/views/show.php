@@ -1,1 +1,0 @@
-<p>Mensaje: <?php print $mensaje ?></p>

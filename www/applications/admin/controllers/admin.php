@@ -592,7 +592,23 @@ class Admin_Controller extends ZP_Controller {
 		$vars['alumnos'] = $alumnos;
 		$vars['clubes'] = $clubes;
 		$vars['periodos'] = periodos('2083');
-		$vars['view'] = $this->view("clubesalumnos", true);
+		$vars['view'] = $this->view("listaclub", true);
+		$this->render("content", $vars);
+ 	}
+
+ 	public function listacarrera($carrera = NULL, $periodo = NULL)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$carreras = $this->Admin_Model->getCarreras();
+		$alumnos = $this->Admin_Model->getAlumnosCarreras($carrera, $periodo);
+		$vars['par1'] = $carrera;
+		$vars['par2'] = $periodo;
+		$vars['alumnos'] = $alumnos;
+		$vars['carreras'] = $carreras;
+		$vars['periodos'] = periodos('2083');
+		$vars['view'] = $this->view("listacarrera", true);
 		$this->render("content", $vars);
  	}
 

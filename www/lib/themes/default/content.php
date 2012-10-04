@@ -19,5 +19,11 @@
 		  </label>
 		  <button type="submit" class="btn btn-primary">Buscar</button>
 		</form>
+		<a class="pull-right" href="http://www.itsa.edu.mx/"  title="Ir a la página del ITSA" rel="tooltip">
+			<img class="pull-right" src="<?php print _rs._sh.'IMAGENES/cargando/logo.png' ?>">
+		</a>
+		
+	
 	</div>
+
 <?php } ?>
