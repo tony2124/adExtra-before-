@@ -73,15 +73,17 @@ $(document).ready(function()
 </script>
 
 <table id="lista" class="table table-striped table-condensed">
+
+
   <thead>
-    <tr>
-      <th>N0.</th>
-      <th>N. control</th>
-      <th>Nombre</th>
-      <th>Carrera</th>
-      <th>Sexo</th>
-      <th>Edad</th>
-      <th>Res.</th>
+    <tr style="background: #eeeeee">
+      <th><span class="icon-chevron-down"></span><br>N0.</th>
+      <th><span class="icon-chevron-down"></span><br>N. control</th>
+      <th><span class="icon-chevron-down"></span><br>Nombre</th>
+      <th><span class="icon-chevron-down"></span><br>Carrera</th>
+      <th><span class="icon-chevron-down"></span><br>Sexo</th>
+      <th><span class="icon-chevron-down"></span><br>Edad</th>
+      <th><span class="icon-chevron-down"></span><br>Res.</th>
     </tr>
   </thead>
   <tbody>
@@ -92,7 +94,7 @@ foreach ($alumnos as $alum) {	?>
   <tr>
     <td><?php print $i++ ?></td>
     <td><?php print $alum['numero_control'] ?></td>
-    <td><?php echo $alum['apellido_paterno_alumno']." ".$alum['apellido_materno_alumno']." ".$alum['nombre_alumno'] ?></td>
+    <td><a href="<?php print get("webURL")._sh."admin/alumno/".$alum['numero_control'] ?>"><?php echo $alum['apellido_paterno_alumno']." ".$alum['apellido_materno_alumno']." ".$alum['nombre_alumno'] ?></a></td>
     <td><?php echo $alum['abreviatura_carrera'] ?></td>
     <td><?php echo ($alum['sexo']==1) ? 'H' : 'M' ?></td>
     <td><?php echo calcularEdad($alum['fecha_nacimiento'],$alum['fecha_inscripcion_club']) ?></td>

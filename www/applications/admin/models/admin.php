@@ -111,7 +111,7 @@ class Admin_Model extends ZP_Model {
 
 	public function getAlumnosInscritos($periodo = NULL)
 	{
-		return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes where periodo = '$periodo'");	
+		return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes natural join carreras where periodo = '$periodo'");	
 	}
 
 	public function getData($usuario)
@@ -188,7 +188,7 @@ class Admin_Model extends ZP_Model {
 	
 	public function getPromotor($club)
 	{
-		return $this->Db->query("select * from promotores where id_club = '$club'");
+		return $this->Db->query("select * from promotores where id_club = '$club' and eliminado_promotor = 0");
 	}
 
 	public function elimNoticia($id)
