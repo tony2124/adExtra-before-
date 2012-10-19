@@ -37,6 +37,18 @@ class Admin_Controller extends ZP_Controller {
 		$this->render('noRightContent', $vars);
 	}
 
+
+	function buscar_promotor()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$palabra = POST("nombre");
+		$data = $this->Admin_Model->getResultadosProm($palabra);
+	}
+
+
+
 	function login()
 	{
 		if (SESSION('user_admin'))

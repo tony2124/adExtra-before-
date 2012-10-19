@@ -13,7 +13,7 @@ function promotor(usuario, name)
    $('#usuario_promotor').val(usuario);
 }
 </script>
-   <div class="btn-group">
+   <div class="btn-group ">
     <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
       OPCIONES
       <span class="caret"></span>
@@ -30,6 +30,11 @@ function promotor(usuario, name)
       </li>
     </ul>
   </div>
+  <form class="well span2 pull-right" style="text-align: center" method="post" action="<?php print get('webURL')._sh."admin/buscar_promotor" ?>">
+    <label><i class="icon-search"></i>&nbsp;Búsqueda </label>
+    <input type="text" name="nombre" class="input-small">
+    <input type="submit" value="Buscar" class="btn btn-primary">
+  </form>
   <hr>
 <?php foreach ($promotores as $promotor) { ?>
 <table class="table table-striped table-condensed">
@@ -37,49 +42,53 @@ function promotor(usuario, name)
     <tr>
       <th>Foto</th>
       <th>Datos</th>
-     <!-- <th>Nombre</th>
-      <th>Club</th>
-      <th>Sex</th>
-      <th>Correo electrónico</th>
-      <th>Edad</th>
-      <th>Ocupación</th>
-      <th>Dirección</th>
-      <th>Acción</th>-->
     </tr>
   </thead>
   <tbody>
       
       <tr>
-        <td rowspan="11"></td>
+        <td width="200" rowspan="11">
+          <img src="http://localhost/dropbox/extraescolares/IMAGENES/cargando/logo.png" width="200" >
+        </td>
       </tr>
       <tr>
+        <td width="200">USUARIO</td>
         <td><?php print $promotor['usuario_promotor']?></td>
       </tr>
       <tr>
+        <td>CONTRASEÑA</td>
         <td  align="center"><a href="#" rel="tooltip" title="<?php print $promotor['contrasena_promotor']?>">Ver</a> </td>
         </tr>
       <tr>
+         <td>NOMBRE</td>
         <td><?php print $promotor['apellido_paterno_promotor'].' '.$promotor['apellido_materno_promotor'].' '.$promotor['nombre_promotor'] ?></td>
         </tr>
       <tr>
+         <td>CLUB</td>
         <td><?php print $promotor['nombre_club'] ?></td>
         </tr>
       <tr>
-        <td><?php print ($promotor['sexo_promotor'] == 1) ? 'H' : 'M' ?></td>
+         <td>SEXO</td>
+        <td><?php print ($promotor['sexo_promotor'] == 1) ? 'HOMBRE' : 'MUJER' ?></td>
         </tr>
       <tr>
+         <td>CORREO ELECTRÓNICO</td>
         <td><?php print $promotor['correo_electronico_promotor'] ?></td>
         </tr>
       <tr>
+         <td>FECHA DE NACIMIENTO</td>
         <td><?php print edad($promotor['fecha_nacimiento_promotor']) ?></td>
         </tr>
       <tr>
+         <td>OCUPACIÓN</td>
         <td><?php print $promotor['ocupacion_promotor']?></td>
         </tr>
       <tr>
+         <td>DIRECCIÓN</td>
         <td><?php print $promotor['direccion_promotor'].' Teléfono: '.$promotor['telefono_promotor'] ?></td>
         </tr>
       <tr>
+         <td>ACCIÓN</td>
         <td>
           <a rel="tooltip" title="Editar" class="pull-right" href="<?php print get('webURL'). _sh . 'admin/formEdicionPromotor/'.$promotor['usuario_promotor'] ?>">
             <i class="icon-edit"></i>
