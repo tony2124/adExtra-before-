@@ -31,48 +31,70 @@ function promotor(usuario, name)
     </ul>
   </div>
   <hr>
+<?php foreach ($promotores as $promotor) { ?>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
-      <th>Usuario</th>
-      <th>Contr.</th>
-      <th>Nombre</th>
+      <th>Foto</th>
+      <th>Datos</th>
+     <!-- <th>Nombre</th>
       <th>Club</th>
       <th>Sex</th>
       <th>Correo electrónico</th>
       <th>Edad</th>
       <th>Ocupación</th>
       <th>Dirección</th>
-      <th>Acción</th>
+      <th>Acción</th>-->
     </tr>
   </thead>
   <tbody>
-    <?php foreach ($promotores as $promotor) { ?>
+      
+      <tr>
+        <td rowspan="11"></td>
+      </tr>
       <tr>
         <td><?php print $promotor['usuario_promotor']?></td>
+      </tr>
+      <tr>
         <td  align="center"><a href="#" rel="tooltip" title="<?php print $promotor['contrasena_promotor']?>">Ver</a> </td>
+        </tr>
+      <tr>
         <td><?php print $promotor['apellido_paterno_promotor'].' '.$promotor['apellido_materno_promotor'].' '.$promotor['nombre_promotor'] ?></td>
+        </tr>
+      <tr>
         <td><?php print $promotor['nombre_club'] ?></td>
+        </tr>
+      <tr>
         <td><?php print ($promotor['sexo_promotor'] == 1) ? 'H' : 'M' ?></td>
+        </tr>
+      <tr>
         <td><?php print $promotor['correo_electronico_promotor'] ?></td>
+        </tr>
+      <tr>
         <td><?php print edad($promotor['fecha_nacimiento_promotor']) ?></td>
+        </tr>
+      <tr>
         <td><?php print $promotor['ocupacion_promotor']?></td>
+        </tr>
+      <tr>
         <td><?php print $promotor['direccion_promotor'].' Teléfono: '.$promotor['telefono_promotor'] ?></td>
+        </tr>
+      <tr>
         <td>
-          <a rel="tooltip" title="Editar" href="<?php print get('webURL'). _sh . 'admin/formEdicionPromotor/'.$promotor['usuario_promotor'] ?>">
+          <a rel="tooltip" title="Editar" class="pull-right" href="<?php print get('webURL'). _sh . 'admin/formEdicionPromotor/'.$promotor['usuario_promotor'] ?>">
             <i class="icon-edit"></i>
           </a>
           <a rel="tooltip" title="Eliminar" class="pull-right" onclick="promotor('<?php print $promotor['usuario_promotor'] ?>','<?php print strtoupper($promotor['apellido_paterno_promotor'].' '.$promotor['apellido_materno_promotor'].' '.$promotor['nombre_promotor'])  ?>')" data-toggle="modal" href="#confirmModal">
             <i class="icon-trash"></i>
           </a>
+
         </td>
       </tr>
-    <?php } ?>
-    
   </tbody>
 </table>
-
 <hr>
+ <?php } ?>
+
 <a href="<?php print get('webURL'). _sh . 'admin/formRegistroPromotor' ?>">Agregar un nuevo promotor</a>
 
 <div class="modal hide fade" id="confirmModal">

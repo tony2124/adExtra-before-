@@ -47,6 +47,12 @@ $().ready(function() {
       </div>
         <hr>
         <div class="control-group">
+            <label class="control-label" for="user">Foto</label>
+          <div class="controls">
+              <img src="http://localhost/dropbox/extraescolares/IMAGENES/cargando/logo.png" width="100"><br>
+              <input type="file" name="foto"><br>
+              <span style="font-style: italic">* Si usted adjunta una foto nueva la anterior será destruida.</span>
+          </div><br>
           <label class="control-label" for="user">Usuario</label>
           <div class="controls">
               <span class="input-xlarge uneditable-input"><?php print $promotor['usuario_promotor'] ?></span>
@@ -54,7 +60,7 @@ $().ready(function() {
           </div><br>
           <label class="control-label" for="pass">Contraseña</label>
           <div class="controls">
-    <!-- -->  <input type="password" name="pass" class="input-xlarge" id="pass" value="<?php print $promotor['usuario_promotor'] ?>">
+    <!-- -->  <input type="password" name="pass" class="input-xlarge" id="pass" value="<?php print $promotor['contrasena_promotor'] ?>">
           </div><br>
           <label class="control-label" for="nombre">Nombre</label>
           <div class="controls">

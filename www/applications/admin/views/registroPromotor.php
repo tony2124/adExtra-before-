@@ -48,6 +48,10 @@ $().ready(function() {
       </div>
         <hr>
         <div class="control-group">
+           <label class="control-label" for="user">Foto</label>
+          <div class="controls">
+    <!-- -->  <input type="file"  name="foto">
+          </div><br>
           <label class="control-label" for="user">Usuario</label>
           <div class="controls">
     <!-- -->  <input type="text" name="user" class="input-xlarge" id="user">
