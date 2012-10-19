@@ -4,7 +4,7 @@
   <p>No se encuentra ningún promotor registrado, por favor vaya al apartado promotores para registrar uno.</p>
   <a href="<?php print get('webURL'). _sh . 'admin/registroPromotor' ?>" class="">Registrar promotor</a>
 </div>
-<?php return; } ?>
+ <?php } ?>
 
 <script>
 function promotor(usuario, name)
@@ -13,8 +13,24 @@ function promotor(usuario, name)
    $('#usuario_promotor').val(usuario);
 }
 </script>
-   <div class="btn-group ">
-    <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+  <div class="alert alert-success span4">
+<h2>Nota importante</h2>
+  <p>Para el mejor funcionamiento del sistema considere las siguientes recomendaciones:</p>
+  <ul>
+    <li>No tenga activo a más de un promotor en un club, dé primero de baja el actual y después inscriba al nuevo promotor.</li>
+    <li>El usuario y contraseña que estén asignadas son las que utilizará el promotor para iniciar sesión en su apartado: <a href="http://serviciosextraescolares.itsapatzingan.net/loginAdministrador/adExtra/promotor">http://serviciosextraescolares.itsapatzingan.net/loginAdministrador/adExtra/promotor</a></li>
+  </ul>
+ </div>
+  <form class="well span6 pull-right" style="text-align: center; " method="post" action="<?php print get('webURL')._sh."admin/buscar_promotor" ?>">
+    <i class="icon-search"></i>&nbsp;<b>NOMBRE</b>
+    <input type="text" name="nombre" >&nbsp;&nbsp;
+    <input type="submit" value="Buscar" class="btn btn-large">
+    <p style="font-style: italic; text-align: left">* Puedes realizar una búsqueda colocando: nombre o apellido paterno o apellido materno.</p>
+  </form>
+
+   <div class="well span6 pull-right" >
+   <div class="btn-group pull-right">
+    <a class="btn dropdown-toggle btn-primary pull-right" data-toggle="dropdown" href="#">
       OPCIONES
       <span class="caret"></span>
     </a>
@@ -30,12 +46,24 @@ function promotor(usuario, name)
       </li>
     </ul>
   </div>
-  <form class="well span2 pull-right" style="text-align: center" method="post" action="<?php print get('webURL')._sh."admin/buscar_promotor" ?>">
-    <label><i class="icon-search"></i>&nbsp;Búsqueda </label>
-    <input type="text" name="nombre" class="input-small">
-    <input type="submit" value="Buscar" class="btn btn-primary">
-  </form>
-  <hr>
+  <p>Se han encontrado <?php print sizeof($promotores) ?> promotores</p>
+   <p><a href="<?php print get('webURL'). _sh . 'admin/formRegistroPromotor' ?>">Agregar un nuevo promotor</a></p>
+
+  </div>
+ <?php if($promotores==NULL) return; ?>
+ 
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+ <p>&nbsp;</p>
+  <hr>  
+ 
 <?php foreach ($promotores as $promotor) { ?>
 <table class="table table-striped table-condensed">
   <thead>
@@ -47,8 +75,8 @@ function promotor(usuario, name)
   <tbody>
       
       <tr>
-        <td width="200" rowspan="11">
-          <img src="http://localhost/dropbox/extraescolares/IMAGENES/cargando/logo.png" width="200" >
+        <td width="200" rowspan="12">
+          <img src="<?php print _rs._sh.'IMAGENES/fotosPromotores/'.$promotor['foto_promotor'] ?>" width="200" >
         </td>
       </tr>
       <tr>
@@ -68,6 +96,10 @@ function promotor(usuario, name)
         <td><?php print $promotor['nombre_club'] ?></td>
         </tr>
       <tr>
+         <td>HORARIO</td>
+        <td><?php print $promotor['horario'] ?></td>
+        </tr>
+      <tr>
          <td>SEXO</td>
         <td><?php print ($promotor['sexo_promotor'] == 1) ? 'HOMBRE' : 'MUJER' ?></td>
         </tr>
@@ -76,7 +108,7 @@ function promotor(usuario, name)
         <td><?php print $promotor['correo_electronico_promotor'] ?></td>
         </tr>
       <tr>
-         <td>FECHA DE NACIMIENTO</td>
+         <td>EDAD</td>
         <td><?php print edad($promotor['fecha_nacimiento_promotor']) ?></td>
         </tr>
       <tr>

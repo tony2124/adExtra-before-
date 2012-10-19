@@ -27,27 +27,15 @@ class Admin_Controller extends ZP_Controller {
 		unsetSessions(get('webURL') . _sh . 'admin');
 	}
 
-	function promotores($palabras = NULL)
+	function promotores()
 	{
 		if( !SESSION('user_admin') )
 			return redirect(get('webURL') . _sh . 'admin/login');
 
-		$vars['promotores']  = $this->Admin_Model->getPromotores($palabras);
+		$vars['promotores']  = $this->Admin_Model->getPromotores();
 		$vars['view'] = $this->view('adminPromotores',true);
 		$this->render('noRightContent', $vars);
 	}
-
-
-	function buscar_promotor()
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$palabra = POST("nombre");
-		redirect(get("webURL")._sh."admin/promotores/".$palabra);
-	}
-
-
 
 	function login()
 	{
@@ -433,142 +421,11 @@ class Admin_Controller extends ZP_Controller {
 		if( !SESSION('user_admin') )
 			return redirect(get('webURL') . _sh . 'admin/login');
 
-		$name = "";
-
-		if (FILES("foto", "tmp_name")) 
-		{
-		    $path = _spath.'/IMAGENES/fotosPromotores/';  
-		    $tmp_name = $_FILES["foto"]["tmp_name"];
-			$name = $_FILES["foto"]["name"];
-	
-			$ext = explode(".",$name);		
-			if($ext[1]=='JPG' || $ext[1]=='jpg')
-			{		 		
-				$id = date("YmdHis").rand(0,100).rand(0,100);
-				$name = $id.".".$ext[1];
-
-				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
-				chmod($path.$name,0777);
-
-				$rutaImagenOriginal = $path.$name;
-				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
-				$max_ancho = 200;
-				$max_alto = 200;
-				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
-				$x_ratio = $max_ancho /$ancho;
-				$y_ratio = $max_alto / $alto;
-				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
-				{
-					$ancho_final = $ancho;
-					$alto_final = $alto;
-				}
-				elseif(($x_ratio * $alto) <$max_alto)
-				{
-					$alto_final = ceil($x_ratio * $alto);
-					$ancho_final = $max_ancho;
-				}
-				else 
-				{
-					$ancho_final = ceil($y_ratio*$ancho);
-					$alto_final = $max_alto;
-				}
-
-				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
-				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
-				imagedestroy($img_original);
-				$calidad = 95;
-				imagejpeg($tmp,$path."tm".$name,$calidad);
-				chmod($path."tm".$name,0777);
-				unlink($path.$name);
-				$name = "tm".$name;
-			}else $name="nofoto.jpg"; 
-
-		}
-
 		$vars['user'] = POST('user');
 		$vars['pass'] = POST('pass');
-		$vars['foto'] = $name;
-		$vars['nombre'] = POST('nombre');
-		$vars['horario'] = POST('horario');
-		$vars['ap'] = POST('ap');
-		$vars['am'] = POST('am');
-		$vars['fecha_nac'] = POST('fecha_nac');
-		$vars['fecha_reg'] = date("Y-m-d");
-		$vars['sexo'] = POST('sexo');
-		$vars['club'] = POST('club');
-		$vars['sexo'] = POST('sexo');
-		$vars['email'] = POST('email');
-		$vars['tel'] = POST('tel');
-		$vars['direccion'] = POST('direccion');
-		$vars['ocupacion'] = POST('ocupacion');
-		print $this->Admin_Model->regPromotor($vars);
-		redirect(get('webURL'). _sh . 'admin/promotores');
-	}
-
-	public function editProm()
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$name = "nofoto.jpg";
-
-		if( strcmp(POST('mantener'), "S") != 0 )
-		if (FILES("foto", "tmp_name")) 
-		{
-		    $path = _spath.'/IMAGENES/fotosPromotores/';  
-		    $tmp_name = $_FILES["foto"]["tmp_name"];
-			$name = $_FILES["foto"]["name"];
-	
-			$ext = explode(".",$name);		
-			if($ext[1]=='JPG' || $ext[1]=='jpg')
-			{		 		
-				$id = date("YmdHis").rand(0,100).rand(0,100);
-				$name = $id.".".$ext[1];
-
-				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
-				chmod($path.$name,0777);
-
-				$rutaImagenOriginal = $path.$name;
-				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
-				$max_ancho = 200;
-				$max_alto = 200;
-				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
-				$x_ratio = $max_ancho /$ancho;
-				$y_ratio = $max_alto / $alto;
-				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
-				{
-					$ancho_final = $ancho;
-					$alto_final = $alto;
-				}
-				elseif(($x_ratio * $alto) <$max_alto)
-				{
-					$alto_final = ceil($x_ratio * $alto);
-					$ancho_final = $max_ancho;
-				}
-				else 
-				{
-					$ancho_final = ceil($y_ratio*$ancho);
-					$alto_final = $max_alto;
-				}
-
-				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
-				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
-				imagedestroy($img_original);
-				$calidad = 95;
-				imagejpeg($tmp,$path."tm".$name,$calidad);
-				chmod($path."tm".$name,0777);
-				unlink($path.$name);
-				$name = "tm".$name;
-			}else $name="nofoto.jpg";
-		}
-
-		$vars['usuario'] = POST('user');
-		$vars['pass'] = POST('pass');
-		$vars['foto'] = $name;
 		$vars['nombre'] = POST('nombre');
 		$vars['ap'] = POST('ap');
 		$vars['am'] = POST('am');
-		$vars['horario'] = POST('horario');
 		$vars['fecha_nac'] = POST('fecha_nac');
 		$vars['fecha_reg'] = date("Y-m-d");
 		$vars['sexo'] = POST('sexo');
@@ -579,10 +436,31 @@ class Admin_Controller extends ZP_Controller {
 		$vars['direccion'] = POST('direccion');
 		$vars['ocupacion'] = POST('ocupacion');
 		//____($vars);
-		if( strcmp(POST('mantener'), "S") != 0 )
-			$this->Admin_Model->updatePromotor($vars);
-		if( strcmp(POST('mantener'), "S") == 0 )
-			$this->Admin_Model->updatePromotorMantener($vars);
+		print $this->Admin_Model->regPromotor($vars);
+		redirect(get('webURL'). _sh . 'admin/promotores');
+	}
+
+	public function editProm()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$vars['usuario'] = POST('user');
+		$vars['pass'] = POST('pass');
+		$vars['nombre'] = POST('nombre');
+		$vars['ap'] = POST('ap');
+		$vars['am'] = POST('am');
+		$vars['fecha_nac'] = POST('fecha_nac');
+		$vars['fecha_reg'] = date("Y-m-d");
+		$vars['sexo'] = POST('sexo');
+		$vars['club'] = POST('club');
+		$vars['sexo'] = POST('sexo');
+		$vars['email'] = POST('email');
+		$vars['tel'] = POST('tel');
+		$vars['direccion'] = POST('direccion');
+		$vars['ocupacion'] = POST('ocupacion');
+		//____($vars);
+		print $this->Admin_Model->updatePromotor($vars);
 		redirect(get('webURL'). _sh . 'admin/promotores');
 	}
 

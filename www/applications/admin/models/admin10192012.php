@@ -35,12 +35,6 @@ class Admin_Model extends ZP_Model {
 	    return $query;
 	}
 
-	public function getResultadoProm()
-	{
-
-		return $this->Db->query("select * from ");
-	}
-
 	public function guardarAviso($texto, $mostrar)
 	{
 		$this->Db->query("update configuracion set mostraraviso = $mostrar");
@@ -56,9 +50,9 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("insert into albumes values('$id','$club','$album','$fec','')");
 	}
 
-	public function getPromotores($palabras)
+	public function getPromotores()
 	{
-		return $this->Db->query("select * from promotores natural join clubes where (nombre_promotor like '%$palabras%' or apellido_paterno_promotor like '%$palabras%' or apellido_materno_promotor like '%$palabras%')  and eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
+		return $this->Db->query("select * from promotores natural join clubes where eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
 	}
 
 	public function getEditPromotor($id)
@@ -252,8 +246,8 @@ class Admin_Model extends ZP_Model {
 	public function regPromotor($vars)
 	{
 		
-		$query = "insert into promotores (usuario_promotor, contrasena_promotor, foto_promotor, nombre_promotor, apellido_paterno_promotor, apellido_materno_promotor, horario, id_club, sexo_promotor, fecha_nacimiento_promotor, fecha_registro_promotor, correo_electronico_promotor, telefono_promotor, ocupacion_promotor, direccion_promotor)
-				values('$vars[user]', '$vars[pass]','$vars[foto]', '$vars[nombre]' ,'$vars[ap]','$vars[am]','$vars[horario]', $vars[club],  $vars[sexo],  '$vars[fecha_nac]', '$vars[fecha_reg]', '$vars[email]','$vars[tel]' ,'$vars[ocupacion]',  '$vars[direccion]')";
+		$query = "insert into promotores (usuario_promotor, contrasena_promotor, nombre_promotor, apellido_paterno_promotor, apellido_materno_promotor, id_club, sexo_promotor, fecha_nacimiento_promotor, fecha_registro_promotor, correo_electronico_promotor, telefono_promotor, ocupacion_promotor, direccion_promotor)
+				values('$vars[user]', '$vars[pass]', '$vars[nombre]' ,'$vars[ap]','$vars[am]', $vars[club],  $vars[sexo],  '$vars[fecha_nac]', '$vars[fecha_reg]', '$vars[email]','$vars[tel]' ,'$vars[ocupacion]',  '$vars[direccion]')";
 		//$this->acentos();
 		$this->Db->query($query);
 		return $query;
@@ -262,15 +256,8 @@ class Admin_Model extends ZP_Model {
 	public function updatePromotor($vars)
 	{
 		
-		$query = "update promotores set horario = '$vars[horario]', contrasena_promotor = '$vars[pass]',  foto_promotor = '$vars[foto]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
-		$this->Db->query($query);
-		return $query;
-	}
-
-	public function updatePromotorMantener($vars)
-	{
-		
-		$query = "update promotores set horario = '$vars[horario]', contrasena_promotor = '$vars[pass]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
+		$query = "update promotores set contrasena_promotor = '$vars[pass]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
+		//$this->acentos();
 		$this->Db->query($query);
 		return $query;
 	}

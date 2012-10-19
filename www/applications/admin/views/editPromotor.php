@@ -12,7 +12,8 @@ $().ready(function() {
       fecha_nac: {required: true, date: true},
       tel: {digits: true, minlength: 7, maxlength: 10},
       ocupacion: "required",
-      direccion: "required"
+      direccion: "required",
+      horario: "required"
     },
     messages: {
       user: { required: "* Este campo es obligatorio", minlength: "Debe tener mínimo 6 caracteres", maxlength: "Debe tener máximo 16 caracteres" },
@@ -24,6 +25,7 @@ $().ready(function() {
       fecha_nac: { required: "* Este campo es obligatorio", date: "Ingrese una fecha válida en el formato aaaa-mm-dd"},
       ocupacion: "* Este campo es obligatorio",
       direccion: "* Este campo es obligatorio",
+      horario: "* Este campo es obligatorio",
       tel: {digits: "Este campo solo admite números", minlength: "El teléfono debe contener de 7 a 10 números", maxlength: "El teléfono debe contener de 7 a 10 números"}
     }
   });
@@ -33,10 +35,10 @@ $().ready(function() {
 <style type="text/css">
   label.error { color: red; display: inline; margin-left: 10px;}
 </style>
- <form id="registropromotor" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editProm/'.$promotor['usuario_promotor'] ?>">
+ <form id="registropromotor" class="form-horizontal" method="post" action="<?php print get('webURL')._sh.'admin/editProm/'.$promotor['usuario_promotor'] ?>" enctype="multipart/form-data">
     <fieldset>
       <legend>Edición de promotor</legend>
-      <div class="well">
+      <div class="well" >
       <h5>Antes de editar al promotor debe tomar en cuenta los siguientes aspectos:</h5>
         <ul>
           <li>No debe usarse acentos en el nombre y apellidos del promotor.</li>
@@ -49,9 +51,10 @@ $().ready(function() {
         <div class="control-group">
             <label class="control-label" for="user">Foto</label>
           <div class="controls">
-              <img src="http://localhost/dropbox/extraescolares/IMAGENES/cargando/logo.png" width="100"><br>
+              <img src="<?php print _rs._sh.'IMAGENES/fotosPromotores/'.$promotor['foto_promotor'] ?>" width="100"><br>
+              <input type="checkbox" value="S" name="mantener" checked="checked"> &nbsp;Mantener la foto actual <br>
               <input type="file" name="foto"><br>
-              <span style="font-style: italic">* Si usted adjunta una foto nueva la anterior será destruida.</span>
+              <span style="font-style: italic">* Para subir una nueva foto debe deseleccionar la casilla de "mantener foto actual". Si usted adjunta una foto nueva la anterior será destruida.</span>
           </div><br>
           <label class="control-label" for="user">Usuario</label>
           <div class="controls">
@@ -95,6 +98,10 @@ $().ready(function() {
                     </option>
                 <?php  } ?>
                 </select>
+          </div><br>
+          <label class="control-label" for="horario">Horario de trabajo</label>
+          <div class="controls">
+      <!-- -->  <textarea name="horario" id="horario"></textarea>
           </div><br>
           <label class="control-label" for="email">Correo electrónico</label>
           <div class="controls">
