@@ -189,11 +189,31 @@ class Admin_Model extends ZP_Model {
 
 	}
 
+	public function guardarClub($vars)
+	{
+		$query = "insert into clubes(nombre_club, tipo_club, texto_club, foto_club, fecha_creacion)
+		 				values ('$vars[nombre_club]','$vars[tipo_club]','$vars[texto_club]','$vars[foto_club]','$vars[fecha_creacion]')";
+		$this->acentos();
+		$this->Db->query($query);
+		return $query;
+
+	}
+
 	public function updateNew($vars)
 	{
 		$query = "update noticias set nombre_noticia = '$vars[nombre_noticia]' , 
 			texto_noticia = '$vars[texto_noticia]', imagen_noticia = '$vars[imagen_noticia]', fecha_modificacion = '$vars[fecha_modificacion]', 
 				hora = '$vars[hora]', id_administrador = $vars[id_administrador] where id_noticias = '$vars[id_noticias]'";
+		$this->acentos();
+		$this->Db->query($query);
+		return $query;
+	}
+
+	public function updateClub($vars)
+	{
+		$query = "update clubes set nombre_club = '$vars[nombre_club]' , tipo_club = '$vars[tipo_club]' ,
+			texto_club = '$vars[texto_club]', foto_club = '$vars[foto_club]' 
+			where id_club = '$vars[id_club]'";
 		$this->acentos();
 		$this->Db->query($query);
 		return $query;
@@ -213,6 +233,12 @@ class Admin_Model extends ZP_Model {
 	{
 		return $this->Db->query("update promotores set eliminado_promotor = true where usuario_promotor = '$id' ");
 	}
+
+	public function elimClub($id)
+	{
+		return $this->Db->query("update clubes set eliminado_club = true where id_club = '$id' ");
+	}
+
 	public function elimActividad($folio)
 	{
 		return $this->Db->query("delete from inscripciones where folio = '$folio'");
@@ -307,6 +333,11 @@ class Admin_Model extends ZP_Model {
 		$this->Db->from($tabla);
 		$this->Db->where($where);
 		return $this->Db->get();
+	}
+
+	public function obtenerDatosClub($id)
+	{
+		return $this->Db->query("select * from clubes where id_club = $id and eliminado_club = false");
 	}
 
 	public function comprobarEstados()

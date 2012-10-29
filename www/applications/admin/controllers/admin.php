@@ -253,6 +253,82 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/noticias');
 	}
 
+
+	public function guardarclub()
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$nombre = $_POST['name'];
+		$texto = $_POST['texto']; //porque necesito el código en formato HTML NO FORMATEADO
+		$tipo = POST('tipo');
+		$cadena = str_replace( "'", "\"", $texto);
+		$nombre = str_replace( "'", "\"", $nombre);
+
+		$name = "";
+
+		if (FILES("foto", "tmp_name")) 
+		{
+		    $path = _spath.'/paginas/clubes/IMAGEN/';  
+		    $tmp_name = $_FILES["foto"]["tmp_name"];
+			$name = $_FILES["foto"]["name"];
+	
+			$ext = explode(".",$name);		
+			if($ext[1]=='JPG' || $ext[1]=='jpg')
+			{		 		
+				$id = date("YmdHis").rand(0,100).rand(0,100);
+				$name = $id.".".$ext[1];
+
+				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
+				chmod($path.$name,0777);
+
+				$rutaImagenOriginal = $path.$name;
+				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
+				$max_ancho = 800;
+				$max_alto = 800;
+				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
+				$x_ratio = $max_ancho /$ancho;
+				$y_ratio = $max_alto / $alto;
+				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
+				{
+					$ancho_final = $ancho;
+					$alto_final = $alto;
+				}
+				elseif(($x_ratio * $alto) <$max_alto)
+				{
+					$alto_final = ceil($x_ratio * $alto);
+					$ancho_final = $max_ancho;
+				}
+				else 
+				{
+					$ancho_final = ceil($y_ratio*$ancho);
+					$alto_final = $max_alto;
+				}
+
+				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
+				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
+				imagedestroy($img_original);
+				$calidad = 95;
+				imagejpeg($tmp,$path."tm".$name,$calidad);
+				chmod($path."tm".$name,0777);
+				unlink($path.$name);
+				$name = "tm".$name;
+			}else $name=""; 
+
+		}
+
+		$vars["nombre_club"] = $nombre;
+		$vars["texto_club"] = $cadena;
+		$vars["foto_club"] = $name;
+		$vars["fecha_creacion"] = date("Y-m-d");
+		$vars["tipo_club"] = $tipo;
+
+		if(strcmp($vars["nombre_club"], "") != 0)
+			$this->Admin_Model->guardarClub($vars);
+
+		redirect(get('webURL')._sh.'admin/adminclubes');
+	}
+
 	public function updateLiberacion()
 	{
 		if( !SESSION('user_admin') )
@@ -347,6 +423,85 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/noticias');
 	}
 
+
+	public function modclub($id)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$nombre = $_POST['name'];
+		$texto = $_POST['texto']; //porque necesito el código en formato HTML NO FORMATEADO
+		$tipo = POST('tipo');
+
+		$cadena = str_replace( "'", "\"", $texto);
+		$nombre = str_replace( "'", "\"", $nombre);
+
+		$name = POST('mostrarfoto');
+
+		if (FILES("foto", "tmp_name")) 
+		{
+			$path = _spath.'/paginas/clubes/IMAGEN/'; 
+
+		    $tmp_name = $_FILES["foto"]["tmp_name"];
+			$name = $_FILES["foto"]["name"];
+
+			$ext = explode(".",$name);		
+			if($ext[1]=='JPG' || $ext[1]=='jpg')
+			{		 		
+				$id_foto = date("YmdHis").rand(0,100).rand(0,100);
+				$name = $id_foto.".".$ext[1];
+
+				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
+				chmod($path.$name,0777);
+
+				$rutaImagenOriginal = $path.$name;
+				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
+				$max_ancho = 500;
+				$max_alto = 500;
+				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
+				$x_ratio = $max_ancho /$ancho;
+				$y_ratio = $max_alto / $alto;
+				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
+				{
+					$ancho_final = $ancho;
+					$alto_final = $alto;
+				}
+				elseif(($x_ratio * $alto) <$max_alto)
+				{
+					$alto_final = ceil($x_ratio * $alto);
+					$ancho_final = $max_ancho;
+				}
+				else 
+				{
+					$ancho_final = ceil($y_ratio*$ancho);
+					$alto_final = $max_alto;
+				}
+
+				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
+				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
+				imagedestroy($img_original);
+				$calidad = 95;
+				imagejpeg($tmp,$path."tm".$name,$calidad);
+
+				chmod($path."tm".$name,0777);
+				unlink($path.$name);
+				$name = "tm".$name;
+			}else $name=""; 
+
+		} 
+
+		$vars["id_club"] = $id;
+		$vars["nombre_club"] = $nombre;
+		$vars["texto_club"] = $cadena;
+		$vars["foto_club"] = $name;
+		$vars["tipo_club"] = $tipo;
+
+		$this->Admin_Model->updateClub($vars);
+
+		redirect(get('webURL')._sh.'admin/adminclubes');
+	}
+
+
 	public function elimPromotor()
 	{
 		if( !SESSION('user_admin') )
@@ -355,6 +510,16 @@ class Admin_Controller extends ZP_Controller {
 		$usuario_promotor = POST('usuario_promotor');
 		$this->Admin_Model->elimPromotor($usuario_promotor);
 		redirect(get('webURL'). _sh . 'admin/promotores');
+	}
+
+	public function elimClub()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$id_club = POST('id_club');
+		$this->Admin_Model->elimClub($id_club);
+		redirect(get('webURL'). _sh . 'admin/adminclubes');
 	}
 
 	
@@ -804,6 +969,19 @@ class Admin_Controller extends ZP_Controller {
 			return redirect(get('webURL') . _sh . 'admin/login');
 
  		$vars['view'] = $this->view('banners',true);
+ 		$this->render('content', $vars);
+ 	}
+
+ 	public function adminclubes($id = NULL)
+ 	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		if($id != NULL) $vars['club'] = $this->Admin_Model->obtenerDatosClub($id);
+		else $vars['club'] = NULL;
+		
+		$vars['clubes'] = $this->Admin_Model->getClubes();
+ 		$vars['view'] = $this->view('adminclubes',true);
  		$this->render('content', $vars);
  	}
 
