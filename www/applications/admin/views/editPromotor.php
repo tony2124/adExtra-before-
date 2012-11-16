@@ -13,7 +13,8 @@ $().ready(function() {
       tel: {digits: true, minlength: 7, maxlength: 10},
       ocupacion: "required",
       direccion: "required",
-      horario: "required"
+      horario: "required",
+      lugar: "required"
     },
     messages: {
       user: { required: "* Este campo es obligatorio", minlength: "Debe tener mínimo 6 caracteres", maxlength: "Debe tener máximo 16 caracteres" },
@@ -26,6 +27,7 @@ $().ready(function() {
       ocupacion: "* Este campo es obligatorio",
       direccion: "* Este campo es obligatorio",
       horario: "* Este campo es obligatorio",
+      lugar: "* Este campo es obligatorio",
       tel: {digits: "Este campo solo admite números", minlength: "El teléfono debe contener de 7 a 10 números", maxlength: "El teléfono debe contener de 7 a 10 números"}
     }
   });
@@ -101,7 +103,11 @@ $().ready(function() {
           </div><br>
           <label class="control-label" for="horario">Horario de trabajo</label>
           <div class="controls">
-      <!-- -->  <textarea name="horario" id="horario"></textarea>
+      <!-- -->  <textarea name="horario" id="horario"><?php print $promotor['horario'] ?></textarea>
+          </div><br>
+          <label class="control-label" for="lugar">Lugar de trabajo</label>
+          <div class="controls">
+      <!-- -->  <textarea name="lugar" id="lugar"><?php print $promotor['lugar'] ?></textarea>
           </div><br>
           <label class="control-label" for="email">Correo electrónico</label>
           <div class="controls">
@@ -120,7 +126,7 @@ $().ready(function() {
       <!-- -->  <input type="text" name="ocupacion" class="input-xlarge" id="ocupacion" value="<?php print $promotor['ocupacion_promotor'] ?>">
           </div>
           <div class="form-actions">
-            <input type="submit" class="btn btn-success span2 pull-center" value="Editar">  
+            <input type="submit" class="btn btn-success span2 pull-center" value="Guardar">  
           </div>
         </div>
       </fieldset>

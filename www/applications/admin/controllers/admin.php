@@ -23,10 +23,47 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL') . _sh . 'admin/login');
 	}
 
+
+/*INICIO DE SESION-*/
 	public function logout() {
 		unsetSessions(get('webURL') . _sh . 'admin');
 	}
 
+	function login()
+	{
+		if (SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/estadistica');
+
+		$vars['view'] = $this->view("login",true);
+		$vars['error'] = '0';
+		$this->render("noRightContent", $vars);
+	} 
+
+	public function iniciarsesion()
+	{
+		$usuario = POST('usuario');
+		$clave = POST('clave');
+		$data = $this->Admin_Model->getData($usuario);
+
+		if($data[0]['contrasena_administrador'] == $clave)
+		{
+			SESSION('user_admin',$data[0]['usuario_administrador']);
+			SESSION('id_admin',$data[0]['id_administrador']);
+			SESSION('name_admin',$data[0]['nombre_administrador']);
+			SESSION('last1_admin',$data[0]['apellido_paterno_administrador']);
+			SESSION('last2_admin',$data[0]['apellido_materno_administrador']);
+			SESSION('profesion_admin',$data[0]['abreviatura_profesion']);
+			return redirect(get('webURL') .  _sh .'admin/estadistica');
+		}
+		
+		$vars['view'] = $this->view("login",true);
+		$vars['error'] = '1';
+		$this->render("noRightContent", $vars);
+
+	}
+
+
+/* PROMOTORES */
 	function promotores($palabras = NULL)
 	{
 		if( !SESSION('user_admin') )
@@ -47,81 +84,247 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get("webURL")._sh."admin/promotores/".$palabra);
 	}
 
-
-
-	function login()
-	{
-		if (SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/estadistica');
-
-		$vars['view'] = $this->view("login",true);
-		$vars['error'] = '0';
-		$this->render("noRightContent", $vars);
-	} 
-
-	public function editalumno()
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-
-		$vars['numero_control'] = POST('numero_control');
-		$vars['nombre'] = POST('nombre');
-		$vars['ap'] = POST('ap');
-		$vars['am'] = POST('am');
-		$vars['fecha_nac'] = POST('fecha_nac');
-		$vars['sexo'] = POST('sexo');
-		$vars['email'] = POST('email');
-		$vars['se'] = POST('se');
-		$vars['clave'] = POST('clave');
-		
-		$this->Admin_Model->updateAlumno($vars);
-
-		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
-	}
-
-	public function inscipcionActividad()
+	public function elimPromotor()
 	{
 		if( !SESSION('user_admin') )
 			return redirect(get('webURL') . _sh . 'admin/login');
 
-		$vars['numero_control'] = POST('numero_control');
-		$vars['id_administrador'] = SESSION('id_admin');
-		$vars['club'] = POST('actividad');
-		$vars['periodo'] = POST('periodo');
-		$vars['semestre'] = POST('semestre');
-		$vars['fecha_inscripcion'] = date('Y-m-d');
-		$vars['fecha_modificacion'] = date('Y-m-d');
-		$vars['observaciones'] = str_replace( "'", "\"", $_POST['obsIns']);
-		$vars['acreditado'] = POST('acreditado');
-		print $this->Admin_Model->inscribirActividad($vars);
-		redirect(get('webURL').'/admin/alumno/'.POST('numero_control'));
+		$usuario_promotor = POST('usuario_promotor');
+		$this->Admin_Model->elimPromotor($usuario_promotor);
+		redirect(get('webURL'). _sh . 'admin/promotores');
+	}
+
+	public function formRegistroPromotor()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$vars['clubes'] = $this->Admin_Model->getClubes();
+		$vars['view'] = $this->view('registroPromotor', true);
+		$this->render('content', $vars);
+	}
+
+	public function formEdicionPromotor($id)
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$data = $this->Admin_Model->getEditPromotor($id);
+		$vars['promotor'] = $data[0];
+		$vars['clubes'] = $this->Admin_Model->getClubes();
+		$vars['view'] = $this->view('editPromotor', true);
+		$this->render('content', $vars);
+	}
+
+	public function editProm()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$name = "nofoto.jpg";
+
+		if( strcmp(POST('mantener'), "S") != 0 )
+		if (FILES("foto", "tmp_name")) 
+		{
+		    $path = _spath.'/IMAGENES/fotosPromotores/';  
+		    $tmp_name = $_FILES["foto"]["tmp_name"];
+			$name = $_FILES["foto"]["name"];
+	
+			$ext = explode(".",$name);		
+			if($ext[1]=='JPG' || $ext[1]=='jpg')
+			{		 		
+				$id = date("YmdHis").rand(0,100).rand(0,100);
+				$name = $id.".".$ext[1];
+
+				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
+				chmod($path.$name,0777);
+
+				$rutaImagenOriginal = $path.$name;
+				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
+				$max_ancho = 200;
+				$max_alto = 200;
+				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
+				$x_ratio = $max_ancho /$ancho;
+				$y_ratio = $max_alto / $alto;
+				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
+				{
+					$ancho_final = $ancho;
+					$alto_final = $alto;
+				}
+				elseif(($x_ratio * $alto) <$max_alto)
+				{
+					$alto_final = ceil($x_ratio * $alto);
+					$ancho_final = $max_ancho;
+				}
+				else 
+				{
+					$ancho_final = ceil($y_ratio*$ancho);
+					$alto_final = $max_alto;
+				}
+
+				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
+				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
+				imagedestroy($img_original);
+				$calidad = 95;
+				imagejpeg($tmp,$path."tm".$name,$calidad);
+				chmod($path."tm".$name,0777);
+				unlink($path.$name);
+				$name = "tm".$name;
+			}else $name="nofoto.jpg";
+		}
+
+		$vars['usuario'] = POST('user');
+		$vars['pass'] = POST('pass');
+		$vars['foto'] = $name;
+		$vars['nombre'] = POST('nombre');
+		$vars['ap'] = POST('ap');
+		$vars['am'] = POST('am');
+		$vars['horario'] = POST('horario');
+		$vars['lugar'] = POST('lugar');
+		$vars['fecha_nac'] = POST('fecha_nac');
+		$vars['fecha_reg'] = date("Y-m-d");
+		$vars['sexo'] = POST('sexo');
+		$vars['club'] = POST('club');
+		$vars['sexo'] = POST('sexo');
+		$vars['email'] = POST('email');
+		$vars['tel'] = POST('tel');
+		$vars['direccion'] = POST('direccion');
+		$vars['ocupacion'] = POST('ocupacion');
+		//____($vars);
+		if( strcmp(POST('mantener'), "S") != 0 )
+			$this->Admin_Model->updatePromotor($vars);
+		if( strcmp(POST('mantener'), "S") == 0 )
+			$this->Admin_Model->updatePromotorMantener($vars);
+		redirect(get('webURL'). _sh . 'admin/promotores');
 	}
 	
-	public function editResultado()
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$resultado = POST('acreditado');
-		$folio = POST('folio');
-		$numero_control = POST('numero_control');
-		$obs = str_replace( "'", "\"", $_POST['obs']);
-		$fecha_lib = date("Y-m-d");
-		print $this->Admin_Model->updateRes($resultado, $folio, $obs, $fecha_lib);
-		redirect(get('webURL').'/admin/alumno/'.$numero_control);
+	public function regProm()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$name = "";
+
+		if (FILES("foto", "tmp_name")) 
+		{
+		    $path = _spath.'/IMAGENES/fotosPromotores/';  
+		    $tmp_name = $_FILES["foto"]["tmp_name"];
+			$name = $_FILES["foto"]["name"];
+	
+			$ext = explode(".",$name);		
+			if($ext[1]=='JPG' || $ext[1]=='jpg')
+			{		 		
+				$id = date("YmdHis").rand(0,100).rand(0,100);
+				$name = $id.".".$ext[1];
+
+				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
+				chmod($path.$name,0777);
+
+				$rutaImagenOriginal = $path.$name;
+				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
+				$max_ancho = 200;
+				$max_alto = 200;
+				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
+				$x_ratio = $max_ancho /$ancho;
+				$y_ratio = $max_alto / $alto;
+				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
+				{
+					$ancho_final = $ancho;
+					$alto_final = $alto;
+				}
+				elseif(($x_ratio * $alto) <$max_alto)
+				{
+					$alto_final = ceil($x_ratio * $alto);
+					$ancho_final = $max_ancho;
+				}
+				else 
+				{
+					$ancho_final = ceil($y_ratio*$ancho);
+					$alto_final = $max_alto;
+				}
+
+				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
+				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
+				imagedestroy($img_original);
+				$calidad = 95;
+				imagejpeg($tmp,$path."tm".$name,$calidad);
+				chmod($path."tm".$name,0777);
+				unlink($path.$name);
+				$name = "tm".$name;
+			}else $name="nofoto.jpg"; 
+
+		}
+
+		$vars['user'] = POST('user');
+		$vars['pass'] = POST('pass');
+		$vars['foto'] = $name;
+		$vars['nombre'] = POST('nombre');
+		$vars['horario'] = POST('horario');
+		$vars['lugar'] = POST('lugar');
+		$vars['ap'] = POST('ap');
+		$vars['am'] = POST('am');
+		$vars['fecha_nac'] = POST('fecha_nac');
+		$vars['fecha_reg'] = date("Y-m-d");
+		$vars['sexo'] = POST('sexo');
+		$vars['club'] = POST('club');
+		$vars['sexo'] = POST('sexo');
+		$vars['email'] = POST('email');
+		$vars['tel'] = POST('tel');
+		$vars['direccion'] = POST('direccion');
+		$vars['ocupacion'] = POST('ocupacion');
+		print $this->Admin_Model->regPromotor($vars);
+		redirect(get('webURL'). _sh . 'admin/promotores');
 	}
 
-	public function editActividad()
-	{
 
+
+	
+	/* ALUMNOS  **/
+	public function buscar()
+	{
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$folio = POST('folio');
-		$numero_control = POST('nc');
-		$club=POST('actividad');
-		print $this->Admin_Model->updateActividad($folio, $club);
-		redirect(get('webURL').'/admin/alumno/'.$numero_control);
+		$busqueda = POST('bus');
+		$sit = POST('sit');
+
+		if(!POST('sit')) $sit='1';
+		//____($sit);
+		$error = NULL;
+		if($busqueda=='') $error = 1;
+
+		$datos = $this->Admin_Model->getRespuesta($busqueda,$sit);
+		
+		/***************** variables **********************/
+		$vars["error"] = $error;
+		$vars["palabra"] = $busqueda;
+		
+		$vars["datos"] = $datos;
+		
+		$vars["view"] = $this->view("busquedaAlumnos",true);
+		/*****************************************************/
+
+		$this->render("content",$vars);
+	}
+
+	public function alumno($nctrl = NULL)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+		//include(_corePath . _sh .'/libraries/funciones/funciones.php');
+		$datos = $this->Admin_Model->getAlumno($nctrl);
+		$inscripciones = $this->Admin_Model->getClubesInscritosAlumno($nctrl);
+		$clubes = $this->Admin_Model->getClubes('all');
+		$vars["nombreAlumno"] = $datos[0]['apellido_paterno_alumno'].' '.$datos[0]['apellido_materno_alumno'].' '.$datos[0]['nombre_alumno'];
+		$vars["periodos"] = periodos($datos[0]['fecha_inscripcion']);
+		$vars['clubes'] = $clubes;
+		$vars["alumno"] = $datos[0];
+		$vars["inscripciones"] = $inscripciones;
+
+		$vars["view"] = $this->view("alumno",true);
+
+		$this->render("content",$vars);
 	}
 
 	public function formRegistroAlumno()
@@ -155,16 +358,116 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
 
-
-	public function elimnoticia($id)
+	public function editalumno()
 	{
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$this->Admin_Model->elimNoticia($id);
-		redirect(get('webURL')._sh.'admin/noticias');
+		$vars['numero_control'] = POST('numero_control');
+		$vars['nombre'] = POST('nombre');
+		$vars['ap'] = POST('ap');
+		$vars['am'] = POST('am');
+		$vars['fecha_nac'] = POST('fecha_nac');
+		$vars['sexo'] = POST('sexo');
+		$vars['email'] = POST('email');
+		$vars['se'] = POST('se');
+		$vars['clave'] = POST('clave');
 		
+		$this->Admin_Model->updateAlumno($vars);
+
+		redirect(get('webURL').'/admin/alumno/'.$vars['numero_control']);
 	}
+
+
+	/*OPERACIONES DE ACTIVIDADES / CLUBES  **/
+	public function inscipcionActividad()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$vars['numero_control'] = POST('numero_control');
+		$vars['id_administrador'] = SESSION('id_admin');
+		$vars['club'] = POST('actividad');
+		$vars['periodo'] = POST('periodo');
+		$vars['semestre'] = POST('semestre');
+		$vars['fecha_inscripcion'] = date('Y-m-d');
+		$vars['fecha_modificacion'] = date('Y-m-d');
+		$vars['observaciones'] = str_replace( "'", "\"", $_POST['obsIns']);
+		$vars['acreditado'] = POST('acreditado');
+		print $this->Admin_Model->inscribirActividad($vars);
+		redirect(get('webURL').'/admin/alumno/'.POST('numero_control'));
+	}
+	
+	
+
+	public function editActividad()
+	{
+
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$folio = POST('folio');
+		$numero_control = POST('nc');
+		$club=POST('actividad');
+		print $this->Admin_Model->updateActividad($folio, $club);
+		redirect(get('webURL').'/admin/alumno/'.$numero_control);
+	}
+
+	public function elimActividad()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$folio = POST('folio');
+		$nc=POST("nc");
+		$this->Admin_Model->elimActividad($folio);
+		redirect(get('webURL'). _sh . 'admin/alumno/'.$nc);
+	}
+
+	public function editResultado()
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$resultado = POST('acreditado');
+		$folio = POST('folio');
+		$numero_control = POST('numero_control');
+		$obs = str_replace( "'", "\"", $_POST['obs']);
+		$fecha_lib = date("Y-m-d");
+		print $this->Admin_Model->updateRes($resultado, $folio, $obs, $fecha_lib);
+		redirect(get('webURL').'/admin/alumno/'.$numero_control);
+	}
+
+	public function updateLiberacion()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$vars['ins_ini'] = POST('ins_ini');
+		$vars['ins_fin'] = POST('ins_fin');
+		$vars['lib_ini'] = POST('lib_ini');
+		$vars['lib_fin'] = POST('lib_fin');
+		$vars['periodo'] = POST('periodo');
+		$vars['nper'] = POST('nper');
+		$this->Admin_Model->updateLiberacion($vars);
+		redirect(get('webURL')._sh.'admin/configLiberacion');
+	}
+
+	
+
+	/*/***** ADMINISTRACION DEL SITIO ***/
+	public function avisos()
+ 	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+ 		$mensaje = $this->Admin_Model->getAviso();
+ 		$conf = $this->Admin_Model->getConfiguracion();
+ 		$vars['conf'] = $conf[0];
+ 		$vars['mensaje'] = $mensaje[0]; 
+ 		$vars['view'] = $this->view('avisos',true);
+ 		$this->render('content', $vars);
+ 	}
 
 	public function guardarAviso()
 	{
@@ -176,6 +479,94 @@ class Admin_Controller extends ZP_Controller {
 		if($mostrar) $mostrar = 1; else $mostrar = 0;
 		$this->Admin_Model->guardarAviso($cuerpo, $mostrar);
 		redirect(get('webURL')._sh.'admin/avisos');
+	}
+
+	public function subirarchivos()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+		$ruta = _spath.'/descarga/';
+		$files = array();
+		if (is_dir($ruta)) 
+		{
+      		if ($dh = opendir($ruta)) 
+      		{
+      			$i=0;
+         		while (($file = readdir($dh)) !== false) 
+         		{
+            		if($file!="." && $file!="..")
+               			$files[$i++] = $file;
+         		}
+      			closedir($dh);
+      		}
+   		}
+   		$vars['files'] = $files;
+		$vars['view'] = $this->view('subirarchivo',true);
+ 		$this->render('content', $vars);
+	}
+
+	public function eliminararchivo($archivo)
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+		unlink( _spath . '/descarga/' . $archivo);
+		redirect(  get('webURL') . _sh . 'admin/subirarchivos'  );
+	}
+
+	public function subiendo()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+		
+		if(is_uploaded_file($_FILES['archivo']['tmp_name']))
+		{
+			$nombre = $_FILES['archivo']['name'];
+			$arreglo = explode(".", $nombre);
+			$tempname = $arreglo[0];
+			$caracteres = array("ñ","Ñ"," ");
+			$tempname = str_replace($caracteres, "_", $tempname);
+
+			$tempname = $tempname . "." . $arreglo[1];
+			move_uploaded_file($_FILES['archivo']['tmp_name'], _spath.'/descarga/'.$tempname);
+			//____($tempname);
+		}
+
+		
+		redirect(  get('webURL') . _sh . 'admin/subirarchivos'  );
+	}
+
+
+	
+
+	/********* NOTICIAS   ****///
+
+	public function noticias($id = NULL)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$noticias = $this->Admin_Model->getNoticias();
+		$vars['noticias'] = $noticias;
+		$vars['view'] = $this->view("noticias",true);
+		$vars['id'] = NULL;
+		if($id)
+		{
+			$vars['id'] = $id;
+			$n = $this->Admin_Model->getNoticia($id);
+			$vars['modnot'] = $n[0];
+		} 
+
+		$this->render("content", $vars);
+	}
+
+	public function elimnoticia($id)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$this->Admin_Model->elimNoticia($id);
+		redirect(get('webURL')._sh.'admin/noticias');
+		
 	}
 
 	public function guardarnoticia()
@@ -253,96 +644,6 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/noticias');
 	}
 
-
-	public function guardarclub()
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-
-		$nombre = $_POST['name'];
-		$texto = $_POST['texto']; //porque necesito el código en formato HTML NO FORMATEADO
-		$tipo = POST('tipo');
-		$cadena = str_replace( "'", "\"", $texto);
-		$nombre = str_replace( "'", "\"", $nombre);
-
-		$name = "";
-
-		if (FILES("foto", "tmp_name")) 
-		{
-		    $path = _spath.'/paginas/clubes/IMAGEN/';  
-		    $tmp_name = $_FILES["foto"]["tmp_name"];
-			$name = $_FILES["foto"]["name"];
-	
-			$ext = explode(".",$name);		
-			if($ext[1]=='JPG' || $ext[1]=='jpg')
-			{		 		
-				$id = date("YmdHis").rand(0,100).rand(0,100);
-				$name = $id.".".$ext[1];
-
-				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
-				chmod($path.$name,0777);
-
-				$rutaImagenOriginal = $path.$name;
-				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
-				$max_ancho = 800;
-				$max_alto = 800;
-				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
-				$x_ratio = $max_ancho /$ancho;
-				$y_ratio = $max_alto / $alto;
-				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
-				{
-					$ancho_final = $ancho;
-					$alto_final = $alto;
-				}
-				elseif(($x_ratio * $alto) <$max_alto)
-				{
-					$alto_final = ceil($x_ratio * $alto);
-					$ancho_final = $max_ancho;
-				}
-				else 
-				{
-					$ancho_final = ceil($y_ratio*$ancho);
-					$alto_final = $max_alto;
-				}
-
-				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
-				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
-				imagedestroy($img_original);
-				$calidad = 95;
-				imagejpeg($tmp,$path."tm".$name,$calidad);
-				chmod($path."tm".$name,0777);
-				unlink($path.$name);
-				$name = "tm".$name;
-			}else $name=""; 
-
-		}
-
-		$vars["nombre_club"] = $nombre;
-		$vars["texto_club"] = $cadena;
-		$vars["foto_club"] = $name;
-		$vars["fecha_creacion"] = date("Y-m-d");
-		$vars["tipo_club"] = $tipo;
-
-		if(strcmp($vars["nombre_club"], "") != 0)
-			$this->Admin_Model->guardarClub($vars);
-
-		redirect(get('webURL')._sh.'admin/adminclubes');
-	}
-
-	public function updateLiberacion()
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$vars['ins_ini'] = POST('ins_ini');
-		$vars['ins_fin'] = POST('ins_fin');
-		$vars['lib_ini'] = POST('lib_ini');
-		$vars['lib_fin'] = POST('lib_fin');
-		$vars['periodo'] = POST('periodo');
-		$vars['nper'] = POST('nper');
-		$this->Admin_Model->updateLiberacion($vars);
-		redirect(get('webURL')._sh.'admin/configLiberacion');
-	}
 
 	public function modnoticia($id_not)
 	{
@@ -423,6 +724,106 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/noticias');
 	}
 
+	public function banners()
+ 	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+ 		$vars['view'] = $this->view('banners',true);
+ 		$this->render('content', $vars);
+ 	}
+
+ 	
+
+	/******* CLUBES   *****/
+
+	public function adminclubes($id = NULL)
+ 	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		if($id != NULL) $vars['club'] = $this->Admin_Model->obtenerDatosClub($id);
+		else $vars['club'] = NULL;
+		
+		$vars['clubes'] = $this->Admin_Model->getClubes();
+ 		$vars['view'] = $this->view('adminclubes',true);
+ 		$this->render('content', $vars);
+ 	}
+
+	public function guardarclub()
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$nombre = $_POST['name'];
+		$texto = $_POST['texto']; //porque necesito el código en formato HTML NO FORMATEADO
+		$tipo = POST('tipo');
+		$cadena = str_replace( "'", "\"", $texto);
+		$nombre = str_replace( "'", "\"", $nombre);
+
+		$name = "";
+
+		if (FILES("foto", "tmp_name")) 
+		{
+		    $path = _spath.'/paginas/clubes/IMAGEN/';  
+		    $tmp_name = $_FILES["foto"]["tmp_name"];
+			$name = $_FILES["foto"]["name"];
+	
+			$ext = explode(".",$name);		
+			if($ext[1]=='JPG' || $ext[1]=='jpg')
+			{		 		
+				$id = date("YmdHis").rand(0,100).rand(0,100);
+				$name = $id.".".$ext[1];
+
+				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
+				chmod($path.$name,0777);
+
+				$rutaImagenOriginal = $path.$name;
+				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
+				$max_ancho = 800;
+				$max_alto = 800;
+				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
+				$x_ratio = $max_ancho /$ancho;
+				$y_ratio = $max_alto / $alto;
+				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
+				{
+					$ancho_final = $ancho;
+					$alto_final = $alto;
+				}
+				elseif(($x_ratio * $alto) <$max_alto)
+				{
+					$alto_final = ceil($x_ratio * $alto);
+					$ancho_final = $max_ancho;
+				}
+				else 
+				{
+					$ancho_final = ceil($y_ratio*$ancho);
+					$alto_final = $max_alto;
+				}
+
+				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
+				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
+				imagedestroy($img_original);
+				$calidad = 95;
+				imagejpeg($tmp,$path."tm".$name,$calidad);
+				chmod($path."tm".$name,0777);
+				unlink($path.$name);
+				$name = "tm".$name;
+			}else $name=""; 
+
+		}
+
+		$vars["nombre_club"] = $nombre;
+		$vars["texto_club"] = $cadena;
+		$vars["foto_club"] = $name;
+		$vars["fecha_creacion"] = date("Y-m-d");
+		$vars["tipo_club"] = $tipo;
+
+		if(strcmp($vars["nombre_club"], "") != 0)
+			$this->Admin_Model->guardarClub($vars);
+
+		redirect(get('webURL')._sh.'admin/adminclubes');
+	}
 
 	public function modclub($id)
 	{
@@ -502,16 +903,6 @@ class Admin_Controller extends ZP_Controller {
 	}
 
 
-	public function elimPromotor()
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$usuario_promotor = POST('usuario_promotor');
-		$this->Admin_Model->elimPromotor($usuario_promotor);
-		redirect(get('webURL'). _sh . 'admin/promotores');
-	}
-
 	public function elimClub()
 	{
 		if( !SESSION('user_admin') )
@@ -523,409 +914,8 @@ class Admin_Controller extends ZP_Controller {
 	}
 
 	
-	public function elimActividad()
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$folio = POST('folio');
-		$nc=POST("nc");
-		$this->Admin_Model->elimActividad($folio);
-		redirect(get('webURL'). _sh . 'admin/alumno/'.$nc);
-	}
-
-	public function elimFoto()
-	{
-
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$id=POST('id_imagen');
-		$image_name = POST('image_name');
-		$url = $_POST['url'];
-		$path = $_POST['path'];
-		$filename = _spath.'/IMAGENES/clubes/'.$path._sh;
-		/** DELETING PHISICS FILES ***/
-		chmod($filename."thumbs/".$image_name, 0777);
-		unlink($filename."thumbs/".$image_name);
-		chmod($filename.$image_name, 0777);
-		unlink($filename.$image_name);
-
-		/****** DELETING FROM THE DATABASE ***/
-		$this->Admin_Model->elimFoto($id);
-		redirect($url);
-	}
-
-	function crearAlbum($tipo, $club)
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$nombre_album = strtoupper( POST('nombre_album') );
-		$id=uniqid();
-		mkdir(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
-		chmod(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
-		mkdir(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id . '/thumbs', 0777);
-		chmod(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
-		$this->Admin_Model->crearAlbum($id, $nombre_album, $club);
-		redirect(get('webURL')._sh.'admin/galeria/'.$tipo._sh.$club);
-	}
-
-	public function formRegistroPromotor()
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$vars['clubes'] = $this->Admin_Model->getClubes();
-		$vars['view'] = $this->view('registroPromotor', true);
-		$this->render('content', $vars);
-	}
-
-	public function formEdicionPromotor($id)
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$data = $this->Admin_Model->getEditPromotor($id);
-		$vars['promotor'] = $data[0];
-		$vars['clubes'] = $this->Admin_Model->getClubes();
-		$vars['view'] = $this->view('editPromotor', true);
-		$this->render('content', $vars);
-	}
-
-	public function regProm()
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$name = "";
-
-		if (FILES("foto", "tmp_name")) 
-		{
-		    $path = _spath.'/IMAGENES/fotosPromotores/';  
-		    $tmp_name = $_FILES["foto"]["tmp_name"];
-			$name = $_FILES["foto"]["name"];
-	
-			$ext = explode(".",$name);		
-			if($ext[1]=='JPG' || $ext[1]=='jpg')
-			{		 		
-				$id = date("YmdHis").rand(0,100).rand(0,100);
-				$name = $id.".".$ext[1];
-
-				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
-				chmod($path.$name,0777);
-
-				$rutaImagenOriginal = $path.$name;
-				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
-				$max_ancho = 200;
-				$max_alto = 200;
-				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
-				$x_ratio = $max_ancho /$ancho;
-				$y_ratio = $max_alto / $alto;
-				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
-				{
-					$ancho_final = $ancho;
-					$alto_final = $alto;
-				}
-				elseif(($x_ratio * $alto) <$max_alto)
-				{
-					$alto_final = ceil($x_ratio * $alto);
-					$ancho_final = $max_ancho;
-				}
-				else 
-				{
-					$ancho_final = ceil($y_ratio*$ancho);
-					$alto_final = $max_alto;
-				}
-
-				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
-				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
-				imagedestroy($img_original);
-				$calidad = 95;
-				imagejpeg($tmp,$path."tm".$name,$calidad);
-				chmod($path."tm".$name,0777);
-				unlink($path.$name);
-				$name = "tm".$name;
-			}else $name="nofoto.jpg"; 
-
-		}
-
-		$vars['user'] = POST('user');
-		$vars['pass'] = POST('pass');
-		$vars['foto'] = $name;
-		$vars['nombre'] = POST('nombre');
-		$vars['horario'] = POST('horario');
-		$vars['ap'] = POST('ap');
-		$vars['am'] = POST('am');
-		$vars['fecha_nac'] = POST('fecha_nac');
-		$vars['fecha_reg'] = date("Y-m-d");
-		$vars['sexo'] = POST('sexo');
-		$vars['club'] = POST('club');
-		$vars['sexo'] = POST('sexo');
-		$vars['email'] = POST('email');
-		$vars['tel'] = POST('tel');
-		$vars['direccion'] = POST('direccion');
-		$vars['ocupacion'] = POST('ocupacion');
-		print $this->Admin_Model->regPromotor($vars);
-		redirect(get('webURL'). _sh . 'admin/promotores');
-	}
-
-	public function editProm()
-	{
-		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		$name = "nofoto.jpg";
-
-		if( strcmp(POST('mantener'), "S") != 0 )
-		if (FILES("foto", "tmp_name")) 
-		{
-		    $path = _spath.'/IMAGENES/fotosPromotores/';  
-		    $tmp_name = $_FILES["foto"]["tmp_name"];
-			$name = $_FILES["foto"]["name"];
-	
-			$ext = explode(".",$name);		
-			if($ext[1]=='JPG' || $ext[1]=='jpg')
-			{		 		
-				$id = date("YmdHis").rand(0,100).rand(0,100);
-				$name = $id.".".$ext[1];
-
-				move_uploaded_file($tmp_name, $path.$name); # Guardar el archivo en una ubicaci�n, debe tener los permisos necesarios
-				chmod($path.$name,0777);
-
-				$rutaImagenOriginal = $path.$name;
-				$img_original = imagecreatefromjpeg($rutaImagenOriginal);
-				$max_ancho = 200;
-				$max_alto = 200;
-				list($ancho,$alto) = getimagesize($rutaImagenOriginal);
-				$x_ratio = $max_ancho /$ancho;
-				$y_ratio = $max_alto / $alto;
-				if(($ancho <= $max_ancho) && ($alto <= $max_alto))
-				{
-					$ancho_final = $ancho;
-					$alto_final = $alto;
-				}
-				elseif(($x_ratio * $alto) <$max_alto)
-				{
-					$alto_final = ceil($x_ratio * $alto);
-					$ancho_final = $max_ancho;
-				}
-				else 
-				{
-					$ancho_final = ceil($y_ratio*$ancho);
-					$alto_final = $max_alto;
-				}
-
-				$tmp = imagecreatetruecolor($ancho_final,$alto_final);
-				imagecopyresampled($tmp, $img_original, 0, 0, 0, 0, $ancho_final, $alto_final, $ancho, $alto);
-				imagedestroy($img_original);
-				$calidad = 95;
-				imagejpeg($tmp,$path."tm".$name,$calidad);
-				chmod($path."tm".$name,0777);
-				unlink($path.$name);
-				$name = "tm".$name;
-			}else $name="nofoto.jpg";
-		}
-
-		$vars['usuario'] = POST('user');
-		$vars['pass'] = POST('pass');
-		$vars['foto'] = $name;
-		$vars['nombre'] = POST('nombre');
-		$vars['ap'] = POST('ap');
-		$vars['am'] = POST('am');
-		$vars['horario'] = POST('horario');
-		$vars['fecha_nac'] = POST('fecha_nac');
-		$vars['fecha_reg'] = date("Y-m-d");
-		$vars['sexo'] = POST('sexo');
-		$vars['club'] = POST('club');
-		$vars['sexo'] = POST('sexo');
-		$vars['email'] = POST('email');
-		$vars['tel'] = POST('tel');
-		$vars['direccion'] = POST('direccion');
-		$vars['ocupacion'] = POST('ocupacion');
-		//____($vars);
-		if( strcmp(POST('mantener'), "S") != 0 )
-			$this->Admin_Model->updatePromotor($vars);
-		if( strcmp(POST('mantener'), "S") == 0 )
-			$this->Admin_Model->updatePromotorMantener($vars);
-		redirect(get('webURL'). _sh . 'admin/promotores');
-	}
-
-
-
-	public function noticias($id = NULL)
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-
-		$noticias = $this->Admin_Model->getNoticias();
-		$vars['noticias'] = $noticias;
-		$vars['view'] = $this->view("noticias",true);
-		$vars['id'] = NULL;
-		if($id)
-		{
-			$vars['id'] = $id;
-			$n = $this->Admin_Model->getNoticia($id);
-			$vars['modnot'] = $n[0];
-		} 
-
-		$this->render("content", $vars);
-	}
-
-	public function iniciarsesion()
-	{
-		$usuario = POST('usuario');
-		$clave = POST('clave');
-		$data = $this->Admin_Model->getData($usuario);
-
-		if($data[0]['contrasena_administrador'] == $clave)
-		{
-			SESSION('user_admin',$data[0]['usuario_administrador']);
-			SESSION('id_admin',$data[0]['id_administrador']);
-			SESSION('name_admin',$data[0]['nombre_administrador']);
-			SESSION('last1_admin',$data[0]['apellido_paterno_administrador']);
-			SESSION('last2_admin',$data[0]['apellido_materno_administrador']);
-			SESSION('profesion_admin',$data[0]['abreviatura_profesion']);
-			return redirect(get('webURL') .  _sh .'admin/estadistica');
-		}
-		
-		$vars['view'] = $this->view("login",true);
-		$vars['error'] = '1';
-		$this->render("noRightContent", $vars);
-
-	}
-
-	public function estadistica($periodo = NULL)
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-
-		//$configuracion = $this->Admin_Model->getConfiguracion();
-		//si no existe periodo calcular periodo actual
-
-		if(!isset($periodo)) 
-		{
-			$periodo = periodo_actual();
-		}
-
-		$clubes = $this->Admin_Model->getClubes();
-		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
-		$carreras = $this->Admin_Model->getCarreras();
-		//____($alumnos);
-		$vars["view"]	 = $this->view("estadistica", TRUE);
-		$vars["periodo"] = $periodo;
-		$vars["clubes"] = $clubes;
-		$vars["alumnos"] = $alumnos;
-		$vars["periodos"] = periodos("2082");
-		$vars["carreras"] = $carreras;
-		$this->render("content", $vars);
-	}
-
-	public function buscar()
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-
-		$busqueda = POST('bus');
-		$sit = POST('sit');
-
-		if(!POST('sit')) $sit='1';
-		//____($sit);
-		$error = NULL;
-		if($busqueda=='') $error = 1;
-
-		$datos = $this->Admin_Model->getRespuesta($busqueda,$sit);
-		
-		/***************** variables **********************/
-		$vars["error"] = $error;
-		$vars["palabra"] = $busqueda;
-		
-		$vars["datos"] = $datos;
-		
-		$vars["view"] = $this->view("busquedaAlumnos",true);
-		/*****************************************************/
-
-		$this->render("content",$vars);
-	}
-
-	public function alumno($nctrl = NULL)
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-		//include(_corePath . _sh .'/libraries/funciones/funciones.php');
-		$datos = $this->Admin_Model->getAlumno($nctrl);
-		$inscripciones = $this->Admin_Model->getClubesInscritosAlumno($nctrl);
-		$clubes = $this->Admin_Model->getClubes('all');
-		$vars["nombreAlumno"] = $datos[0]['apellido_paterno_alumno'].' '.$datos[0]['apellido_materno_alumno'].' '.$datos[0]['nombre_alumno'];
-		$vars["periodos"] = periodos($datos[0]['fecha_inscripcion']);
-		$vars['clubes'] = $clubes;
-		$vars["alumno"] = $datos[0];
-		$vars["inscripciones"] = $inscripciones;
-
-		$vars["view"] = $this->view("alumno",true);
-
-		$this->render("content",$vars);
-	}
-
-	public function listaclub($club = NULL, $periodo = NULL)
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-
-		$clubes = $this->Admin_Model->getClubes('all');
-		$alumnos = $this->Admin_Model->getAlumnosClubes($club, $periodo);
-		$vars['par1'] = $club;
-		$vars['par2'] = $periodo;
-		$vars['alumnos'] = $alumnos;
-		$vars['clubes'] = $clubes;
-		$vars['periodos'] = periodos('2083');
-		$vars['view'] = $this->view("listaclub", true);
-		$this->render("content", $vars);
- 	}
-
- 	public function listacarrera($carrera = NULL, $periodo = NULL)
-	{
-		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
-
-		$carreras = $this->Admin_Model->getCarreras();
-		$alumnos = $this->Admin_Model->getAlumnosCarreras($carrera, $periodo);
-		$vars['par1'] = $carrera;
-		$vars['par2'] = $periodo;
-		$vars['alumnos'] = $alumnos;
-		$vars['carreras'] = $carreras;
-		$vars['periodos'] = periodos('2083');
-		$vars['view'] = $this->view("listacarrera", true);
-		$this->render("content", $vars);
- 	}
-
- 	public function configLiberacion()
- 	{
- 		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
- 		$vars['view'] = $this->view('configLiberacion', true);
- 		$config = $this->Admin_Model->getConfiguracion();
- 		$vars['periodos'] = periodos('1082');
- 		$vars['config'] = $config[0];
-
- 		$this->render('content', $vars);
- 	}
-
- 	public function avisos()
- 	{
- 		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
- 		$mensaje = $this->Admin_Model->getAviso();
- 		$conf = $this->Admin_Model->getConfiguracion();
- 		$vars['conf'] = $conf[0];
- 		$vars['mensaje'] = $mensaje[0]; 
- 		$vars['view'] = $this->view('avisos',true);
- 		$this->render('content', $vars);
- 	}
-
- 	public function galeria($tipo=NULL, $club = NULL, $album = NULL, $subalbum = NULL)
+	/* GALERIA  */
+	public function galeria($tipo=NULL, $club = NULL, $album = NULL, $subalbum = NULL)
  	{
  		if( !SESSION('user_admin') )
 			return redirect(get('webURL') . _sh . 'admin/login');
@@ -962,28 +952,121 @@ class Admin_Controller extends ZP_Controller {
  		$vars['view'] = $this->view('galeria',true);
  		$this->render('content', $vars);
  	}
+	function crearAlbum($tipo, $club)
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
 
- 	public function banners()
+		$nombre_album = strtoupper( POST('nombre_album') );
+		$id=uniqid();
+		mkdir(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
+		chmod(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
+		mkdir(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id . '/thumbs', 0777);
+		chmod(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
+		$this->Admin_Model->crearAlbum($id, $nombre_album, $club);
+		redirect(get('webURL')._sh.'admin/galeria/'.$tipo._sh.$club);
+	}
+
+	public function elimFoto()
+	{
+
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$id=POST('id_imagen');
+		$image_name = POST('image_name');
+		$url = $_POST['url'];
+		$path = $_POST['path'];
+		$filename = _spath.'/IMAGENES/clubes/'.$path._sh;
+		/** DELETING PHISICS FILES ***/
+		chmod($filename."thumbs/".$image_name, 0777);
+		unlink($filename."thumbs/".$image_name);
+		chmod($filename.$image_name, 0777);
+		unlink($filename.$image_name);
+
+		/****** DELETING FROM THE DATABASE ***/
+		$this->Admin_Model->elimFoto($id);
+		redirect($url);
+	}
+
+
+	/************* ESTADISTICA  ***********/
+	public function estadistica($periodo = NULL)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		//$configuracion = $this->Admin_Model->getConfiguracion();
+		//si no existe periodo calcular periodo actual
+
+		if(!isset($periodo)) 
+		{
+			$periodo = periodo_actual();
+		}
+
+		$clubes = $this->Admin_Model->getClubes();
+		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
+		$carreras = $this->Admin_Model->getCarreras();
+		//____($alumnos);
+		$vars["view"]	 = $this->view("estadistica", TRUE);
+		$vars["periodo"] = $periodo;
+		$vars["clubes"] = $clubes;
+		$vars["alumnos"] = $alumnos;
+		$vars["periodos"] = periodos("2082");
+		$vars["carreras"] = $carreras;
+		$this->render("content", $vars);
+	}
+
+	
+	/***LISTAS *********/
+	public function listaclub($club = NULL, $periodo = NULL)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$clubes = $this->Admin_Model->getClubes('all');
+		$alumnos = $this->Admin_Model->getAlumnosClubes($club, $periodo);
+		$vars['par1'] = $club;
+		$vars['par2'] = $periodo;
+		$vars['alumnos'] = $alumnos;
+		$vars['clubes'] = $clubes;
+		$vars['periodos'] = periodos('2083');
+		$vars['view'] = $this->view("listaclub", true);
+		$this->render("content", $vars);
+ 	}
+
+ 	public function listacarrera($carrera = NULL, $periodo = NULL)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$carreras = $this->Admin_Model->getCarreras();
+		$alumnos = $this->Admin_Model->getAlumnosCarreras($carrera, $periodo);
+		$vars['par1'] = $carrera;
+		$vars['par2'] = $periodo;
+		$vars['alumnos'] = $alumnos;
+		$vars['carreras'] = $carreras;
+		$vars['periodos'] = periodos('2083');
+		$vars['view'] = $this->view("listacarrera", true);
+		$this->render("content", $vars);
+ 	}
+
+
+
+ 	public function configLiberacion()
  	{
  		if( !SESSION('user_admin') )
 			return redirect(get('webURL') . _sh . 'admin/login');
 
- 		$vars['view'] = $this->view('banners',true);
+ 		$vars['view'] = $this->view('configLiberacion', true);
+ 		$config = $this->Admin_Model->getConfiguracion();
+ 		$vars['periodos'] = periodos('1082');
+ 		$vars['config'] = $config[0];
+
  		$this->render('content', $vars);
  	}
 
- 	public function adminclubes($id = NULL)
- 	{
- 		if( !SESSION('user_admin') )
-			return redirect(get('webURL') . _sh . 'admin/login');
-
-		if($id != NULL) $vars['club'] = $this->Admin_Model->obtenerDatosClub($id);
-		else $vars['club'] = NULL;
-		
-		$vars['clubes'] = $this->Admin_Model->getClubes();
- 		$vars['view'] = $this->view('adminclubes',true);
- 		$this->render('content', $vars);
- 	}
+ 	/***** ADMINISTRADOR  *******/ 	
 
  	public function cambiarEstado ($estado = NULL,$userAdmin = NULL)
  	{

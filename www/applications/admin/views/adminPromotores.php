@@ -96,8 +96,8 @@ function promotor(usuario, name)
         <td><?php print $promotor['nombre_club'] ?></td>
         </tr>
       <tr>
-         <td>HORARIO</td>
-        <td><?php print $promotor['horario'] ?></td>
+         <td>LUGAR Y HORARIO</td>
+        <td><?php print $promotor['lugar']." horario:".$promotor['horario'] ?></td>
         </tr>
       <tr>
          <td>SEXO</td>

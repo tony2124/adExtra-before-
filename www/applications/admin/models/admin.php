@@ -19,6 +19,63 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("SET NAMES 'utf8'");
 	}
 
+/****** PROMOTORES  *******/
+	public function getResultadoProm()
+	{
+
+		return $this->Db->query("select * from ");
+	}
+	
+	public function getPromotores($palabras)
+	{
+		return $this->Db->query("select * from promotores natural join clubes where (nombre_promotor like '%$palabras%' or apellido_paterno_promotor like '%$palabras%' or apellido_materno_promotor like '%$palabras%')  and eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
+	}
+
+	public function getEditPromotor($id)
+	{
+		return $this->Db->query("select * from promotores where eliminado_promotor = false and usuario_promotor = '$id'");
+	}
+
+	public function getPromotor($club)
+	{
+		return $this->Db->query("select * from promotores where id_club = '$club' and eliminado_promotor = 0");
+	}
+
+	public function elimPromotor($id)
+	{
+		return $this->Db->query("update promotores set eliminado_promotor = true where usuario_promotor = '$id' ");
+	}
+
+	public function regPromotor($vars)
+	{
+		
+		$query = "insert into promotores (usuario_promotor, contrasena_promotor, foto_promotor, nombre_promotor, apellido_paterno_promotor, apellido_materno_promotor, horario, lugar, id_club, sexo_promotor, fecha_nacimiento_promotor, fecha_registro_promotor, correo_electronico_promotor, telefono_promotor, ocupacion_promotor, direccion_promotor)
+				values('$vars[user]', '$vars[pass]','$vars[foto]', '$vars[nombre]' ,'$vars[ap]','$vars[am]','$vars[horario]','$vars[lugar]', $vars[club],  $vars[sexo],  '$vars[fecha_nac]', '$vars[fecha_reg]', '$vars[email]','$vars[tel]' ,'$vars[ocupacion]',  '$vars[direccion]')";
+		//$this->acentos();
+		$this->Db->query($query);
+		return $query;
+	}
+
+	public function updatePromotor($vars)
+	{
+		
+		$query = "update promotores set lugar = '$vars[lugar]', horario = '$vars[horario]', contrasena_promotor = '$vars[pass]',  foto_promotor = '$vars[foto]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
+		$this->Db->query($query);
+		return $query;
+	}
+
+	public function updatePromotorMantener($vars)
+	{
+		
+		$query = "update promotores set lugar = '$vars[lugar]', horario = '$vars[horario]', contrasena_promotor = '$vars[pass]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
+		$this->Db->query($query);
+		return $query;
+	}
+
+
+/*ALUMNOS*/
+
+
 	public function updateLiberacion($vars)
 	{
 		$this->Db->query("update configuracion set fecha_inicio_inscripcion = '$vars[ins_ini]', fecha_fin_inscripcion = '$vars[ins_fin]', fecha_inicio_liberacion = '$vars[lib_ini]', fecha_fin_liberacion = '$vars[lib_fin]', periodo = '$vars[periodo]', numero_clubes_periodo = '$vars[nper]'");
@@ -35,11 +92,7 @@ class Admin_Model extends ZP_Model {
 	    return $query;
 	}
 
-	public function getResultadoProm()
-	{
-
-		return $this->Db->query("select * from ");
-	}
+	
 
 	public function guardarAviso($texto, $mostrar)
 	{
@@ -56,16 +109,7 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query("insert into albumes values('$id','$club','$album','$fec','')");
 	}
 
-	public function getPromotores($palabras)
-	{
-		return $this->Db->query("select * from promotores natural join clubes where (nombre_promotor like '%$palabras%' or apellido_paterno_promotor like '%$palabras%' or apellido_materno_promotor like '%$palabras%')  and eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
-	}
-
-	public function getEditPromotor($id)
-	{
-		return $this->Db->query("select * from promotores where eliminado_promotor = false and usuario_promotor = '$id'");
-	}
-
+	
 	public function getConfiguracion()
 	{
 		return $data = $this->Db->query("select * from configuracion");
@@ -219,21 +263,14 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 	
-	public function getPromotor($club)
-	{
-		return $this->Db->query("select * from promotores where id_club = '$club' and eliminado_promotor = 0");
-	}
+	
 
 	public function elimNoticia($id)
 	{
 		return $this->Db->query("delete from noticias where id_noticias = '$id'");
 	}
 
-	public function elimPromotor($id)
-	{
-		return $this->Db->query("update promotores set eliminado_promotor = true where usuario_promotor = '$id' ");
-	}
-
+	
 	public function elimClub($id)
 	{
 		return $this->Db->query("update clubes set eliminado_club = true where id_club = '$id' ");
@@ -275,31 +312,7 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 
-	public function regPromotor($vars)
-	{
-		
-		$query = "insert into promotores (usuario_promotor, contrasena_promotor, foto_promotor, nombre_promotor, apellido_paterno_promotor, apellido_materno_promotor, horario, id_club, sexo_promotor, fecha_nacimiento_promotor, fecha_registro_promotor, correo_electronico_promotor, telefono_promotor, ocupacion_promotor, direccion_promotor)
-				values('$vars[user]', '$vars[pass]','$vars[foto]', '$vars[nombre]' ,'$vars[ap]','$vars[am]','$vars[horario]', $vars[club],  $vars[sexo],  '$vars[fecha_nac]', '$vars[fecha_reg]', '$vars[email]','$vars[tel]' ,'$vars[ocupacion]',  '$vars[direccion]')";
-		//$this->acentos();
-		$this->Db->query($query);
-		return $query;
-	}
-
-	public function updatePromotor($vars)
-	{
-		
-		$query = "update promotores set horario = '$vars[horario]', contrasena_promotor = '$vars[pass]',  foto_promotor = '$vars[foto]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
-		$this->Db->query($query);
-		return $query;
-	}
-
-	public function updatePromotorMantener($vars)
-	{
-		
-		$query = "update promotores set horario = '$vars[horario]', contrasena_promotor = '$vars[pass]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
-		$this->Db->query($query);
-		return $query;
-	}
+	
 
 	
 
