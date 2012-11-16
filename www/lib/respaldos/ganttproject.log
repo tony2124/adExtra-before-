@@ -1,0 +1,33 @@
+java.class.path: eclipsito.jar;.
+java.home: C:\Program Files (x86)\Java\jre7
+java.io.tmpdir: C:\Users\Simpus\AppData\Local\Temp\
+java.runtime.version: 1.7.0_05-b06
+java.vendor: Oracle Corporation
+java.vm.name: Java HotSpot(TM) Client VM
+java.vm.vendor: Oracle Corporation
+java.vm.version: 23.1-b03
+os.arch: x86
+os.name: Windows 7
+os.version: 6.1
+sun.java.command: org.bardsoftware.eclipsito.Boot ganttproject-eclipsito-config.xml -log G:\Users\Zeus\Documents\Planificación de Extraescolares.gan
+user.country: US
+user.dir: C:\Program Files (x86)\GanttProject-2.5
+user.home: C:\Users\Simpus
+user.language: en
+user.timezone: America/Mexico_City
+
+Creating main frame...
+1. loading look'n'feels
+2. loading options
+3. creating menus...
+4. creating views...
+5. calculating size and packing...
+6. changing language ...
+7. changing look'n'feel ...
+8. finalizing...
+Main frame created
+Splash closed
+Nov 01, 2012 10:24:30 AM net.sourceforge.ganttproject.GPLogger log
+INFO: [GanttOptions] save(): finished!!
+Nov 01, 2012 10:24:32 AM org.bardsoftware.impl.eclipsito.BootImpl shutdown
+INFO: Eclipsito platform is shut down.

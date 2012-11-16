@@ -535,8 +535,60 @@ class Admin_Controller extends ZP_Controller {
 		redirect(  get('webURL') . _sh . 'admin/subirarchivos'  );
 	}
 
+	/*************** RESPALDO DE LA BD  ***************/
 
-	
+	public function respaldoBD()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+		
+		$ruta = _spath.'/973164852/respaldos/';
+		$files = array();
+
+		if (is_dir($ruta)) 
+		{
+      		if ($dh = opendir($ruta)) 
+      		{
+      			$i=0;
+         		while (($file = readdir($dh)) !== false) 
+         		{
+            		if($file!="." && $file!="..")
+               			$files[$i++] = $file;
+         		}
+      			closedir($dh);
+      		}
+   		}
+
+   		$vars['files'] = $files;
+
+		$vars['view'] = $this->view("respaldobd",true);
+		$this->render("content", $vars);
+	}
+
+	public function eliminarrespaldo($archivo)
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+		unlink( _spath . '/973164852/respaldos/' . $archivo);
+		redirect(  get('webURL') . _sh . 'admin/respaldobd'  );
+	}
+
+	public function respaldando()
+	{
+		$name = date("y-m-d_H-i-s");
+		$usuario = $this->Admin_Model->$db["dbUser"];//"extraescolares";
+		____($usuario);
+
+		$passwd = "Extra2011";
+		$host = "extraescolares.db.7850492.hostedresource.com";
+		$bd = "extraescolares";
+
+		$executa = "mysqldump -h ". $host ." -u ".$usuario." -p".$passwd." ".$bd." > "._spath.'/973164852/respaldos/'.$name.".sql";
+		system($executa, $resultado); 
+		if($resultado) print "Error al ejecutar comando:   "  . $executa;
+		else redirect( get('webURL') . _sh . 'admin/respaldoBD' );
+	}
+
 
 	/********* NOTICIAS   ****///
 

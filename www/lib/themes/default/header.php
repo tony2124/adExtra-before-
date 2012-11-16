@@ -93,10 +93,10 @@
 				      <b class="caret"></b>
 				    </a>
 				    <ul class="dropdown-menu">
-				      <li><a href="#">Respaldo de BD</a></li>
-				      <li><a href="#">Actualizar datos</a></li>
-				      <li><a href="#">Descarga de formatos</a></li>
-				      <li><a href="#">Configuración de BD</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/respaldoBD/'  ?>">Respaldo de BD</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/subirBD/'  ?>">Subir base de datos</a></li>
+				      <!--<li><a href="#">Descarga de formatos</a></li>
+				      <li><a href="#">Configuración de BD</a></li>-->
 				    </ul>
 				  </li>
 				  <li class="dropdown" id="menu4">

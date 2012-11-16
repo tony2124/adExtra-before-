@@ -9,8 +9,8 @@ function eliminar(name)
 <p>
 	<form action="<?php print get('webURL')._sh.'admin/subiendo' ?>" method="post" enctype="multipart/form-data">
 		<label>Elige el archivo</label>
-		<input type="file" name="archivo">
-		<input type="submit" value="Subir">
+		<input type="file" name="archivo"><br>
+		<input type="submit" value="Subir" class="btn">
 	</form>
 
 </p>
