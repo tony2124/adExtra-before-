@@ -53,6 +53,7 @@ function eliminar(nombre, id)
 </script>
 
 <h2>Administración de clubes</h2><hr>
+<p><a class="btn btn-success pull-right" href="<?php print get('webURL').'/admin/adminclubes' ?>">Nuevo</a></p>
 <p>
 <form id="textoForm" action="<?php print isset($club) ? get('webURL')._sh.'admin/modclub/'.$club[0]['id_club'] : get('webURL')._sh.'admin/guardarclub' ?>" method="post" enctype="multipart/form-data">
 	<label for="titulo">Nombre del club</label>

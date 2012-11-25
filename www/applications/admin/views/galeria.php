@@ -59,13 +59,11 @@ if(isset($URL['tipo']))
 </script>
 
 <script type="text/javascript">
-	function eliminarAlbum(id, tipo, club)
+	
+	function eliminarAlbum(tipo, club, album, nombre_album)
 	{
-		var r = confirm("¿Está seguro que desea eliminar este álbum?. Tome en cuenta que se eliminarán todas las fotos y no será posible recuperarlas después");
-		if(r == 1)
-		{				
-			location.href="#";
-		}
+	   $('#nombre_album').html(nombre_album);
+	   $('#eliminar').attr("href","<?php print get('webURL') . _sh . 'admin/elimAlbum/' ?>"+tipo+"/"+club+"/"+album);
 	}
 
 	function eliminarFoto( id , imname)
@@ -146,7 +144,7 @@ if(isset($URL['tipo']))
 					<?php echo $album['nombre_album'] ?>				
 				</div>
 			</a>
-			<a title="Eliminar álbum <?php print $album['nombre_album'] ?>" onclick="eliminarAlbum(<?php echo $album['id_album'].",".$tipo.",'".$club['id_club']."'" ?>)" href="#">
+			<a title="Eliminar álbum <?php print $album['nombre_album'] ?>" onclick="eliminarAlbum('<?php echo $URL['tipo']."','".$URL['club']."','".$album['id_album']."','".$album['nombre_album']."'" ?>)" data-toggle="modal" href="#confirmModalAlbum">
 				<img style="width: 20px; height: 20px; float: left; margin-left: -30px;" src="<?php print path('www/lib/images/eliminar.gif',true) ?>" /> 
 			</a>	
 <?php	} 
@@ -159,8 +157,8 @@ if(isset($URL['tipo']))
 	<a href="<?php print get('webURL'). _sh . 'admin/galeria'. _sh . $URL['tipo'] . _sh . $URL['club'] ?>"><?php print $URL['club_nombre'] ?></a> /
 	<a href=""><?php print $URL['album_nombre'] ?></a> /
 	<p>&nbsp;</p>
-	<a rel="tooltip" title="Eliminar álbum" href="" class="btn btn-danger"><i class="icon-trash icon-white"></i></a>&nbsp;
-	<a rel="tooltip" title="Editar nombre" href="" class="btn btn-primary"><i class="icon-edit icon-white"></i></a>&nbsp;
+	<a rel="tooltip" title="Eliminar álbum" onclick="eliminarAlbum('<?php echo $URL['tipo']."','".$URL['club']."','".$album['id_album']."','".$album['nombre_album']."'" ?>)" data-toggle="modal" href="#confirmModalAlbum" class="btn btn-danger"><i class="icon-trash icon-white"></i></a>&nbsp;
+	<a rel="tooltip" title="Editar nombre" data-toggle="modal" href="#editarAlbum" class="btn btn-primary"><i class="icon-edit icon-white"></i></a>&nbsp;
 	<p>&nbsp;</p>
     <table>
 	  <tr>
@@ -220,6 +218,21 @@ if(isset($URL['tipo']))
    <p>&nbsp;</p>
 	<?php }	?>
 
+<div class="modal hide fade" id="confirmModalAlbum">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Confirmación</h3>
+  </div>
+  <div class="modal-body">
+    <p>¿Está seguro que desea eliminar el album <span class="label label-important" id="nombre_album"></span> de la galeria?</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
+    <a href="#" class="btn btn-danger" id="eliminar">Eliminar</a>
+  </div>
+</div>
+
+
 <div class="modal hide fade" id="confirmModal">
   <div class="modal-header">
     <button class="close" data-dismiss="modal">×</button>
@@ -244,7 +257,7 @@ if(isset($URL['tipo']))
 <div class="modal hide fade" id="crearAlbum">
   <div class="modal-header">
     <button class="close" data-dismiss="modal">×</button>
-    <h3>Confirmación</h3>
+    <h3>Nuevo Album</h3>
   </div>
   <div class="modal-body">
     <p>Escribe el nombre del álbum</p>
@@ -256,5 +269,23 @@ if(isset($URL['tipo']))
   <div class="modal-footer">
     <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
     <a href="#" class="btn btn-success" onclick="$('#album').submit()">Crear álbum</a>
+  </div>
+</div>
+
+<div class="modal hide fade" id="editarAlbum">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3>Editar nombre del Album</h3>
+  </div>
+  <div class="modal-body">
+    <p>Escribe el nuevo nombre del álbum</p>
+   
+    <form id="editalbum" method="post" action="<?php print get('webURL')._sh.'admin/editAlbum/'.$URL['tipo'].'/'.$URL['club'].'/'.$album['id_album'] ?>">
+      <input name="nombre_album" type="text">
+    </form> 
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Cancelar</a>
+    <a href="#" class="btn btn-success" onclick="$('#editalbum').submit()">Guardar nombre del álbum</a>
   </div>
 </div>

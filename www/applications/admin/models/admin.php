@@ -313,7 +313,26 @@ class Admin_Model extends ZP_Model {
 	}
 
 	
+	public function eliminarAlbum($album)
+	{
+		$query = "delete from albumes where id_album = '$album'";
+		$this->Db->query($query);
+		return $query;
+	}
 
+	public function eliminarFotosAlbum($album)
+	{
+		$query = "delete from galeria where id_album = '$album'";
+		$this->Db->query($query);
+		return $query;
+	}
+
+	public function editAlbum($album, $name)
+	{
+		$query = "update albumes set nombre_album = '$name' where id_album = '$album'";
+		$this->Db->query($query);
+		return $query;
+	}
 	
 
 	public function insertarFoto($id, $name, $album)

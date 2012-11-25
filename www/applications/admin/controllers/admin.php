@@ -1004,6 +1004,7 @@ class Admin_Controller extends ZP_Controller {
  		$vars['view'] = $this->view('galeria',true);
  		$this->render('content', $vars);
  	}
+	
 	function crearAlbum($tipo, $club)
 	{
 		if( !SESSION('user_admin') )
@@ -1017,6 +1018,52 @@ class Admin_Controller extends ZP_Controller {
 		chmod(_spath . _sh . 'IMAGENES/clubes/'.$club.'/'.$id, 0777);
 		$this->Admin_Model->crearAlbum($id, $nombre_album, $club);
 		redirect(get('webURL')._sh.'admin/galeria/'.$tipo._sh.$club);
+	}
+
+	function editAlbum($tipo, $club, $album)
+	{
+		$nombre = strtoupper(POST('nombre_album'));
+
+		$this->Admin_Model->editAlbum($album, $nombre);
+
+		redirect(get('webURL') . _sh . 'admin/galeria/'.$tipo.'/'.$club.'/'.$album);
+	}
+
+	function elimAlbum($tipo, $club, $album)
+	{
+
+		/* ELIMINO TODOS LOS ARCHIVOS DENTRO DEL ÁLBUM */
+		$filename = _spath."/IMAGENES/clubes/".$club."/".$album."/";
+		$handle = opendir($filename."thumbs/");
+
+		while ($file = readdir($handle))
+		{
+		   if (is_file($filename."thumbs/".$file))
+		   {
+		       unlink($filename."thumbs/".$file);
+		   }
+		}
+
+		chmod($filename."thumbs", 0777);
+		rmdir($filename."thumbs");
+
+		$handle = opendir($filename);
+
+		while ($file = readdir($handle))
+		{
+		   if (is_file($filename.$file))
+		   {
+		       unlink($filename.$file);
+		   }
+		}
+
+		chmod($filename, 0777);
+		rmdir($filename);
+
+		$this->Admin_Model->eliminarFotosAlbum($album);
+		$this->Admin_Model->eliminarAlbum($album);
+
+		redirect(get('webURL'). _sh . 'admin/galeria/'.$tipo.'/'.$club);
 	}
 
 	public function elimFoto()

@@ -25,7 +25,7 @@ function eliminar(name)
 				<a rel="tooltip" title="Eliminar" data-toggle="modal" class="pull-right btn btn-danger" onclick="eliminar('<?php print $files[$i] ?>')" href="#confirmModal">
 					Eliminar
 				</a>
-				<a class="btn btn-success" target="_blank" href="<?php print get('webURL') . _sh . 'www/lib/respaldos/' . $files[$i++] ?>">
+				<a class="btn btn-success" target="_blank" href="<?php print _rs . '/973164852/respaldos/' . $files[$i++] ?>">
 					Descargar
 				</a>
 			</td>
