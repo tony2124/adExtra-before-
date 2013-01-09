@@ -112,6 +112,7 @@
 				      <li><a href="<?php print get('webURL'). _sh .'admin/galeria/' ?>">Galería</a></li>				      
 				      
 				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Banners</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/reglamento/' ?>">Reglamento</a></li>
 				      <li class="divider"></li>
 				      <li><a href="<?php print get('webURL'). _sh .'admin/adminclubes/' ?>">Administrar clubes</a></li>
 				      <li class="divider"></li>

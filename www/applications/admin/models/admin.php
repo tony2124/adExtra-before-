@@ -233,16 +233,6 @@ class Admin_Model extends ZP_Model {
 
 	}
 
-	public function guardarClub($vars)
-	{
-		$query = "insert into clubes(nombre_club, tipo_club, texto_club, foto_club, fecha_creacion)
-		 				values ('$vars[nombre_club]','$vars[tipo_club]','$vars[texto_club]','$vars[foto_club]','$vars[fecha_creacion]')";
-		$this->acentos();
-		$this->Db->query($query);
-		return $query;
-
-	}
-
 	public function updateNew($vars)
 	{
 		$query = "update noticias set nombre_noticia = '$vars[nombre_noticia]' , 
@@ -253,6 +243,23 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 
+	public function elimNoticia($id)
+	{
+		return $this->Db->query("delete from noticias where id_noticias = '$id'");
+	}
+
+	public function guardarClub($vars)
+	{
+		$query = "insert into clubes(nombre_club, tipo_club, texto_club, foto_club, fecha_creacion)
+		 				values ('$vars[nombre_club]','$vars[tipo_club]','$vars[texto_club]','$vars[foto_club]','$vars[fecha_creacion]')";
+		$this->acentos();
+		$this->Db->query($query);
+		return $query;
+
+	}
+
+	
+
 	public function updateClub($vars)
 	{
 		$query = "update clubes set nombre_club = '$vars[nombre_club]' , tipo_club = '$vars[tipo_club]' ,
@@ -262,14 +269,6 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query($query);
 		return $query;
 	}
-	
-	
-
-	public function elimNoticia($id)
-	{
-		return $this->Db->query("delete from noticias where id_noticias = '$id'");
-	}
-
 	
 	public function elimClub($id)
 	{
@@ -406,5 +405,16 @@ class Admin_Model extends ZP_Model {
 				return "Ya existe uno igual, elija otro por favor";
 			}
 		}
+	}
+
+	public function  obtenerReglamento()
+	{
+		return $this->Db->query("select reglamento from configuracion");
+	}
+
+	public function  guardarReglamento($reg)
+	{
+		$this->acentos();
+		$this->Db->query("update configuracion set reglamento = '$reg'");
 	}
 }

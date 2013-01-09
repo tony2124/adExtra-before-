@@ -576,8 +576,7 @@ class Admin_Controller extends ZP_Controller {
 	public function respaldando()
 	{
 		$name = date("y-m-d_H-i-s");
-		$usuario = $this->Admin_Model->$db["dbUser"];//"extraescolares";
-		____($usuario);
+		$usuario = "extraescolares";
 
 		$passwd = "Extra2011";
 		$host = "extraescolares.db.7850492.hostedresource.com";
@@ -783,6 +782,25 @@ class Admin_Controller extends ZP_Controller {
 
  		$vars['view'] = $this->view('banners',true);
  		$this->render('content', $vars);
+ 	}
+
+ 	public function reglamento()
+ 	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+		$reg = $this->Admin_Model->obtenerReglamento();
+		$vars['reglamento'] = $reg[0]; 
+ 		$vars['view'] = $this->view('reglamento',true);
+ 		$this->render('content', $vars);
+ 	}
+
+ 	public function guardarReglamento()
+ 	{
+ 		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+		$reg = $_POST['reglamento'];
+ 		$this->Admin_Model->guardarReglamento($reg);
+ 		redirect(get('webURL')._sh.'admin/reglamento');
  	}
 
  	

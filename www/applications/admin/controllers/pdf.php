@@ -285,12 +285,13 @@ class Pdf_Controller extends ZP_Controller {
 	
 	public function formatos($for, $club=NULL, $periodo=NULL)
  	{
- 		if (!SESSION('user_admin'))
-			return redirect(get('webURL') .  _sh .'admin/login');
  		
  		switch($for)
  		{
  			case 'lista':
+	 			if (!SESSION('user_admin') && !SESSION('usuario_promotor'))
+				return redirect(get('webURL') .  _sh .'admin/login');
+
  				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
 				$prommotor = $this->Admin_Model->getPromotor($club);
 				$pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -350,7 +351,8 @@ class Pdf_Controller extends ZP_Controller {
  			break;
 
  			case 'cedula':
-
+ 				if (!SESSION('user_admin'))
+				return redirect(get('webURL') .  _sh .'admin/login');
 				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
 				$prommotor = $this->Admin_Model->getPromotor($club);
 				$admin = $this->Admin_Model->getAdminData($data[0]['id_administrador']);
@@ -406,6 +408,8 @@ class Pdf_Controller extends ZP_Controller {
  			break;
 
  			case 'resultados':
+ 			if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
  				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
 				$promotor = $this->Admin_Model->getPromotor($club);
 				$admin = $this->Admin_Model->getAdminData(SESSION('id_admin'));
@@ -457,6 +461,8 @@ class Pdf_Controller extends ZP_Controller {
  			break;
 
  			case 'liberacion':
+ 			if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
  				$folio = $club; 
  				$row = $this->Admin_Model->getAlumnoInscrito($folio);
  			
