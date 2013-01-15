@@ -154,9 +154,13 @@ class Admin_Model extends ZP_Model {
 		return $this->Db->query("select * from galeria where id_album='$album'");
 	}
 
-	public function getCarreras()
+	public function getCarreras($id)
 	{
-		return $data = $this->Db->query("select * from carreras order by abreviatura_carrera asc");
+		if($id == NULL)
+			return $data = $this->Db->query("select * from carreras where eliminada = false order by abreviatura_carrera asc");
+		
+		return $data = $this->Db->query("select * from carreras where id_carrera = '$id' and eliminada = false order by abreviatura_carrera asc");
+
 	}
 
 	public function getAlumnosInscritos($periodo = NULL)
@@ -255,9 +259,16 @@ class Admin_Model extends ZP_Model {
 		$this->acentos();
 		$this->Db->query($query);
 		return $query;
-
 	}
 
+	public function guardarcarrera($vars)
+	{
+		$query = "insert into carreras(nombre_carrera, abreviatura_carrera, semestres_carrera, eliminada)
+		 				values ('$vars[nombre_carrera]','$vars[abreviatura_carrera]','$vars[semestres_carrera]',0)";
+		$this->acentos();
+		$this->Db->query($query);
+		return $query;
+	}
 	
 
 	public function updateClub($vars)
@@ -269,10 +280,24 @@ class Admin_Model extends ZP_Model {
 		$this->Db->query($query);
 		return $query;
 	}
+
+	public function modcarrera($vars)
+	{
+		$query = "update carreras set nombre_carrera = '$vars[nombre_carrera]' , abreviatura_carrera = '$vars[abreviatura_carrera]' ,
+			semestres_carrera = '$vars[semestres_carrera]'	where id_carrera = '$vars[id_carrera]'";
+		$this->acentos();
+		$this->Db->query($query);
+		return $query;
+	}
 	
 	public function elimClub($id)
 	{
 		return $this->Db->query("update clubes set eliminado_club = true where id_club = '$id' ");
+	}
+
+	public function elimcarrera($id)
+	{
+		return $this->Db->query("update carreras set eliminada = true where id_carrera = '$id' ");
 	}
 
 	public function elimActividad($folio)

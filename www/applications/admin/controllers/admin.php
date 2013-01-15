@@ -332,7 +332,7 @@ class Admin_Controller extends ZP_Controller {
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$vars['carreras'] = $this->Admin_Model->getCarreras();
+		$vars['carreras'] = $this->Admin_Model->getCarreras(NULL);
 		$vars['view'] = $this->view('registroalumno',true);
 		$this->render("content",$vars);
 	}
@@ -775,12 +775,16 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/noticias');
 	}
 
-	public function banners()
+	public function carreras($id = NULL)
  	{
  		if( !SESSION('user_admin') )
 			return redirect(get('webURL') . _sh . 'admin/login');
 
- 		$vars['view'] = $this->view('banners',true);
+		if($id != NULL) $vars['carrera'] = $this->Admin_Model->getCarreras($id);
+		else $vars['carrera'] = NULL;
+		
+		$vars['carreras'] = $this->Admin_Model->getCarreras(NULL);
+ 		$vars['view'] = $this->view('carreras',true);
  		$this->render('content', $vars);
  	}
 
@@ -895,6 +899,53 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/adminclubes');
 	}
 
+	public function guardarcarrera()
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$nombre = $_POST['name'];
+		$abreviatura = $_POST['abreviatura'];
+		$sem = $_POST['sem'];
+
+		$abreviatura = str_replace( "'", "\"", $abreviatura);
+		$nombre = str_replace( "'", "\"", $nombre);
+
+		$vars["nombre_carrera"] = $nombre;
+		$vars["abreviatura_carrera"] = $abreviatura;
+		$vars["semestres_carrera"] = $sem;
+		
+
+		if(strcmp($vars["nombre_carrera"], "") != 0 || strcmp($vars["abreviatura_carrera"], "") != 0)
+			$this->Admin_Model->guardarcarrera($vars);
+
+		redirect(get('webURL')._sh.'admin/carreras');
+	}
+
+	public function modcarrera($id)
+	{
+		if (!SESSION('user_admin'))
+			return redirect(get('webURL') .  _sh .'admin/login');
+
+		$nombre = $_POST['name'];
+		$abreviatura = $_POST['abreviatura'];
+		$sem = $_POST['sem'];
+
+		$abreviatura = str_replace( "'", "\"", $abreviatura);
+		$nombre = str_replace( "'", "\"", $nombre);
+
+		$vars["nombre_carrera"] = $nombre;
+		$vars["abreviatura_carrera"] = $abreviatura;
+		$vars["semestres_carrera"] = $sem;
+		$vars["id_carrera"] = $id;
+		
+
+		if(strcmp($vars["nombre_carrera"], "") != 0 || strcmp($vars["abreviatura_carrera"], "") != 0)
+			$this->Admin_Model->modcarrera($vars);
+
+		redirect(get('webURL')._sh.'admin/carreras');
+	}
+
 	public function modclub($id)
 	{
 		if (!SESSION('user_admin'))
@@ -972,6 +1023,8 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/adminclubes');
 	}
 
+	
+
 
 	public function elimClub()
 	{
@@ -982,6 +1035,17 @@ class Admin_Controller extends ZP_Controller {
 		$this->Admin_Model->elimClub($id_club);
 		redirect(get('webURL'). _sh . 'admin/adminclubes');
 	}
+
+	public function elimcarrera()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$id_carrera = POST('id_carrera');
+		$this->Admin_Model->elimcarrera($id_carrera);
+		redirect(get('webURL'). _sh . 'admin/carreras');
+	}
+
 
 	
 	/* GALERIA  */
@@ -1123,7 +1187,7 @@ class Admin_Controller extends ZP_Controller {
 
 		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
-		$carreras = $this->Admin_Model->getCarreras();
+		$carreras = $this->Admin_Model->getCarreras(NULL);
 		//____($alumnos);
 		$vars["view"]	 = $this->view("estadistica", TRUE);
 		$vars["periodo"] = $periodo;
@@ -1157,7 +1221,7 @@ class Admin_Controller extends ZP_Controller {
 		if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
 
-		$carreras = $this->Admin_Model->getCarreras();
+		$carreras = $this->Admin_Model->getCarreras(NULL);
 		$alumnos = $this->Admin_Model->getAlumnosCarreras($carrera, $periodo);
 		$vars['par1'] = $carrera;
 		$vars['par2'] = $periodo;

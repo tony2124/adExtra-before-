@@ -95,8 +95,7 @@
 				    <ul class="dropdown-menu">
 				      <li><a href="<?php print get('webURL'). _sh .'admin/respaldoBD/'  ?>">Respaldo de BD</a></li>
 				      <li><a href="<?php print get('webURL'). _sh .'admin/subirBD/'  ?>">Subir base de datos</a></li>
-				      <!--<li><a href="#">Descarga de formatos</a></li>
-				      <li><a href="#">Configuración de BD</a></li>-->
+				      <li><a href="<?php print get('webURL'). _sh .'admin/eliminarhistorial/'  ?>">Eliminar historial</a></li>
 				    </ul>
 				  </li>
 				  <li class="dropdown" id="menu4">
@@ -110,11 +109,11 @@
 				      <li><a href="<?php print get('webURL'). _sh .'admin/avisos/' ?>">Avisos</a></li>
 				      <li class="divider"></li>
 				      <li><a href="<?php print get('webURL'). _sh .'admin/galeria/' ?>">Galería</a></li>				      
-				      
-				      <li><a href="<?php print get('webURL'). _sh .'admin/banners/' ?>">Banners</a></li>
 				      <li><a href="<?php print get('webURL'). _sh .'admin/reglamento/' ?>">Reglamento</a></li>
 				      <li class="divider"></li>
-				      <li><a href="<?php print get('webURL'). _sh .'admin/adminclubes/' ?>">Administrar clubes</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/adminclubes/' ?>">Admon. clubes</a></li>
+				      <li><a href="<?php print get('webURL'). _sh .'admin/carreras/' ?>">Admon. carreras</a></li>
+
 				      <li class="divider"></li>
 				      <li><a href="<?php print get('webURL'). _sh .'admin/subirarchivos/' ?>">Subir archivos</a></li>
 				    </ul>
