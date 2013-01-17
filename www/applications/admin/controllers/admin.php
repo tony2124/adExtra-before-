@@ -453,8 +453,6 @@ class Admin_Controller extends ZP_Controller {
 		redirect(get('webURL')._sh.'admin/configLiberacion');
 	}
 
-	
-
 	/*/***** ADMINISTRACION DEL SITIO ***/
 	public function avisos()
  	{
@@ -480,6 +478,27 @@ class Admin_Controller extends ZP_Controller {
 		$this->Admin_Model->guardarAviso($cuerpo, $mostrar);
 		redirect(get('webURL')._sh.'admin/avisos');
 	}
+
+	public function subirBD()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$vars['view'] = $this->view('subiralumnos',true);
+ 		$this->render('content', $vars);
+
+	}
+
+	public function eliminarhistorial()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+
+		$vars['view'] = $this->view('eliminarhistorial',true);
+ 		$this->render('content', $vars);
+
+	}
+
 
 	public function subirarchivos()
 	{
@@ -1187,6 +1206,7 @@ class Admin_Controller extends ZP_Controller {
 
 		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
+		$todos_alumnos = $this->Admin_Model->getAlumnosInscritos(NULL);
 		$carreras = $this->Admin_Model->getCarreras(NULL);
 		//____($alumnos);
 		$vars["view"]	 = $this->view("estadistica", TRUE);
@@ -1195,6 +1215,7 @@ class Admin_Controller extends ZP_Controller {
 		$vars["alumnos"] = $alumnos;
 		$vars["periodos"] = periodos("2082");
 		$vars["carreras"] = $carreras;
+		$vars["todos_alumnos"] = $todos_alumnos;
 		$this->render("content", $vars);
 	}
 

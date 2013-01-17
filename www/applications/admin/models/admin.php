@@ -163,8 +163,10 @@ class Admin_Model extends ZP_Model {
 
 	}
 
-	public function getAlumnosInscritos($periodo = NULL)
+	public function getAlumnosInscritos($periodo)
 	{
+		if($periodo == NULL)
+			return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes natural join carreras");	
 		return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes natural join carreras where periodo = '$periodo'");	
 	}
 
