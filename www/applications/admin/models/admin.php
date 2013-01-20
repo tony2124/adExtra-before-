@@ -346,6 +346,15 @@ class Admin_Model extends ZP_Model {
 		return $query;
 	}
 
+	public function eliminargeneracion($gen)
+	{
+		$query = "delete from inscripciones where numero_control like '$gen%'";
+		$this->Db->query($query);
+		$query = "delete from alumnos where numero_control like '$gen%'";
+		$this->Db->query($query);
+		return $query;
+	}
+
 	public function eliminarFotosAlbum($album)
 	{
 		$query = "delete from galeria where id_album = '$album'";

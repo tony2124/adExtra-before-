@@ -7,7 +7,7 @@
 		</div>
 		<hr>
 		<footer>
-			<p>Instituto Tecnológico Superior de Apatzingán - - - Administrador de extraescolares</p>
+			<p>Instituto Tecnológico Superior de Apatzingán - - - Departamento de Promoción Cultural, Deportiva y Recreativa</p>
 		</footer>
 	</div>
 	</body>

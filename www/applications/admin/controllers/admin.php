@@ -489,13 +489,33 @@ class Admin_Controller extends ZP_Controller {
 
 	}
 
-	public function eliminarhistorial()
+	public function eliminarhistorial($id = NULL)
 	{
 		if( !SESSION('user_admin') )
 			return redirect(get('webURL') . _sh . 'admin/login');
-
+		$vars['elim'] = $id;
 		$vars['view'] = $this->view('eliminarhistorial',true);
  		$this->render('content', $vars);
+	}
+
+	public function eliminargeneracion()
+	{
+		if( !SESSION('user_admin') )
+			return redirect(get('webURL') . _sh . 'admin/login');
+		
+		$gen = POST('generacion');
+		$clave = POST('clave');
+
+		$data = $this->Admin_Model->getData(SESSION('user_admin'));
+
+		if(strcmp($data[0]['contrasena_administrador'],$clave)==0)
+		{
+			$generacion = substr($gen, 2, 2 );
+			$this->Admin_Model->eliminargeneracion($generacion);
+			redirect(get("webURL")._sh."admin/eliminarhistorial/".$gen);
+		}
+		else
+			redirect(get("webURL")._sh."admin/eliminarhistorial/error");
 
 	}
 
