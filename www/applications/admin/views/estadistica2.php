@@ -1,6 +1,6 @@
 
 <script src="http://cdn.kendostatic.com/2012.3.1315/js/kendo.all.min.js"></script>
-
+<link href="styles/kendo.common.css" rel="stylesheet" />
 <link href="http://cdn.kendostatic.com/2012.3.1315/styles/kendo.default.min.css" rel="stylesheet" />
 <!--COMBO PARA SELECCIONAR EL PERIODO  -->
 <p>ALUMNOS INSCRITOS EN LOS CLUBES EN EL PERIODO: <?php print $periodo ?></p>
@@ -38,20 +38,18 @@
 				$porcentaje = 0;
 				$i = 0;
 				$conta = 0;
-				$conta2 = 0;
 				while($i < sizeof($clubes))
 				{
 					if(strcmp($clubes[$i]['tipo_club'], "3") != 0)
 					{
-				
+						$contador = 0;
 						$hombres = 0;
 						$mujeres = 0;
 						$hLib = 0;
 						$mLib = 0;
-
 						if($todos_alumnos != null)
 						foreach ($todos_alumnos as $al) {
-							if(strcmp($al['periodo'], $periodo)==0)
+							if(strcmp($al['periodo'],$periodos[$indice])==0)
 							{
 								if($al['id_club'] == $clubes[$i]['id_club'])
 								{
@@ -67,6 +65,7 @@
 											$hLib++;
 										$hombres++;
 									}
+									
 								}
 							}
 						}
@@ -77,7 +76,7 @@
 						$tmL += $mLib;
 						$por = ($mujeres + $hombres > 0) ? round( ($hLib + $mLib) / ($mujeres + $hombres) * 10000) / 100 : 0;
 						
-						//if( strcmp( $periodo, $periodo) == 0 )
+						if( strcmp( $periodo, $periodos[$indice]) == 0 )
 						{
 							$mostrar[$conta][0] = $clubes[$i]['id_club'];
 							$mostrar[$conta][1] = $clubes[$i]['tipo_club'];
@@ -92,54 +91,16 @@
 							$conta++;
 						}
 					}
-					else
-					{
-						$mujeres_otros = 0;
-						$hombres_otros = 0;
-
-						if($todos_alumnos != null)
-						foreach ($todos_alumnos as $al) {
-							if(strcmp($al['periodo'], $periodo)==0)
-							{
-								if($al['id_club'] == $clubes[$i]['id_club'])
-								{
-									if(strcmp($al['sexo'],'2')==0)
-									{
-										//if($al['acreditado'] == 1)
-											$mujeres_otros++;
-									}
-									else
-									{
-										//if($al['acreditado'] == 1)
-											$hombres_otros++;
-									}
-								}
-							}
-						}
-
-						//if( strcmp( $periodo, $periodo) == 0 )
-						{
-							$mostrar2[$conta2][0] = $clubes[$i]['id_club'];
-							$mostrar2[$conta2][1] = $clubes[$i]['tipo_club'];
-							$mostrar2[$conta2][2] = $clubes[$i]['nombre_club'];
-							$mostrar2[$conta2][3] = $mujeres_otros;
-							$mostrar2[$conta2][4] = $hombres_otros;
-							$mostrar2[$conta2][5] = $mujeres_otros + $hombres_otros;
-							$conta2++;
-						}
-					}
 
 					$i++;
 				}
-			//	if( strcmp( $periodo, $periodo) == 0 )
-				{
-					$totales[0] = $tm; 
-					$totales[1] = $th;
-					$totales[2] = $tm+$th;
-					$totales[3] = $tmL;
-					$totales[4] = $thL;
-					$totales[5] = $tmL+$thL;
-				}
+
+				$totales[0] = $tm; 
+				$totales[1] = $th;
+				$totales[2] = $tm+$th;
+				$totales[3] = $tmL;
+				$totales[4] = $thL;
+				$totales[5] = $tmL+$thL;
 
 				$porcentaje = ($tm+$th > 0) ? round( ($tmL+$thL) / ($tm+$th) * 10000 ) / 100 : 0;
 
@@ -171,7 +132,7 @@
 			  	<tbody>
 				<?php 
 					$i = 0;
-					while($i < sizeof($mostrar))
+					while($i < sizeof($clubes))
 					{
 				?>
 
@@ -207,53 +168,7 @@
 				</tbody>
 			</table>
 			
-			<table id="estadistica" width="600" class="table table-striped table-bordered table-condensed">
-				<thead>
-			     	<tr align="center">
-			     		<th rowspan="2">ID</th>
-					    <th rowspan="2">Tipo</th>
-					    <th rowspan="2">Nombre de la actividad</th>
-					    <th colspan="3">Alumnos Liberados</th>
-			    	</tr>
-			    	<tr>
-			    		<th>M</th>
-			    		<th>H</th>
-			    		<th>TOTAL</th>
-			    	</tr>
-			  	</thead>
-			  	<tbody>
-				<?php 
-					$i = 0;
-					while($i < sizeof($mostrar2))
-					{
-				?>
 
-					<tr>
-						<td><?php echo $mostrar2[$i][0] ?></td>
-						<td><?php echo $mostrar2[$i][1] ?></td>		
-						<td>
-							<a href="<?php print get("webURL")._sh.'admin/listaclub/'.$clubes[$i]['id_club'].'/'.$periodo ?>"><?php echo $mostrar2[$i][2] ?></a>
-						</td>
-						<td><?php print $mostrar2[$i][3] ?></td>
-						<td><?php print $mostrar2[$i][4] ?></td>
-						<td><?php print $mostrar2[$i][5] ?></td>
-						
-					</tr>
-					<?php
-					
-					$i++;
-					}
-				?>
-					<tr >
-						<td colspan="3"></td>
-						<td style="font-size: 15px;"><b><?php  ?></b></td>
-						<td style="font-size: 15px;"><b><?php  ?></b></td>
-						<td style="font-size: 20px;"><b><?php  ?></b></td>
-						
-					</tr>
-				</tbody>
-			</table>
-			
 		</div>
 		<div class="tab-pane" id="carreras">
 			<table id="estadistica" width="600" class="table table-striped table-bordered table-condensed">
@@ -287,7 +202,7 @@
 					while($i < sizeof($carreras))
 					{
 
-	
+							$contador = 0;
 							$hombres = 0;
 							$mujeres = 0;
 							$hLib = 0;
@@ -467,4 +382,4 @@
 	</div>
 <hr>
 
-<p><h3>IMPORTANTE</h3><i>Los datos que aquí se presentan hacen referencia únicamente a los alumnos que se inscribieron a los diferentes clubes deportivos y culturales, no representa los datos de los alumnos que liberaron en otras actividades.</i></p>
+<p><h3>IMPORTANTE</h3><i>Los datos que aquí se presentan hacen referencia únicamente a los alumnos que se inscribieron a los diferentes clubes deportivos y culturales, no representa los datos de los alumnos que liberaron en otras actividades.</i></p>-->

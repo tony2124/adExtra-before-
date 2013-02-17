@@ -1224,9 +1224,9 @@ class Admin_Controller extends ZP_Controller {
 			$periodo = periodo_actual();
 		}
 
-		$clubes = $this->Admin_Model->getClubes();
+		$clubes = $this->Admin_Model->getClubes('all');
 		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
-		$todos_alumnos = $this->Admin_Model->getAlumnosInscritos(NULL);
+		$todos_alumnos = $this->Admin_Model->getAlumnosInscritos($periodo);
 		$carreras = $this->Admin_Model->getCarreras(NULL);
 		//____($alumnos);
 		$vars["view"]	 = $this->view("estadistica", TRUE);
