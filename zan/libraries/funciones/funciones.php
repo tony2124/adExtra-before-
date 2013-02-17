@@ -26,6 +26,26 @@ function periodos($fecha_inscripcion)
 	return $periodo;
 }
 
+function periodos_combo($fecha_inscripcion)
+{
+	$periodo = array();
+	$fec = substr($fecha_inscripcion,1,2);
+	$anio = "20".$fec;
+	for($i = 0; $i < semestre($fecha_inscripcion); $i++)
+	{
+		if($i % 2 == 0)
+		{
+		$periodo[$i] = "AGO".$anio."-ENE".($anio+1);
+		$anio++; 
+		}
+		else
+		{
+		$periodo[$i] = "FEB".($anio)."-JUL".($anio);
+		}
+	}
+	return $periodo;
+}
+
 function fechaactual()
 {
 	return date("Y-m-d");	

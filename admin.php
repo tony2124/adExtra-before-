@@ -1224,16 +1224,16 @@ class Admin_Controller extends ZP_Controller {
 			$periodo = periodo_actual();
 		}
 
-		$clubes = $this->Admin_Model->getClubes('all');
+		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
-		$todos_alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
+		$todos_alumnos = $this->Admin_Model->getAlumnosInscritos($periodo);
 		$carreras = $this->Admin_Model->getCarreras(NULL);
 		//____($alumnos);
 		$vars["view"]	 = $this->view("estadistica", TRUE);
 		$vars["periodo"] = $periodo;
 		$vars["clubes"] = $clubes;
 		$vars["alumnos"] = $alumnos;
-		$vars["periodos"] = periodos_combo("2082");
+		$vars["periodos"] = periodos("2082");
 		$vars["carreras"] = $carreras;
 		$vars["todos_alumnos"] = $todos_alumnos;
 		$this->render("content", $vars);

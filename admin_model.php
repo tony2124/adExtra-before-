@@ -166,7 +166,7 @@ return $data = $this->Db->query("select * from carreras where id_carrera = '$id'
 public function getAlumnosInscritos($periodo)
 {
 /*if($periodo == NULL)
-	return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes natural join carreras");	*/
+return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes natural join carreras");	*/
 return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes natural join carreras where periodo = '$periodo'");	
 }
 
