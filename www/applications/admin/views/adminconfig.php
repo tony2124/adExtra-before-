@@ -125,7 +125,7 @@
               <tr>
                 <th>Apellido materno</th>
                 <td><?php print $ad['apellido_materno_administrador'] ?></td>
-              </tr>
+              </tr> 
               <tr>
                 <th>Profesión</th>
                 <td><?php print $ad['profesion_administrador'] ?></td>

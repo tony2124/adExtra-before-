@@ -26,11 +26,9 @@ public function getResultadoProm()
 return $this->Db->query("select * from ");
 }
 
-public function getPromotores($periodo)
+public function getPromotores($palabras)
 {
-	if($periodo==NULL)
-		return $this->Db->query("select * from promotores where eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");	
-	return $this->Db->query("select * from promotores natural join horarios natural join clubes where periodo='$periodo' and eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
+return $this->Db->query("select * from promotores natural join clubes where (nombre_promotor like '%$palabras%' or apellido_paterno_promotor like '%$palabras%' or apellido_materno_promotor like '%$palabras%') and eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
 }
 
 public function getEditPromotor($id)
@@ -40,17 +38,12 @@ return $this->Db->query("select * from promotores where eliminado_promotor = fal
 
 public function getPromotor($club)
 {
-	return $this->Db->query("select * from promotores where id_club = '$club' and eliminado_promotor = 0");
+return $this->Db->query("select * from promotores where id_club = '$club' and eliminado_promotor = 0");
 }
 
 public function elimPromotor($id)
 {
 return $this->Db->query("update promotores set eliminado_promotor = true where usuario_promotor = '$id' ");
-}
-
-public function getPeriodos()
-{
-	return $this->Db->query("select distinct periodo from inscripciones");	
 }
 
 public function regPromotor($vars)
@@ -139,20 +132,12 @@ return $this->Db->query("select * from noticias where id_noticias = 1");
 }
 public function getClubes($hm = NULL)
 {
-	if(strcmp($hm, "all") == 0)
-		return $data = $this->Db->query("select * from clubes where eliminado_club = 0 order by nombre_club asc");	
-	
-	if($hm == 1 || $hm == 2)
-		return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club = $hm order by nombre_club asc");	
-	
-	return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club!=3 order by nombre_club asc");
+if(strcmp($hm, "all") == 0)
+return $data = $this->Db->query("select * from clubes where eliminado_club = 0 order by nombre_club asc");	
+if($hm == 1 || $hm == 2)
+return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club = $hm order by nombre_club asc");	
+return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club!=3 order by nombre_club asc");
 }
-
-public function getClubesProm()
-{
-	return $data = $this->Db->query("select intersection from clubes join promotores where eliminado_club = 0 and tipo_club!=3 and eliminado_promotor = 0 order by nombre_club asc");
-}
-
 
 public function getAlbumes($var, $value)
 {
@@ -181,7 +166,7 @@ return $data = $this->Db->query("select * from carreras where id_carrera = '$id'
 public function getAlumnosInscritos($periodo)
 {
 /*if($periodo == NULL)
-	return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes natural join carreras");	*/
+return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes natural join carreras");	*/
 return $data = $this->Db->query("select * from alumnos natural join inscripciones natural join clubes natural join carreras where periodo = '$periodo'");	
 }
 

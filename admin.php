@@ -64,32 +64,12 @@ class Admin_Controller extends ZP_Controller {
 
 
 /* PROMOTORES */
-	function promotores($periodo = NULL)
+	function promotores($palabras = NULL)
 	{
 		if( !SESSION('user_admin') )
 			return redirect(get('webURL') . _sh . 'admin/login');
 
-		/***** SELECCION DE PERIODOS AGREGADOS EN LA BD *****/
-		$periodossss = $this->Admin_Model->getPeriodos();
-		//____($periodossss);
-		$i = 0;
-		$bandera = false;
-		foreach ($periodossss as $per) {
-			if(strcmp($per['periodo'], periodo_actual()) == 0)
-				$bandera = true;
-			$periodos[$i] = $per['periodo']; 
-			$i++;
-		}
-		if($bandera == false) $periodos[$i] = periodo_actual();
-		$vars["periodos"] = $periodos; //periodos_combo("2082");
-		/****************************************************/
-		if($periodo == NULL)
-			$vars['periodo'] = periodo_actual();
-		else
-			$vars['periodo'] = $periodo;
-		$vars['promotores']  = $this->Admin_Model->getPromotores($periodo);
-		$vars['todos_promotores'] = $this->Admin_Model->getPromotores(NULL);
-		$vars['clubes'] = $this->Admin_Model->getClubes();
+		$vars['promotores']  = $this->Admin_Model->getPromotores($palabras);
 		$vars['view'] = $this->view('adminPromotores',true);
 		$this->render('noRightContent', $vars);
 	}
@@ -119,7 +99,7 @@ class Admin_Controller extends ZP_Controller {
 		if( !SESSION('user_admin') )
 			return redirect(get('webURL') . _sh . 'admin/login');
 
-		$vars['clubes'] = $this->Admin_Model->getClubesProm();
+		$vars['clubes'] = $this->Admin_Model->getClubes();
 		$vars['view'] = $this->view('registroPromotor', true);
 		$this->render('content', $vars);
 	}
@@ -1244,31 +1224,16 @@ class Admin_Controller extends ZP_Controller {
 			$periodo = periodo_actual();
 		}
 
-		$clubes = $this->Admin_Model->getClubes('all');
+		$clubes = $this->Admin_Model->getClubes();
 		$alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
-		$todos_alumnos = $this->Admin_Model->getAlumnosInscritos( $periodo );
+		$todos_alumnos = $this->Admin_Model->getAlumnosInscritos($periodo);
 		$carreras = $this->Admin_Model->getCarreras(NULL);
-
-		/***** SELECCION DE PERIODOS AGREGADOS EN LA BD *****/
-		$periodossss = $this->Admin_Model->getPeriodos();
-		//____($periodossss);
-		$i = 0;
-		$bandera = false;
-		foreach ($periodossss as $per) {
-			if(strcmp($per['periodo'], periodo_actual()) == 0)
-				$bandera = true;
-			$periodos[$i] = $per['periodo']; 
-			$i++;
-		}
-		if($bandera == false) $periodos[$i] = periodo_actual();
-		$vars["periodos"] = $periodos; //periodos_combo("2082");
-		/****************************************************/
-		
+		//____($alumnos);
 		$vars["view"]	 = $this->view("estadistica", TRUE);
 		$vars["periodo"] = $periodo;
 		$vars["clubes"] = $clubes;
 		$vars["alumnos"] = $alumnos;
-		
+		$vars["periodos"] = periodos("2082");
 		$vars["carreras"] = $carreras;
 		$vars["todos_alumnos"] = $todos_alumnos;
 		$this->render("content", $vars);
@@ -1283,24 +1248,11 @@ class Admin_Controller extends ZP_Controller {
 
 		$clubes = $this->Admin_Model->getClubes('all');
 		$alumnos = $this->Admin_Model->getAlumnosClubes($club, $periodo);
-		/***** SELECCION DE PERIODOS AGREGADOS EN LA BD *****/
-		$periodossss = $this->Admin_Model->getPeriodos();
-		//____($periodossss);
-		$i = 0;
-		$bandera = false;
-		foreach ($periodossss as $per) {
-			if(strcmp($per['periodo'], periodo_actual()) == 0)
-				$bandera = true;
-			$periodos[$i] = $per['periodo']; 
-			$i++;
-		}
-		if($bandera == false) $periodos[$i] = periodo_actual();
-		$vars["periodos"] = $periodos; //periodos_combo("2082");
-		/****************************************************/
 		$vars['par1'] = $club;
 		$vars['par2'] = $periodo;
 		$vars['alumnos'] = $alumnos;
 		$vars['clubes'] = $clubes;
+		$vars['periodos'] = periodos('2083');
 		$vars['view'] = $this->view("listaclub", true);
 		$this->render("content", $vars);
  	}

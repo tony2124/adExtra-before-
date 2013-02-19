@@ -1,29 +1,22 @@
+
 <script src="http://cdn.kendostatic.com/2012.3.1315/js/kendo.all.min.js"></script>
 <link href="styles/kendo.common.css" rel="stylesheet" />
-<link rel="stylesheet" href="<?php print path("libraries/","zan") ?>/kendo/kendo.default.min.css"></link>
-<!--COMBO PARA SELECCIONAR EL PERIODO -->
+<link href="http://cdn.kendostatic.com/2012.3.1315/styles/kendo.default.min.css" rel="stylesheet" />
+<!--COMBO PARA SELECCIONAR EL PERIODO  -->
 <p>ALUMNOS INSCRITOS EN LOS CLUBES EN EL PERIODO: <?php print $periodo ?></p>
 <select onchange="location.href='<?php print get("webURL").'/admin/estadistica/' ?>'+$(this).val()">
-	<?php 
-		$bandera = false;
-		foreach ($periodos as $per ) 
-		{
-			print "<option  id='".$per."' ";
-			if(strcmp($per,$periodo)==0) 
-			{ 
-					print "selected='selected'"; 
-					$bandera=true; 
-			}
-			?>
-			>
-			
-			<?php print $per . "</option>";
-		}
+	<?php foreach ($periodos as $per ) {
+		print "<option ";
+		if($per == $periodo) print "selected='selected'";
+		?>
 
-		if($bandera == false)
-			print "<option id='".$periodo."' selected='selected'> ".$periodo."</option>";
+		 id="<?php print $per ?>">
 		
-	?>
+		<?php print $per;
+		print "</option>";
+
+		$periodos = periodos("2112");
+	}?>
 </select>
 
 <!-- PESTAÑAS PARA MOSTRAR LA INFORMACIÓN POR SEPARADO. -->
@@ -39,24 +32,19 @@
 			{ 
 
 				$th = 0;
-				$thX = 0;
 				$tm = 0;
-				$tmX = 0;
 				$thL = 0;
 				$tmL = 0;
 				$porcentaje = 0;
 				$i = 0;
 				$conta = 0;
-				$contaX= 0;
 				while($i < sizeof($clubes))
 				{
-					//if(strcmp($clubes[$i]['tipo_club'], "3") != 0)
+					if(strcmp($clubes[$i]['tipo_club'], "3") != 0)
 					{
 						$contador = 0;
 						$hombres = 0;
 						$mujeres = 0;
-						$hombresX = 0;
-						$mujeresX = 0;
 						$hLib = 0;
 						$mLib = 0;
 						if($todos_alumnos != null)
@@ -67,31 +55,15 @@
 								{
 									if(strcmp($al['sexo'],'2')==0)
 									{
-										//if(strcmp($clubes[$i]['tipo_club'], "3") != 0)
-										{
-											$mujeres++;
-											if($al['acreditado'] == 1)
-												$mLib++;
-										}
-										/*else
-										{
-											if($al['acreditado'] == 1)
-												$mujeresX++;
-										}*/
+										$mujeres++;
+										if($al['acreditado'] == 1)
+											$mLib++;
 									}
 									else
 									{
-										//if(strcmp($clubes[$i]['tipo_club'], "3") != 0)
-										{
-											if($al['acreditado'] == 1)
-												$hLib++;
-											$hombres++;
-										}
-										/*else
-										{
-											if($al['acreditado'] == 1)
-												$hombresX++;
-										}*/
+										if($al['acreditado'] == 1)
+											$hLib++;
+										$hombres++;
 									}
 									
 								}
@@ -99,60 +71,36 @@
 						}
 
 						$th += $hombres;
-						$thX += $hombresX;
 						$tm += $mujeres;
-						$tmX += $mujeresX;
 						$thL += $hLib;
 						$tmL += $mLib;
 						$por = ($mujeres + $hombres > 0) ? round( ($hLib + $mLib) / ($mujeres + $hombres) * 10000) / 100 : 0;
 						
 						if( strcmp( $periodo, $periodos[$indice]) == 0 )
 						{
-							//if(strcmp($clubes[$i]['tipo_club'], "3") != 0)
-							{
-								$mostrar[$conta][0] = $clubes[$i]['id_club'];
-								$mostrar[$conta][1] = $clubes[$i]['tipo_club'];
-								$mostrar[$conta][2] = $clubes[$i]['nombre_club'];
-								$mostrar[$conta][3] = $mujeres;
-								$mostrar[$conta][4] = $hombres;
-								$mostrar[$conta][5] = $mujeres + $hombres;
-								$mostrar[$conta][6] = $mLib;
-								$mostrar[$conta][7] = $hLib;
-								$mostrar[$conta][8] = $hLib+$mLib;
-								$mostrar[$conta][9] = $por;
-								
-								$conta++;
-							}
-							/*else
-							{
-								$mostrarX[$contaX][0] = $clubes[$i]['id_club'];
-								$mostrarX[$contaX][1] = $clubes[$i]['tipo_club'];
-								$mostrarX[$contaX][2] = $clubes[$i]['nombre_club'];
-								$mostrarX[$contaX][3] = $mujeresX;
-								$mostrarX[$contaX][4] = $hombresX;
-								$mostrarX[$contaX][5] = $mujeresX + $hombresX;
-								$contaX++;
-							}	*/
+							$mostrar[$conta][0] = $clubes[$i]['id_club'];
+							$mostrar[$conta][1] = $clubes[$i]['tipo_club'];
+							$mostrar[$conta][2] = $clubes[$i]['nombre_club'];
+							$mostrar[$conta][3] = $mujeres;
+							$mostrar[$conta][4] = $hombres;
+							$mostrar[$conta][5] = $mujeres + $hombres;
+							$mostrar[$conta][6] = $mLib;
+							$mostrar[$conta][7] = $hLib;
+							$mostrar[$conta][8] = $hLib+$mLib;
+							$mostrar[$conta][9] = $por;
+							$conta++;
 						}
 					}
 
 					$i++;
 				}
 
-				if( strcmp( $periodo, $periodos[$indice]) == 0 )
-				{
-					$totales[0] = $tm; 
-					$totales[1] = $th;
-					$totales[2] = $tm+$th;
-					$totales[3] = $tmL;
-					$totales[4] = $thL;
-					$totales[5] = $tmL+$thL;
-
-					$totalesX[0] = $tmX;
-					$totalesX[1] = $thX;
-					$totalesX[2] = $tmX + $thX;
-
-				}
+				$totales[0] = $tm; 
+				$totales[1] = $th;
+				$totales[2] = $tm+$th;
+				$totales[3] = $tmL;
+				$totales[4] = $thL;
+				$totales[5] = $tmL+$thL;
 
 				$porcentaje = ($tm+$th > 0) ? round( ($tmL+$thL) / ($tm+$th) * 10000 ) / 100 : 0;
 
@@ -184,31 +132,27 @@
 			  	<tbody>
 				<?php 
 					$i = 0;
-					$ix = 0;
-					while($ix < sizeof($clubes)) 
-					{ 
-						//if ( strcmp ( $clubes[$ix]['tipo_club'] , "3" ) != 0 )
-						{
-					?>
+					while($i < sizeof($clubes))
+					{
+				?>
 
-						<tr>
-							<td><?php echo $mostrar[$i][0] ?></td>
-							<td><?php echo $mostrar[$i][1] ?></td>		
-							<td>
-								<a href="<?php print get("webURL")._sh.'admin/listaclub/'.$clubes[$i]['id_club'].'/'.$periodo ?>"><?php echo $mostrar[$i][2] ?></a>
-							</td>
-							<td><?php print $mostrar[$i][3] ?></td>
-							<td><?php print $mostrar[$i][4] ?></td>
-							<td><?php print $mostrar[$i][5] ?></td>
-							<td><?php print $mostrar[$i][6] ?></td>
-							<td><?php print $mostrar[$i][7] ?></td>
-							<td><?php print $mostrar[$i][8] ?></td>
-							<td style="color: <?php if($mostrar[$i][9] > 90) print "green"; else if($mostrar[$i][9] < 70) print "red" ?>"><?php print $mostrar[$i][9]." %"  ?></td>
-						</tr>
-						<?php
-						$i++;
-						}
-					$ix++;
+					<tr>
+						<td><?php echo $mostrar[$i][0] ?></td>
+						<td><?php echo $mostrar[$i][1] ?></td>		
+						<td>
+							<a href="<?php print get("webURL")._sh.'admin/listaclub/'.$clubes[$i]['id_club'].'/'.$periodo ?>"><?php echo $mostrar[$i][2] ?></a>
+						</td>
+						<td><?php print $mostrar[$i][3] ?></td>
+						<td><?php print $mostrar[$i][4] ?></td>
+						<td><?php print $mostrar[$i][5] ?></td>
+						<td><?php print $mostrar[$i][6] ?></td>
+						<td><?php print $mostrar[$i][7] ?></td>
+						<td><?php print $mostrar[$i][8] ?></td>
+						<td style="color: <?php if($mostrar[$i][9] > 90) print "green"; else if($mostrar[$i][9] < 70) print "red" ?>"><?php print $mostrar[$i][9]." %"  ?></td>
+					</tr>
+					<?php
+					
+					$i++;
 					}
 				?>
 					<tr bgcolor="#EEF">
@@ -223,61 +167,8 @@
 					</tr>
 				</tbody>
 			</table>
-			<hr>
-			<!-- ****** TABLA OTROS ****** -->
-		<!--	<table id="estadistica" width="600" class="table table-striped table-bordered table-condensed">
-				<thead>
-			     	<tr align="center">
-			     		<th rowspan="2">ID</th>
-					    <th rowspan="2">Tipo</th>
-					    <th rowspan="2">Nombre del club</th>
-					    <th colspan="3">Alumnos inscritos</th>
-			    	</tr>
-			    	<tr>
-			    		<th>M</th>
-			    		<th>H</th>
-			    		<th>TOTAL</th>
-			    	</tr>
-			  	</thead>
-			  	<tbody>
-				<?php 
-					$i = 0;
-					$ix = 0;
-					while($ix < sizeof($clubes)) 
-					{ 
-						if ( strcmp ( $clubes[$ix]['tipo_club'] , "3" ) == 0 )
-						{
-					?>
-					<tr>
-						<td><?php echo $mostrarX[$i][0] ?></td>
-						<td><?php echo $mostrarX[$i][1] ?></td>		
-						<td>
-							<a href="<?php print get("webURL")._sh.'admin/listaclub/'.$clubes[$ix]['id_club'].'/'.$periodo ?>"><?php echo $clubes[$ix]['nombre_club'] ?></a>
-						</td>
-						<td><?php print $mostrarX[$i][3] ?></td>
-						<td><?php print $mostrarX[$i][4] ?></td>
-						<td><?php print $mostrarX[$i][5] ?></td>
-					</tr>
-					<?php
-					
-					$i++;
-					}
-					$ix++;
-					}
-				?>
-					<tr bgcolor="#EEF">
-						<td colspan="3"></td>
-						<td style="font-size: 15px;"><b><?php print $totalesX[0] ?></b></td>
-						<td style="font-size: 15px;"><b><?php print $totalesX[1] ?></b></td>
-						<td style="font-size: 20px;"><b><?php echo $totalesX[2] ?></b></td>
-						
-					</tr>
-				</tbody>
-			</table>
 			
-			<hr>
-			<p>TOTAL DE ALUMNOS LIBERADOS: <span style="font-size: 30px"><?php print  $totalesX[2] + $totales[5]?></span></p>
--->
+
 		</div>
 		<div class="tab-pane" id="carreras">
 			<table id="estadistica" width="600" class="table table-striped table-bordered table-condensed">
@@ -320,7 +211,7 @@
 							foreach ($alumnos as $al) {
 								if($al['id_carrera'] == $carreras[$i]['id_carrera'])
 								{
-									//if(strcmp($al['tipo_club'], "3") != 0)
+									if(strcmp($al['tipo_club'], "3") != 0)
 									{
 										if(strcmp($al['sexo'],'2')==0)
 										{
@@ -347,7 +238,8 @@
 							
 				?>
 							<tr>
-								<td><?php echo $carreras[$i]['id_carrera'] ?></td>		
+								<td><?php echo $carreras[$i]['id_carrera'] ?></td>
+										
 								<td>
 									<a href="<?php print get("webURL")._sh.'admin/listacarrera/'.$carreras[$i]['id_carrera'].'/'.$periodo ?>"><?php echo $carreras[$i]['nombre_carrera'] ?></a>		
 								</td>
@@ -378,61 +270,6 @@
 				</tr>
 			  	</tbody>
 			 </table>
-			 <hr>
-			 <!-- ****** TABLA OTROS ****** -->
-		<!--	<table id="estadistica" width="600" class="table table-striped table-bordered table-condensed">
-				<thead>
-			     	<tr align="center">
-			     		<th rowspan="2">ID</th>
-					    <th rowspan="2">Tipo</th>
-					    <th rowspan="2">Nombre del club</th>
-					    <th colspan="3">Alumnos inscritos</th>
-			    	</tr>
-			    	<tr>
-			    		<th>M</th>
-			    		<th>H</th>
-			    		<th>TOTAL</th>
-			    	</tr>
-			  	</thead>
-			  	<tbody>
-				<?php 
-					$i = 0;
-					$ix = 0;
-					while($ix < sizeof($clubes)) 
-					{ 
-						if ( strcmp ( $clubes[$ix]['tipo_club'] , "3" ) == 0 )
-						{
-					?>
-					<tr>
-						<td><?php echo $mostrarX[$i][0] ?></td>
-						<td><?php echo $mostrarX[$i][1] ?></td>		
-						<td>
-							<a href="<?php print get("webURL")._sh.'admin/listaclub/'.$clubes[$ix]['id_club'].'/'.$periodo ?>"><?php echo $clubes[$ix]['nombre_club'] ?></a>
-						</td>
-						<td><?php print $mostrarX[$i][3] ?></td>
-						<td><?php print $mostrarX[$i][4] ?></td>
-						<td><?php print $mostrarX[$i][5] ?></td>
-					</tr>
-					<?php
-					
-					$i++;
-					}
-					$ix++;
-					}
-				?>
-					<tr bgcolor="#EEF">
-						<td colspan="3"></td>
-						<td style="font-size: 15px;"><b><?php print $totalesX[0] ?></b></td>
-						<td style="font-size: 15px;"><b><?php print $totalesX[1] ?></b></td>
-						<td style="font-size: 20px;"><b><?php echo $totalesX[2] ?></b></td>
-						
-					</tr>
-				</tbody>
-			</table>
-			
-			<hr>
-			<p>TOTAL DE ALUMNOS LIBERADOS: <span style="font-size: 30px"><?php print  $totalesX[2] + ($tmL+$thL) ?></span></p>
--->
 		</div>
 		<div class="tab-pane" id="grafico">
 			<div class="alert">En construcción.</div>
@@ -545,4 +382,4 @@
 	</div>
 <hr>
 
-<p><h3>IMPORTANTE</h3><i>Los datos que aquí se presentan hacen referencia únicamente a los alumnos que se inscribieron a los diferentes clubes deportivos y culturales y actividades recreativas.</i></p>
+<p><h3>IMPORTANTE</h3><i>Los datos que aquí se presentan hacen referencia únicamente a los alumnos que se inscribieron a los diferentes clubes deportivos y culturales, no representa los datos de los alumnos que liberaron en otras actividades.</i></p>
