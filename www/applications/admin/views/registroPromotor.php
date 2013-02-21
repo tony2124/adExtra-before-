@@ -88,9 +88,9 @@ $().ready(function() {
                   <option value="2">MUJER</option>
                 </select>
           </div><br>
-          <label class="control-label">Club</label>
+      <!--    <label class="control-label">Club</label>
           <div class="controls">
-      <!-- -->  <select name="club" id="club">
+      <select name="club" id="club">
                 <option>Seleccione una opción....</option>
                   <?php foreach ($clubes as $club){
 
@@ -100,12 +100,12 @@ $().ready(function() {
           </div><br>
           <label class="control-label" for="horario">Horario de trabajo</label>
           <div class="controls">
-      <!-- -->  <textarea name="horario" id="horario"></textarea>
+      <!  <textarea name="horario" id="horario"></textarea>
           </div><br>
           <label class="control-label" for="lugar">Lugar de trabajo</label>
           <div class="controls">
-      <!-- -->  <textarea name="lugar" id="lugar"></textarea>
-          </div><br>
+      <!  <textarea name="lugar" id="lugar"></textarea>
+          </div><br>-->
           <label class="control-label" for="email">Correo electrónico</label>
           <div class="controls">
       <!-- -->  <input type="text" name="email" class="input-xlarge" id="email">

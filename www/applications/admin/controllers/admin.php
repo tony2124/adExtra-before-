@@ -62,7 +62,15 @@ class Admin_Controller extends ZP_Controller {
 
 	}
 
-
+	function guardarHorario($periodo)
+	{
+		$vars['club'] = POST('club');
+		$vars['promotor'] = POST('promotor');
+		$vars['lugar'] = POST('lugar');
+		$vars['horario'] = POST('horario');
+		$vars['periodo'] = $periodo;
+		$this->Admin_Model->guardarHorario($vars);
+	}
 /* PROMOTORES */
 	function promotores($periodo = NULL)
 	{
@@ -87,8 +95,9 @@ class Admin_Controller extends ZP_Controller {
 			$vars['periodo'] = periodo_actual();
 		else
 			$vars['periodo'] = $periodo;
-		$vars['promotores']  = $this->Admin_Model->getPromotores($periodo);
-		$vars['todos_promotores'] = $this->Admin_Model->getPromotores(NULL);
+		$vars['promotores']  = $this->Admin_Model->getPromotores($vars['periodo']);
+		$vars['todos_promotores'] = $this->Admin_Model->getPromotores("all");
+		$vars['promotores_actuales'] = $this->Admin_Model->getPromotores(NULL);
 		$vars['clubes'] = $this->Admin_Model->getClubes();
 		$vars['view'] = $this->view('adminPromotores',true);
 		$this->render('noRightContent', $vars);
@@ -199,12 +208,12 @@ class Admin_Controller extends ZP_Controller {
 		$vars['nombre'] = POST('nombre');
 		$vars['ap'] = POST('ap');
 		$vars['am'] = POST('am');
-		$vars['horario'] = POST('horario');
-		$vars['lugar'] = POST('lugar');
+		//$vars['horario'] = POST('horario');
+		//$vars['lugar'] = POST('lugar');
 		$vars['fecha_nac'] = POST('fecha_nac');
 		$vars['fecha_reg'] = date("Y-m-d");
 		$vars['sexo'] = POST('sexo');
-		$vars['club'] = POST('club');
+		//$vars['club'] = POST('club');
 		$vars['sexo'] = POST('sexo');
 		$vars['email'] = POST('email');
 		$vars['tel'] = POST('tel');
@@ -280,14 +289,14 @@ class Admin_Controller extends ZP_Controller {
 		$vars['pass'] = POST('pass');
 		$vars['foto'] = $name;
 		$vars['nombre'] = POST('nombre');
-		$vars['horario'] = POST('horario');
-		$vars['lugar'] = POST('lugar');
+		//$vars['horario'] = POST('horario');
+		//$vars['lugar'] = POST('lugar');
 		$vars['ap'] = POST('ap');
 		$vars['am'] = POST('am');
 		$vars['fecha_nac'] = POST('fecha_nac');
 		$vars['fecha_reg'] = date("Y-m-d");
 		$vars['sexo'] = POST('sexo');
-		$vars['club'] = POST('club');
+		//$vars['club'] = POST('club');
 		$vars['sexo'] = POST('sexo');
 		$vars['email'] = POST('email');
 		$vars['tel'] = POST('tel');
@@ -1330,7 +1339,7 @@ class Admin_Controller extends ZP_Controller {
 
  		$vars['view'] = $this->view('configLiberacion', true);
  		$config = $this->Admin_Model->getConfiguracion();
- 		$vars['periodos'] = periodos('1082');
+ 		$vars['periodos'] = periodos_combo('1082');
  		$vars['config'] = $config[0];
 
  		$this->render('content', $vars);

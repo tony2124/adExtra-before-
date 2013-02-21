@@ -29,8 +29,10 @@ return $this->Db->query("select * from ");
 public function getPromotores($periodo)
 {
 	if($periodo==NULL)
-		return $this->Db->query("select * from promotores where eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");	
-	return $this->Db->query("select * from promotores natural join horarios natural join clubes where periodo='$periodo' and eliminado_promotor = false order by apellido_paterno_promotor asc, apellido_materno_promotor asc, nombre_promotor asc");
+		return $this->Db->query("select * from promotores where eliminado_promotor=false order by nombre_promotor asc, apellido_paterno_promotor asc, apellido_materno_promotor asc");	
+	else if(strcmp($periodo,"all") == 0)
+		return $this->Db->query("select * from promotores order by  nombre_promotor asc, apellido_paterno_promotor asc, apellido_materno_promotor asc");	
+	return $this->Db->query("select * from promotores natural join horarios natural join clubes where periodo='$periodo' order by nombre_promotor asc, apellido_paterno_promotor asc, apellido_materno_promotor asc");
 }
 
 public function getEditPromotor($id)
@@ -38,9 +40,9 @@ public function getEditPromotor($id)
 return $this->Db->query("select * from promotores where eliminado_promotor = false and usuario_promotor = '$id'");
 }
 
-public function getPromotor($club)
+public function getPromotor($club, $periodo)
 {
-	return $this->Db->query("select * from promotores where id_club = '$club' and eliminado_promotor = 0");
+	return $this->Db->query("select * from promotores natural join horarios natural join clubes where id_club = '$club' and periodo ='$periodo'");
 }
 
 public function elimPromotor($id)
@@ -56,8 +58,8 @@ public function getPeriodos()
 public function regPromotor($vars)
 {
 
-$query = "insert into promotores (usuario_promotor, contrasena_promotor, foto_promotor, nombre_promotor, apellido_paterno_promotor, apellido_materno_promotor, horario, lugar, id_club, sexo_promotor, fecha_nacimiento_promotor, fecha_registro_promotor, correo_electronico_promotor, telefono_promotor, ocupacion_promotor, direccion_promotor)
-values('$vars[user]', '$vars[pass]','$vars[foto]', '$vars[nombre]' ,'$vars[ap]','$vars[am]','$vars[horario]','$vars[lugar]', $vars[club], $vars[sexo], '$vars[fecha_nac]', '$vars[fecha_reg]', '$vars[email]','$vars[tel]' ,'$vars[ocupacion]', '$vars[direccion]')";
+$query = "insert into promotores (usuario_promotor, contrasena_promotor, foto_promotor, nombre_promotor, apellido_paterno_promotor, apellido_materno_promotor, sexo_promotor, fecha_nacimiento_promotor, fecha_registro_promotor, correo_electronico_promotor, telefono_promotor, ocupacion_promotor, direccion_promotor)
+values('$vars[user]', '$vars[pass]','$vars[foto]', '$vars[nombre]' ,'$vars[ap]','$vars[am]', $vars[sexo], '$vars[fecha_nac]', '$vars[fecha_reg]', '$vars[email]','$vars[tel]' ,'$vars[ocupacion]', '$vars[direccion]')";
 //$this->acentos();
 $this->Db->query($query);
 return $query;
@@ -66,7 +68,7 @@ return $query;
 public function updatePromotor($vars)
 {
 
-$query = "update promotores set lugar = '$vars[lugar]', horario = '$vars[horario]', contrasena_promotor = '$vars[pass]', foto_promotor = '$vars[foto]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
+$query = "update promotores set contrasena_promotor = '$vars[pass]', foto_promotor = '$vars[foto]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
 $this->Db->query($query);
 return $query;
 }
@@ -74,7 +76,7 @@ return $query;
 public function updatePromotorMantener($vars)
 {
 
-$query = "update promotores set lugar = '$vars[lugar]', horario = '$vars[horario]', contrasena_promotor = '$vars[pass]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', id_club = $vars[club], sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
+$query = "update promotores set contrasena_promotor = '$vars[pass]', nombre_promotor = '$vars[nombre]', apellido_paterno_promotor = '$vars[ap]', apellido_materno_promotor = '$vars[am]', sexo_promotor = $vars[sexo], fecha_nacimiento_promotor = '$vars[fecha_nac]', fecha_registro_promotor = '$vars[fecha_reg]', correo_electronico_promotor = '$vars[email]', telefono_promotor = '$vars[tel]', ocupacion_promotor = '$vars[ocupacion]', direccion_promotor = '$vars[direccion]' where usuario_promotor = '$vars[usuario]'";
 $this->Db->query($query);
 return $query;
 }
@@ -146,6 +148,16 @@ public function getClubes($hm = NULL)
 		return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club = $hm order by nombre_club asc");	
 	
 	return $data = $this->Db->query("select * from clubes where eliminado_club = 0 and tipo_club!=3 order by nombre_club asc");
+}
+
+public function guardarHorario($vars)
+{
+
+	$data = $this->Db->query("select * from horarios where periodo = '$vars[periodo]' and id_club = '$vars[club]'");
+	if($data == NULL)
+		$this->Db->query("insert into horarios values($vars[club],'$vars[promotor]','$vars[periodo]','$vars[lugar]','$vars[horario]')");
+	else
+		$this->Db->query("update horarios set usuario_promotor = '$vars[promotor]', lugar = '$vars[lugar]', horario =  '$vars[horario]' where id_club = '$vars[club]' and periodo = '$vars[periodo]' ");
 }
 
 public function getClubesProm()

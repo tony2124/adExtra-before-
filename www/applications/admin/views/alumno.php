@@ -153,7 +153,7 @@ function folio(folio)
 
 <h2>Historial de liberación de horas extraescolares</h2>
 <hr>
-<p>A continuación se muestra todos los clubes y actividades que ha realizado <span class="label label-primary"><?php print $nombreAlumno ?> </span>.</p>
+<p>A continuación se muestra todos los clubes y actividades que ha realizado <span class="label label-success"><?php print $nombreAlumno ?> </span>.</p>
 <hr><!--
 <?php // if($inscripciones == NULL) { ?>
  <div class="alert"><h2>Advertencia</h2>Este alumno no se ha inscrito en ninguna actividad.</div>
@@ -174,7 +174,7 @@ function folio(folio)
             
         }
       ?>
-    <li class="<?php print ($i==0) ? 'active' : NULL; $i++; ?>">
+    <li class="<?php print ($i==sizeof($periodos) - 1) ? 'active' : NULL; $i++; ?>">
       <a href="#tab<?php print $i ?>" data-toggle="tab">
         <span class="label label-<?php print ($liberado) ? 'success' : 'important' ?>"><?php print $periodo ?></span>
       </a>
@@ -187,7 +187,7 @@ function folio(folio)
     <?php $i=0; foreach ($periodos as $periodo) 
     { ?>
     
-    <div class="tab-pane <?php print ($i==0) ? 'active' : NULL; $i++; ?>" id="tab<?php print $i ?>">
+    <div class="tab-pane <?php print ($i==sizeof($periodos) - 1) ? 'active' : NULL; $i++; ?>" id="tab<?php print $i ?>">
       <table class="table table-striped table-condensed">
         <thead>
         <th>fecha insc.</th>

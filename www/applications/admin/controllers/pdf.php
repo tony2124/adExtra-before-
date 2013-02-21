@@ -10,6 +10,8 @@ require_once(_spath.'/APIs/tcpdf/config/lang/eng.php');
 require_once(_spath.'/APIs/tcpdf/tcpdf.php');
 include(_corePath . _sh .'/libraries/funciones/funciones.php');
 
+
+//Encabezado personalizado de la cédula de inscripción
 class Cedula extends TCPDF {
 	
     //Page header
@@ -18,7 +20,7 @@ class Cedula extends TCPDF {
         $this->SetFont('helvetica', 'N', 10);
         $this->SetY(15);
 
-        // Title
+        // Se genera la tabla del encabezado de la cédula de inscripción
         $html = '<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" cellspacing="0" cellpadding="0" width="620">
         <tr>
           <td height="110" width="150" rowspan="3" align="center" valign="middle">
@@ -66,21 +68,21 @@ class Cedula extends TCPDF {
 				    <td width="100">
 				   		<b>ACTIVIDAD:</b>
 					</td>
-					<td width="250">
+					<td width="200">
 				   		'.SESSION('actividad').'
 					</td>
-					<td  width="100">
+					<td width="60" >
 				   		<b>GRUPO:</b> 
 					</td>
-					<td width="150">
+					<td width="100">
 					ÚNICO
 					</td>
 					<td width="80">
 				   		<b>HORA:</b>
 					</td>
-					<td width="150">
-					_____________________
-					</td>
+					<td width="300">'.
+					SESSION('horario')
+					.'</td>
 				  </tr>
 				</table><p>&nbsp;</p>
 				<table style="border-collapse:collapse; font-family:Arial, Helvetica, sans-serif" border="1" 
@@ -188,32 +190,43 @@ class Resultados extends TCPDF {
 				  </tr></table>';
 				//  $this->Text(50,73, "asdds");
        $this->writeHTML($html, true, false, true, false, '');
+
     }
 
     // Page footer
     public function Footer() {
         // Position at 15 mm from bottom
-        $this->SetY(-40);
-        // Set font
+        $this->SetY(-55);
+
         $this->SetFont('helvetica', 'N', 12);
         
-        $html = '<p>Lugar y fecha: Apatzingán, Michoacán a '.date("d - m - Y").'<b><br><br>
-        <table>
+        $fech = substr(SESSION('periodo'), - 7, -4);
+
+        if(strcmp($fech,"ENE") == 0)
+        	$fech = "Enero del ".substr(SESSION('periodo'), -4);
+        else
+        	$fech = "Julio del ".substr(SESSION('periodo'), -4);
+
+        $html = '<p>Lugar y fecha: Apatzingán, Michoacán. '.$fech.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Descargado el :'.convertirFecha(date("Y-m-d")).'</p>
+				<br>
+        <table align="center">
         	<tr>
-        		<td>PROMOTOR: </td>
-        		<td>JEFE DE DEPARTAMENTO</td>
+        		<td><b>PROMOTOR:</b></td>
+        		<td><b>JEFE DE DEPARTAMENTO</b></td>
         	</tr>
         	
-	        	<tr>
-	        		<td>'.SESSION('promotor').'</td>
-	        		<td><b>'.SESSION('admin').'</b></td>	       		</tr>
+	        <tr>
+	        	<td>'.SESSION('promotor').'</td>
+	        	<td>'.SESSION('admin').'</td>
+	        </tr>
        		
-       	</table></p>
+       	</table>
        	<p>&nbsp;</p>';
         $this->writeHTML($html,true,false,true,false,'');
 
         $this->SetFont('helvetica', 'I', 10);
-        $this->Cell(0, 10, "SNEST/D-VI-PO-003-03                                                                                                                                                     				Rev. 3", 0, false, 'C', 0, '', 0, false, 'T', 'M');
+        $this->Cell(0, 0, "SNEST/D-VI-PO-003-03                                                                                                                                                     				Rev. 3", 0, false, 'C', 0, '', 0, false, 'T', 'M');
+
     }
 }
 
@@ -293,14 +306,15 @@ class Pdf_Controller extends ZP_Controller {
 				return redirect(get('webURL') .  _sh .'admin/login');
 
  				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
-				$prommotor = $this->Admin_Model->getPromotor($club);
+				$prommotor = $this->Admin_Model->getPromotor($club, $periodo);
+
 				$pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 				$pdf->SetCreator(PDF_CREATOR);
 				$pdf->SetAuthor('Alfonso Calderon');
 				$pdf->SetTitle('Lista de alumnos');
 				$pdf->SetSubject('Lista');
 				$pdf->SetKeywords('lista, extraescolares, clubes, club');
-				$pdf->SetHeaderData("logo.png", 15, "Relación de alumnos del club de ".$data[0]['nombre_club'], "Instituto Tecnológico Superior de Apatzingán\n".$prommotor[0]['nombre_promotor']." ".$prommotor[0]['apellido_paterno_promotor']." ".$prommotor[0]['apellido_materno_promotor']."\nwww.itsa.edu.mx");
+				$pdf->SetHeaderData("logo.png", 15, "RELACIÓN DE ALUMNOS DEL CLUB DE ".$prommotor[0]['nombre_club'], "INSTITUTO TECNOLÓGICO SUPERIOR DE APATZINGÁN\n".$prommotor[0]['nombre_promotor']." ".$prommotor[0]['apellido_paterno_promotor']." ".$prommotor[0]['apellido_materno_promotor']."\nwww.serviciosextraescolares.itsapatzingan.net");
 				$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 				$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -314,7 +328,7 @@ class Pdf_Controller extends ZP_Controller {
 				$html = '
 					<br>
 					<p align="center">
-					RELACIÓN DE ALUMNOS DEL CLUB DE '.$data[0]['nombre_club'].' DEL PERIODO '.$periodo.'  
+					RELACIÓN DE ALUMNOS DEL CLUB DE '.$prommotor[0]['nombre_club'].' DEL PERIODO '.$periodo.'  
 					</p>
 					<table border="1" width="850">
 						<tr height="80" align="center">
@@ -354,15 +368,17 @@ class Pdf_Controller extends ZP_Controller {
  				if (!SESSION('user_admin'))
 				return redirect(get('webURL') .  _sh .'admin/login');
 				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
-				$prommotor = $this->Admin_Model->getPromotor($club);
+				$prommotor = $this->Admin_Model->getPromotor($club, $periodo);
 				$admin = $this->Admin_Model->getAdminData($data[0]['id_administrador']);
 				SESSION('periodo',$periodo);
+				SESSION('horario',$prommotor[0]['horario']);
 				SESSION('actividad', $data[0]['nombre_club']);
+
 				SESSION('admin', strtoupper($admin[0]['abreviatura_profesion'].' '.$admin[0]['apellido_paterno_administrador'].' '.$admin[0]['apellido_materno_administrador'].' '.$admin[0]['nombre_administrador'] ) );
 				$pdf = new Cedula('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 				$pdf->SetCreator(PDF_CREATOR);
 				$pdf->SetAuthor('Alfonso Calderon');
-				$pdf->SetTitle('Lista de alumnos');
+				$pdf->SetTitle('Cédula de inscripción');
 				$pdf->SetSubject('Lista');
 				$pdf->SetKeywords('lista, extraescolares, clubes, club');
 				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -404,30 +420,34 @@ class Pdf_Controller extends ZP_Controller {
 				$pdf->writeHTML($html, true, false, true, false, '');
 
 				$pdf->lastPage();
-				$pdf->Output("cedulaInscripcion.pdf", 'I');
+				$pdf->Output("cedins".$prommotor[0]['nombre_club'].$periodo.".pdf", 'I');
  			break;
 
  			case 'resultados':
  			if (!SESSION('user_admin'))
 			return redirect(get('webURL') .  _sh .'admin/login');
+
  				$data = $this->Admin_Model->getAlumnosClubes($club, $periodo);
-				$promotor = $this->Admin_Model->getPromotor($club);
+				$promotor = $this->Admin_Model->getPromotor($club, $periodo);
 				$admin = $this->Admin_Model->getAdminData(SESSION('id_admin'));
+
 				SESSION('periodo',$periodo);
 				SESSION('actividad', $data[0]['nombre_club']);
 				SESSION('promotor',strtoupper($promotor[0]['apellido_paterno_promotor'].' '.$promotor[0]['apellido_materno_promotor'].' '.$promotor[0]['nombre_promotor']));
+				
 				$pdf = new Resultados('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+				
 				$pdf->SetCreator(PDF_CREATOR);
 				$pdf->SetAuthor('Alfonso Calderon');
-				$pdf->SetTitle('Lista de alumnos');
+				$pdf->SetTitle('Cédula de resultados');
 				$pdf->SetSubject('Lista');
-				$pdf->SetKeywords('lista, extraescolares, clubes, club');
+				$pdf->SetKeywords('cedula, extraescolares, clubes, club');
 				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 				$pdf->SetMargins(20, 93, 20);
 				$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 				$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-				$pdf->SetAutoPageBreak(TRUE, 50);
+				$pdf->SetAutoPageBreak(TRUE, 60);
 
 				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 				$pdf->SetFont('dejavusans', '', 10);
@@ -457,7 +477,7 @@ class Pdf_Controller extends ZP_Controller {
 				$pdf->writeHTML($html, true, false, true, false, '');
 
 				$pdf->lastPage();
-				$pdf->Output("cedulaResultados.pdf", 'I');
+				$pdf->Output("cedres".$promotor[0]['nombre_club'].$periodo.".pdf", 'I');
  			break;
 
  			case 'liberacion':

@@ -90,9 +90,9 @@ $().ready(function() {
                   <option <?php if(strcmp($promotor['sexo_promotor'],'2') == 0) print 'selected="selected"' ?> value="2">MUJER</option>
                 </select>
           </div><br>
-          <label class="control-label">Club</label>
+     <!--     <label class="control-label">Club</label>
           <div class="controls">
-      <!-- -->  <select name="club" id="club">
+       <select name="club" id="club">
                   <?php foreach ($clubes as $club){ ?>
 
                     <option <?php if($club['id_club'] == $promotor['id_club']) print 'selected="selected"' ?> value="<?php print $club['id_club'] ?>"> 
@@ -103,12 +103,12 @@ $().ready(function() {
           </div><br>
           <label class="control-label" for="horario">Horario de trabajo</label>
           <div class="controls">
-      <!-- -->  <textarea name="horario" id="horario"><?php print $promotor['horario'] ?></textarea>
+       <textarea name="horario" id="horario"><?php print $promotor['horario'] ?></textarea>
           </div><br>
           <label class="control-label" for="lugar">Lugar de trabajo</label>
           <div class="controls">
-      <!-- -->  <textarea name="lugar" id="lugar"><?php print $promotor['lugar'] ?></textarea>
-          </div><br>
+        <textarea name="lugar" id="lugar"><?php print $promotor['lugar'] ?></textarea>
+          </div><br>-->
           <label class="control-label" for="email">Correo electrónico</label>
           <div class="controls">
       <!-- -->  <input type="text" name="email" class="input-xlarge" id="email" value="<?php print $promotor['correo_electronico_promotor'] ?>">

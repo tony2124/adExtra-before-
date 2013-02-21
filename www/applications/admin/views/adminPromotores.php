@@ -1,26 +1,37 @@
-
 <script>
 function promotor(usuario, name)
 {
    $('#nombre_promotor').html(name);
    $('#usuario_promotor').val(usuario);
 }
+
+function guardar(posicion)
+{
+    var request = $.ajax({
+      type: "POST",
+      url: "<?php print get('webURL')._sh.'admin/guardarHorario/'.$periodo ?>",
+      data: { club: $('#club'+posicion).val(), promotor: $('#promotor'+posicion).val(), lugar : $('#lugar'+posicion).val(), horario: $('#horario'+posicion).val() }
+      });
+
+    request.done(function( msg ) {
+      alert( "Data Saved: "+posicion + $('#promotor'+posicion).val() );
+    });
+
+    request.fail(function(jqXHR, textStatus) {
+     alert( "Request failed: " + textStatus );
+    });
+}
 </script>
-  <div class="alert alert-success span4">
-<h2>Nota importante</h2>
+
+<div >
+  <h2>Horarios de los promotores</h2>
   <p>Para el mejor funcionamiento del sistema considere las siguientes recomendaciones:</p>
   <ul>
     <li>No tenga activo a más de un promotor en un club, dé primero de baja el actual y después inscriba al nuevo promotor.</li>
     <li>El usuario y contraseña que estén asignadas son las que utilizará el promotor para iniciar sesión en su apartado: <a href="http://serviciosextraescolares.itsapatzingan.net/loginAdministrador/adExtra/promotor">http://serviciosextraescolares.itsapatzingan.net/loginAdministrador/adExtra/promotor</a></li>
   </ul>
- </div>
-  <form class="well span6 pull-right" style="text-align: center; " method="post" action="<?php print get('webURL')._sh."admin/buscar_promotor" ?>">
-    <i class="icon-search"></i>&nbsp;<b>NOMBRE</b>
-    <input type="text" name="nombre" >&nbsp;&nbsp;
-    <input type="submit" value="Buscar" class="btn btn-large">
-    <p style="font-style: italic; text-align: left">* Puedes realizar una búsqueda colocando: nombre o apellido paterno o apellido materno.</p>
-  </form>
-
+</div>
+<!--
    <div class="well span6 pull-right" >
    <div class="btn-group pull-right">
     <a class="btn dropdown-toggle btn-primary pull-right" data-toggle="dropdown" href="#">
@@ -40,21 +51,10 @@ function promotor(usuario, name)
     </ul>
   </div>
   <p>Se han encontrado <?php print sizeof($promotores) ?> promotores</p>
-   <p><a href="<?php print get('webURL'). _sh . 'admin/formRegistroPromotor' ?>">Agregar un nuevo promotor</a></p>
+  <p><a href="<?php print get('webURL'). _sh . 'admin/formRegistroPromotor' ?>">Agregar un nuevo promotor</a></p>
 
   </div>
- 
- 
- <p>&nbsp;</p>
- <p>&nbsp;</p>
- <p>&nbsp;</p>
- <p>&nbsp;</p>
- <p>&nbsp;</p>
- <p>&nbsp;</p>
- <p>&nbsp;</p>
- <p>&nbsp;</p>
- <p>&nbsp;</p>
- <p>&nbsp;</p>
+ -->
   <hr>  
   PERIODO
  <select onchange="location.href='<?php print get("webURL").'/admin/promotores/' ?>'+$(this).val()">
@@ -83,13 +83,12 @@ function promotor(usuario, name)
 <?php if($promotores==NULL) { ?>
 <div class="alert alert-error">
   <!--<a class="close" data-dismiss="alert" href="#">×</a>-->
-  <p>No se encuentra ningún promotor registrado, por favor vaya al apartado promotores para registrar uno.</p>
-  <a href="<?php print get('webURL'). _sh . 'admin/registroPromotor' ?>" class="">Registrar promotor</a>
+  <p>No se encuentra ningún promotor ASIGNADO en este periodo, por favor asigne los promotores correspondientes a cada club y su horario de participación. Debe tener en cuenta que si es un periodo pasado solo podra hacer esta configuración UNA VEZ, es necesario que cuente con el horario correspondiente al periodo.</p>
+  
 </div>
  <?php } ?>
- <hr>
- 
- <?php if($promotores==NULL) return; ?>
+<hr>
+
 
 <table class="table">
   <thead align="left">
@@ -97,58 +96,75 @@ function promotor(usuario, name)
     <th>PROMOTOR</th>
     <th>LUGAR</th>
     <th>HORARIO</th>
+    <th width="50"></th>
   </thead>
   <tbody>
 
 <?php $cI = 0; foreach ($clubes as $club) {  $b = false; ?>
   
   <tr>
-      <td ><?php print $club['nombre_club'] ?></td>
-     <?php foreach ($promotores as $promotor) 
+      <td ><?php print $club['nombre_club'] ?><input id="club<?php print $cI ?>" type="hidden" value="<?php print $club['id_club'] ?>" /></td>
+     <?php if($promotores != NULL) foreach ($promotores as $promotor) 
       if($club['id_club'] == $promotor['id_club'])
       {
+         if(strcmp( $periodo , periodo_actual()) == 0)
+         {
       ?>
-      <td >
-        <select name="promotor"> 
-          <?php foreach ($todos_promotores as $prom) { ?>
-          <option id="<?php print $prom['usuario_promotor'] ?>"  <?php if(strcmp($prom['usuario_promotor'], $promotor['usuario_promotor']) == 0) print "selected='selected'" ?>>
-            <?php print strtoupper($prom['nombre_promotor'].' '.$prom['apellido_paterno_promotor'].' '.$prom['apellido_materno_promotor']) ?>
-          </option>
-          <?php } ?>
-        </select>
-      </td>
-      <td ><textarea><?php print $promotor['lugar']  ?></textarea></td>
-      <td ><textarea><?php print $promotor['horario']  ?></textarea></td>
-      <?php $b = true; break;  } 
+        <td>
+          <select id="promotor<?php print $cI ?>"> 
+            <?php foreach ($promotores_actuales as $prom) { ?>
+            <option value="<?php print $prom['usuario_promotor'] ?>"  <?php if(strcmp($prom['usuario_promotor'], $promotor['usuario_promotor']) == 0) print "selected='selected'" ?>>
+              <?php print strtoupper($prom['nombre_promotor'].' '.$prom['apellido_paterno_promotor'].' '.$prom['apellido_materno_promotor']) ?>
+            </option>
+            <?php } ?>
+          </select>
+        </td>
+        <td><textarea id="lugar<?php print $cI ?>"><?php print $promotor['lugar'] ?></textarea></td>
+        <td><textarea id="horario<?php print $cI ?>"><?php print $promotor['horario'] ?></textarea></td>
+        <td><button class="btn" onclick="guardar(<?php print $cI ?>)">Guardar</button></td>
+        <?php 
+          }
+          else
+          { ?>
+
+          <td><?php print strtoupper($promotor['nombre_promotor'].' '.$promotor['apellido_paterno_promotor'].' '.$promotor['apellido_materno_promotor']) ?></td>
+          <td><?php print $promotor['lugar'] ?></td>
+          <td><?php print $promotor['horario'] ?></td>
+          <td></td>
+          <?php }
+        $b = true; 
+        break; 
+
+      } 
 
       if($b == false)
       {  ?>
       <td>
-        <select name="promotor"> 
+        <select id="promotor<?php print $cI ?>"> 
           <option>Elige un promotor</option>
-          <?php foreach ($todos_promotores as $prom) { ?>
+          <?php foreach ($promotores_actuales as $prom) { ?>
           
-          <option id="<?php print $prom['usuario_promotor'] ?>" >
+          <option value="<?php print $prom['usuario_promotor'] ?>" >
             <?php print strtoupper($prom['nombre_promotor'].' '.$prom['apellido_paterno_promotor'].' '.$prom['apellido_materno_promotor']) ?>
           </option>
           <?php } ?>
         </select>
       </td>
-      <td ><textarea></textarea></td>
-      <td ><textarea></textarea></td>
-
-      <?php }
-
-      ?>
+      <td ><textarea id="lugar<?php print $cI ?>"></textarea></td>
+      <td ><textarea id="horario<?php print $cI ?>"></textarea></td>
+      <td><button class="btn" onclick="guardar(<?php print $cI ?>)">Guardar</button></td>
+      <?php }  ?>
 
     </tr>
+    <?php if($b == true)  { ?>
     <tr bgcolor="#eee">
-      <td colspan="4" data-toggle="collapse" href="#showAdmin_<?php print $cI;?>">
+      <td colspan="5" data-toggle="collapse" href="#showAdmin_<?php print $cI;?>">
         <a class="icon-chevron-down pull-right" rel="tooltip" title="Mostrar datos"></a>
       </td>
     </tr>
+    <?php } ?>
     <tr>
-      <td colspan="4">
+      <td colspan="5">
         <div id="showAdmin_<?php print $cI;?>" class="collapse out">
 
           <table class="table table-striped table-condensed">
