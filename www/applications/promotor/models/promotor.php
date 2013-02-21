@@ -15,7 +15,7 @@ class Promotor_Model extends ZP_Model {
 
 	public function getPromotor($user)
 	{
-		return $this->Db->query("select * from promotores where usuario_promotor = '$user' and eliminado_promotor=false");
+		return $this->Db->query("select * from promotores natural join horarios natural join clubes where usuario_promotor = '$user' and eliminado_promotor=false");
 	}
 
 	public function getAlumnos($id_club, $periodo)
