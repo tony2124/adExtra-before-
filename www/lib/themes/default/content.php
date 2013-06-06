@@ -19,6 +19,7 @@
 		  </label>
 		  <button type="submit" class="btn btn-primary">Buscar</button>
 		</form>
+		<p><a target="_blank" href="https://www.dropbox.com/s/yoniq6vddq62nvp/Manual%20para%20el%20administrador.docx">¡Descargar manual de administrador!</a></p>
 		<a class="pull-right" href="http://www.itsa.edu.mx/"  title="Ir a la página del ITSA" rel="tooltip">
 			<img class="pull-right" src="<?php print _rs._sh.'IMAGENES/cargando/logo.png' ?>">
 		</a>
